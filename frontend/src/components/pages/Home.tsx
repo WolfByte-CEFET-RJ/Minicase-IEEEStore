@@ -10,8 +10,24 @@ export default function Home() {
                 <ProductCard imgSrc="data:image/jpeg;base64,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" imgAlt="imagem do produto" nameProduct="Camisa Branca" price="50,00" available="Sim" rating="10" />
             </ProductCategorySection>
             
-            <ProductCategorySection nameCategory="Copos"></ProductCategorySection>
-            <ProductCategorySection nameCategory="Bottons"></ProductCategorySection>
+            <ProductCategorySection nameCategory="Copos">
+                <ProductCard imgSrc="https://atelierdascanecas.com.br/wp-content/uploads/2022/07/caneca-desenrola-bate-pega-caf%C3%A9zinho-atelier-das-canecas-personalizadas.jpg" imgAlt="Caneca Branca" nameProduct="Caneca Branca" price="15,00" available="Sim" rating="10" />
+
+                <ProductCard imgSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNJ18gPn3_5voHaMuaV6XPhI9RCeIApxlCjA&s" imgAlt="Caneca Preta" nameProduct="Caneca Branca" price="15,00" available="Sim" rating="10" />
+
+                <ProductCard imgSrc="https://atelierdascanecas.com.br/wp-content/uploads/2022/07/caneca-desenrola-bate-pega-caf%C3%A9zinho-atelier-das-canecas-personalizadas.jpg" imgAlt="Caneca Branca" nameProduct="Caneca Branca" price="15,00" available="Sim" rating="10" />
+
+                <ProductCard imgSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNJ18gPn3_5voHaMuaV6XPhI9RCeIApxlCjA&s" imgAlt="Caneca Preta" nameProduct="Caneca Branca" price="15,00" available="Sim" rating="10" />
+
+                <ProductCard imgSrc="https://atelierdascanecas.com.br/wp-content/uploads/2022/07/caneca-desenrola-bate-pega-caf%C3%A9zinho-atelier-das-canecas-personalizadas.jpg" imgAlt="Caneca Branca" nameProduct="Caneca Branca" price="15,00" available="Sim" rating="10" />
+
+                <ProductCard imgSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNJ18gPn3_5voHaMuaV6XPhI9RCeIApxlCjA&s" imgAlt="Caneca Preta" nameProduct="Caneca Branca" price="15,00" available="Sim" rating="10" />
+            </ProductCategorySection>
+            <ProductCategorySection nameCategory="Bottons">
+                <ProductCard imgSrc="https://img.elo7.com.br/product/685x685/45FED26/10-bottons-3-5-rock-roll-botons-button-pins-broches.jpg" imgAlt="Botton Preto" nameProduct="Botton Preto" price="10,00" available="Sim" rating="10" />
+
+                <ProductCard imgSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxbo-tO_xPiYqUPCTjeoQFA9CJn9-3lRRJOA&s" imgAlt="Botton Preto" nameProduct="Botton Preto" price="10,00" available="Sim" rating="10" />
+            </ProductCategorySection>
         </div>
     )
 }
