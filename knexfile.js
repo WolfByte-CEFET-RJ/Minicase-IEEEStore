@@ -1,7 +1,6 @@
 const path = require('path');
 require('dotenv').config();
 require('dotenv').config({path: '../../.env'});
-console.log(`SE LIGA ${process.env.KNEX_DATABASE}`);
 
 module.exports = {
   client: 'mysql2',
