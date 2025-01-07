@@ -1,6 +1,7 @@
 const path = require('path');
-require('dotenv').config();
 require('dotenv').config({path: '../../.env'});
+
+console.log('KNEX_HOST:', process.env.KNEX_HOST);
 
 module.exports = {
   client: 'mysql2',
