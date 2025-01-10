@@ -1,6 +1,6 @@
-const { configDotenv } = require("dotenv");
+require('dotenv').config();
 const express = require("express");
-const homeRouter = require("./routes/homeRouter");
+const homeRouter = require("./src/routes/homeRouter");
 configDotenv();
 const app = express();
 app.use(homeRouter) 
