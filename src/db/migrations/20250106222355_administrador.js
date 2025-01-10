@@ -9,6 +9,7 @@ exports.up = function(knex) {
         table.json('cargo').notNullable();
         table.string('cpf',11).notNullable().unique();
         table.string('telefone').notNullable();
+        table.string('senha').notNullable();
     })
 };
 

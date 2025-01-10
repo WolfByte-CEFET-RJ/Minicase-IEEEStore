@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express = require("express");
-const homeRouter = require("./src/routes/homeRouter");
+const router = require("./src/routes/routes");
 configDotenv();
 const app = express();
-app.use(homeRouter) 
+app.use(router) 
 
 console.log('Host:', process.env.KNEX_HOST);
 console.log('Port:', process.env.KNEX_PORT);

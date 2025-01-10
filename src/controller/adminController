@@ -1,0 +1,18 @@
+const adminServices = require("../services/adminServices");
+
+async function createAdmin(req, res){
+    try{
+    const {nome, cargo, cpf, telefone, senha} = req.body;
+    const createService = await adminServices.createAdmin(nome, cargo, cpf, telefone, senha);
+    res.json({status: true, message: createService});
+    console.log("Controlador executado.");
+
+    }catch(erro){
+        console.log(erro);
+        res.json({status: false, message: erro.message});
+    }
+}
+
+module.exports = {
+    createAdmin,
+}

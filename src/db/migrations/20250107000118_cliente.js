@@ -12,6 +12,7 @@ exports.up = function(knex) {
         table.string('email').notNullable().unique();
         table.json('cargo');
         table.boolean('membro_pagante').notNullable();
+        table.string('senha').notNullable();
     })
 };
 
