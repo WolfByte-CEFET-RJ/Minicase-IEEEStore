@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
+const {autenticar} = require("../middleware/auth.js");
 
 const adminController = require("../controller/adminController");
 
-homeRouter.get("/",(req,res)=>{
-    res.status(200).json({message:"oba!!!"})
-})
-
 //ADMINISTRADOR
-router.post("/admin", adminController.createAdmin);
+router.post("/admin",adminController.createAdmin);
+router.post("/admin/login",adminController.loginAdmin);
+router.patch("/admin/:id",autenticar,adminController.updateAdmin);
+router.delete("/admin/:id",autenticar,adminController.deleteAdmin);
 
 module.exports = router;

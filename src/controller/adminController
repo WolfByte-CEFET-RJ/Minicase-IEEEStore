@@ -1,8 +1,22 @@
 const adminServices = require("../services/adminServices");
 
-async function createAdmin(req, res){
+
+async function loginAdmin(req,res){
     try{
+        const { cpf, senha} = req.body;
+        const loginService = await adminServices.loginAdmin(cpf,senha);
+        res.json({status: true, message: loginService});
+        console.log("Controlador executado.");
+    }catch(error){
+        console.log(error);
+        res.json({status:false, message: error.message});
+    }
+}
+
+async function createAdmin(req, res){
     const {nome, cargo, cpf, telefone, senha} = req.body;
+    try{
+    console.log("REQ.BODY:", req.body); 
     const createService = await adminServices.createAdmin(nome, cargo, cpf, telefone, senha);
     res.json({status: true, message: createService});
     console.log("Controlador executado.");
@@ -12,7 +26,35 @@ async function createAdmin(req, res){
         res.json({status: false, message: erro.message});
     }
 }
+async function updateAdmin(req, res) {
+    try {
+        const { id } = req.params;
+        const { nome, cargo, cpf, telefone, senha } = req.body;
+
+        const updateService = await adminServices.updateAdmin(id, nome, cargo, cpf, telefone, senha);
+
+        res.json({ status: true, message: updateService });
+        console.log("Controlador executado.");
+    } catch (error) {
+        console.log(error);
+        res.json({ status: false, message: error.message });
+    }
+}
+
+async function deleteAdmin(req,res){
+    try{
+        const {id} = req.params;
+        const deleteAdmin = await adminServices.deleteAdmin(id);
+        res.json({status: true, message: deleteAdmin});
+        console.log("Controlador executado.");
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({status: false, message: error.message});
+    }
+}
+
+
 
 module.exports = {
-    createAdmin,
+    createAdmin,updateAdmin,deleteAdmin,loginAdmin
 }
