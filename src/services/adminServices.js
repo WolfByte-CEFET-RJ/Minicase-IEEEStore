@@ -6,6 +6,21 @@ const jwt = require("jsonwebtoken");
 configDotenv();
 
 
+async function viewAdmin(id){
+    try{
+        if(!id){
+            throw new Error("Administrador não encontrado.");
+        }
+        const adminInfo = await knex("administrador").select("*").where({id}).first();
+        if(!adminInfo){
+            throw new Error("Erro ao exibir informações");
+        }
+        return {message: "Exibindo... ", adminInfo};
+    }catch(error){
+        throw error;
+    }
+}
+
 async function createAdmin(nome, cargo, cpf, telefone, senha) {
     try {
         const cpfExistente = await knex("administrador").select("*").where({ cpf }).first();
@@ -137,5 +152,5 @@ async function deleteAdmin(id) {
   
 
 module.exports = {
-    createAdmin,updateAdmin,deleteAdmin,loginAdmin
+    createAdmin,updateAdmin,deleteAdmin,loginAdmin,viewAdmin,
 };

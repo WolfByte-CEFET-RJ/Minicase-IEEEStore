@@ -5,6 +5,7 @@ const {autenticar} = require("../middleware/auth.js");
 const adminController = require("../controller/adminController");
 
 //ADMINISTRADOR
+router.get("/admin/:id",autenticar,adminController.viewAdmin)
 router.post("/admin",adminController.createAdmin);
 router.post("/admin/login",adminController.loginAdmin);
 router.patch("/admin/:id",autenticar,adminController.updateAdmin);

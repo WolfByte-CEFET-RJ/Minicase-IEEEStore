@@ -12,6 +12,21 @@ async function loginAdmin(req,res){
         res.json({status:false, message: error.message});
     }
 }
+async function viewAdmin(req,res){
+    try{
+        const {id} = req.params;
+        if (parseInt(req.userId) !== parseInt(id)) {
+            return res.status(403).json({ status: false, message: "Acesso negado." });
+        }
+        const viewService = await adminServices.viewAdmin(id);
+
+        res.status(200).json({status: true, message: viewService})
+        console.log("Controlador executado.")
+    }catch(err){
+        console.log(err);
+        res.status(500).json({status:false,message:err.message})
+    }
+}
 
 async function createAdmin(req, res){
     const {nome, cargo, cpf, telefone, senha} = req.body;
@@ -26,11 +41,16 @@ async function createAdmin(req, res){
         res.json({status: false, message: erro.message});
     }
 }
+
 async function updateAdmin(req, res) {
     try {
         const { id } = req.params;
-        const { nome, cargo, cpf, telefone, senha } = req.body;
 
+        if (parseInt(req.userId) !== parseInt(id)) {
+            return res.status(403).json({ status: false, message: "Acesso negado." });
+        }
+
+        const { nome, cargo, cpf, telefone, senha } = req.body;
         const updateService = await adminServices.updateAdmin(id, nome, cargo, cpf, telefone, senha);
 
         res.json({ status: true, message: updateService });
@@ -41,20 +61,23 @@ async function updateAdmin(req, res) {
     }
 }
 
-async function deleteAdmin(req,res){
-    try{
-        const {id} = req.params;
+async function deleteAdmin(req, res) {
+    try {
+        const { id } = req.params;
+        if (parseInt(req.userId) !== parseInt(id)) {
+            return res.status(403).json({ status: false, message: "Acesso negado." });
+        }
         const deleteAdmin = await adminServices.deleteAdmin(id);
-        res.json({status: true, message: deleteAdmin});
+        res.json({ status: true, message: deleteAdmin });
         console.log("Controlador executado.");
-    }catch(error){
+    } catch (error) {
         console.log(error);
-        return res.status(500).json({status: false, message: error.message});
+        return res.status(500).json({ status: false, message: error.message });
     }
 }
 
 
 
 module.exports = {
-    createAdmin,updateAdmin,deleteAdmin,loginAdmin
+    createAdmin,updateAdmin,deleteAdmin,loginAdmin,viewAdmin
 }
