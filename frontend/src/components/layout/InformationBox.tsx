@@ -6,7 +6,7 @@ interface InformationBoxProps {
 
 export default function InformationBox(props: InformationBoxProps) {
     return (
-        <section className="layout-boxed bg-amber-50 rounded flex flex-col gap-4 py-10">
+        <section className="layout-boxed mt-20 bg-amber-50 rounded-3xl flex flex-col gap-6 py-10">
             {props.children}
         </section>
     )

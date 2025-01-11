@@ -3,24 +3,41 @@ import { ReactNode } from "react"
 interface InputProps {
     type: string
     name: string
-    placeholder: string
-    icon: ReactNode
+    placeholder?: string
+    icon?: ReactNode
     size: number
+    checkbox?: string
 }
 
 
 export default function Input(props: InputProps) {
-    return (
-        <div className=" flex justify-between border-b border-gray-500 p-1">
-            <input
-                type={props.type}
-                name={props.name}
-                placeholder={props.placeholder}
-                className="focus:outline-none bg-amber-50 text-xl placeholder-gray-600"
-                size={props.size}
-                autoComplete="off"
-            />
-            <label htmlFor={props.name}>{props.icon}</label>
-        </div>
+    return ( 
+        <>
+            {props.icon ? (
+                <div className=" flex justify-between border-b border-gray-500 p-1">
+                    <input
+                        type={props.type}
+                        name={props.name}
+                        placeholder={props.placeholder}
+                        className="focus:outline-none bg-amber-50 text-xl placeholder-gray-600"
+                        size={props.size}
+                        autoComplete="off"
+                    />
+                    <label htmlFor={props.name}>{props.icon}</label>
+                </div>
+            ) : (
+                <div className=" flex p-1">
+                    <p className="text-xl mr-5">{props.checkbox}</p>
+                    <input
+                        type={props.type}
+                        name={props.name}
+                        className="w-4"
+                        size={props.size}
+                        autoComplete="off"
+                    />
+                    <label htmlFor={props.name}>{props.icon}</label>
+                </div>
+            )}
+        </>
     )
 }
