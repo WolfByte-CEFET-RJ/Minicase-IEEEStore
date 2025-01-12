@@ -20,11 +20,37 @@ async function viewAdmin(id){
         throw error;
     }
 }
+async function checkAdmin(cpf, senha) {
+    try {
+        if (!cpf) {
+            throw new Error("O CPF não foi fornecido.");
+        }
+        console.log("Consultando CPF:", cpf);
 
-async function createAdmin(nome, cargo, cpf, telefone, senha) {
+        const admin = await knex("administrador").select("*").where({ cpf }).first();
+        console.log(admin);
+        if (!admin) {
+            throw new Error("Nenhum administrador com esse CPF localizado.");
+        }
+
+        const senhaCorreta = await bcrypt.compare(senha, admin.senha);
+        
+        if (!senhaCorreta) {
+            throw new Error("Senha incorreta.");
+        }
+
+        return admin;  
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function createAdmin({nome, cargo, cpf, telefone, senha}) {
+    console.log("ENtrei no createadmin")
+    console.log("Olha aq garotao", telefone)
     try {
         const cpfExistente = await knex("administrador").select("*").where({ cpf }).first();
-
+        console.log("Passei da query")
         if (cpfExistente) {
             throw new Error("Já existe um administrador registrado com esse CPF.");
         }
@@ -90,6 +116,7 @@ async function gerarHashSenha(senha) {
     const senhaHasheada = await bcrypt.hash(senha, saltRounds);
     return senhaHasheada;
 }
+
 async function updateAdmin(id, nome, cargo, cpf, telefone, senha) {
     try {
         const idExiste = await knex("administrador")
@@ -152,5 +179,5 @@ async function deleteAdmin(id) {
   
 
 module.exports = {
-    createAdmin,updateAdmin,deleteAdmin,loginAdmin,viewAdmin,
+    createAdmin,updateAdmin,deleteAdmin,loginAdmin,viewAdmin,checkAdmin,
 };

@@ -1,7 +1,7 @@
 const { configDotenv } = require('dotenv');
 const jwt = require('jsonwebtoken');
 configDotenv();
-const autenticar = (req, res, next) => {
+const adminAutentication = (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', ''); 
 
     if (!token) {
@@ -18,4 +18,4 @@ const autenticar = (req, res, next) => {
     }
 };
 
-module.exports = {autenticar};
+module.exports = {adminAutentication};
