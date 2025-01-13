@@ -46,11 +46,8 @@ async function checkAdmin(cpf, senha) {
 }
 
 async function createAdmin({nome, cargo, cpf, telefone, senha}) {
-    console.log("ENtrei no createadmin")
-    console.log("Olha aq garotao", telefone)
     try {
         const cpfExistente = await knex("administrador").select("*").where({ cpf }).first();
-        console.log("Passei da query")
         if (cpfExistente) {
             throw new Error("Já existe um administrador registrado com esse CPF.");
         }
@@ -89,10 +86,9 @@ async function createAdmin({nome, cargo, cpf, telefone, senha}) {
     }
 }
 function gerarToken(admin){
-    const token = jwt.sign({ id:admin.id}, process.env.JWT_KEY,{expiresIn: "1h"});
+    const token = jwt.sign({ id:admin.id, role: "admin"}, process.env.JWT_KEY,{expiresIn: "1h"});
     return token;
 }
-
 async function loginAdmin(cpf,senha){
     try{
         const admin = await knex("administrador").where({cpf}).first();

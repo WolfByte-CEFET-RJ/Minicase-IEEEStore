@@ -32,13 +32,8 @@ async function viewAdmin(req,res){
 async function createAdmin(req, res){
     try{
     const {nome, cargo, cpf, telefone, senha} = req.body;
-    console.log("Parouuu")
-    console.log("REQ.BODY:", req.body); 
-    
     const createService = await adminServices.createAdmin({nome, cargo, cpf, telefone, senha});
-    console.log("Passou aqui");
-    res.json({status: true, message: createService});
-    console.log("Controlador executado.");
+    res.json({status: true, message: createService});;
 
     }catch(erro){
         console.log(erro);
@@ -67,30 +62,17 @@ async function updateAdmin(req, res) {
 
 async function adminCreationPower(req,res){
     try{
-        const {cpf,senha, novoAdmin} = req.body;
-        console.log("Corpo da requisição:", req.body);
-        
-        const checkAdminService = await adminServices.checkAdmin(cpf,senha);
-        if(!checkAdminService){
-            return res.status(403).json({status:false, message: "Você não tem permissão pra criar um administrador"})
-        }
-        //console.log("Se liga queridaooo", JSON.stringify(novoAdmin, null, 2))
+        const {novoAdmin} = req.body;
         const { nome, cargo, cpfNovo, telefone, senhaNovo } = novoAdmin || {};
-        console.log("Olha eu aqui antes do serviee")
-        console.log(`Se liga aqui ${cpfNovo}`)
-        //o problema é essa const criarAdminService
         const criarAdminService = await adminServices.createAdmin({
             nome,
             cargo,
             cpf: cpfNovo,
             telefone,
             senha: senhaNovo
-        });
-        console.log("Olha eu aq no service")
-        
+        });  
         return res.json({status:true,message: criarAdminService})
     }catch(err){
-        console.log("Fudeu")
         res.status(500).json({status: false, message:err.message});
     }
 }
