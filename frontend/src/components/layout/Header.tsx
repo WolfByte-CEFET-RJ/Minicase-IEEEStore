@@ -1,4 +1,4 @@
-import logo from "../assets/logo.png"
+import logo from "../../assets/logo.png"
 import { useState } from "react"
 
 function Header() {
@@ -113,7 +113,6 @@ function Header() {
             </ul>
           </div>  
         </div>
-
       </header>
     </div>
   );
