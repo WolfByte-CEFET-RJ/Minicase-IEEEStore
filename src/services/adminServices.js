@@ -5,21 +5,6 @@ const { configDotenv } = require("dotenv");
 const jwt = require("jsonwebtoken");
 configDotenv();
 
-
-async function viewAdmin(id){
-    try{
-        if(!id){
-            throw new Error("Administrador não encontrado.");
-        }
-        const adminInfo = await knex("administrador").select("*").where({id}).first();
-        if(!adminInfo){
-            throw new Error("Erro ao exibir informações");
-        }
-        return {message: "Exibindo... ", adminInfo};
-    }catch(error){
-        throw error;
-    }
-}
 async function checkAdmin(cpf, senha) {
     try {
         if (!cpf) {
@@ -42,6 +27,26 @@ async function checkAdmin(cpf, senha) {
         return admin;  
     } catch (err) {
         throw err;
+    }
+}
+
+async function gerarHashSenha(senha) {
+    const saltRounds = 10;
+    const senhaHasheada = await bcrypt.hash(senha, saltRounds);
+    return senhaHasheada;
+}
+async function viewAdmin(id){
+    try{
+        if(!id){
+            throw new Error("Administrador não encontrado.");
+        }
+        const adminInfo = await knex("administrador").select("*").where({id}).first();
+        if(!adminInfo){
+            throw new Error("Erro ao exibir informações");
+        }
+        return {message: "Exibindo... ", adminInfo};
+    }catch(error){
+        throw error;
     }
 }
 
@@ -85,33 +90,7 @@ async function createAdmin({nome, cargo, cpf, telefone, senha}) {
         throw erro;
     }
 }
-function gerarToken(admin){
-    const token = jwt.sign({ id:admin.id, role: "admin"}, process.env.JWT_KEY,{expiresIn: "1h"});
-    return token;
-}
-async function loginAdmin(cpf,senha){
-    try{
-        const admin = await knex("administrador").where({cpf}).first();
-         
-        if(!admin){
-            throw new Error("Administrador não encontrado.");
-        }
-        const senhaCorreta= await bcrypt.compare(senha, admin.senha);
-        if(!senhaCorreta){
-            throw new Error("Senha incorreta.");
-        }
-        const token = gerarToken(admin);
-        return { message: 'Login bem-sucedido!', token };
-    }catch(error){
-        throw error;
-    }
-}
 
-async function gerarHashSenha(senha) {
-    const saltRounds = 10;
-    const senhaHasheada = await bcrypt.hash(senha, saltRounds);
-    return senhaHasheada;
-}
 
 async function updateAdmin(id, nome, cargo, cpf, telefone, senha) {
     try {
@@ -175,5 +154,5 @@ async function deleteAdmin(id) {
   
 
 module.exports = {
-    createAdmin,updateAdmin,deleteAdmin,loginAdmin,viewAdmin,checkAdmin,
+    createAdmin,updateAdmin,deleteAdmin,viewAdmin,checkAdmin,
 };

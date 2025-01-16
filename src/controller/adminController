@@ -1,17 +1,5 @@
-const adminServices = require("../services/adminServices");
+const adminServices = require("../services/adminServices.js");
 
-
-async function loginAdmin(req,res){
-    try{
-        const { cpf, senha} = req.body;
-        const loginService = await adminServices.loginAdmin(cpf,senha);
-        res.json({status: true, message: loginService});
-        console.log("Controlador executado.");
-    }catch(error){
-        console.log(error);
-        res.json({status:false, message: error.message});
-    }
-}
 
 async function viewAdmin(req,res){
     try{
@@ -60,6 +48,21 @@ async function updateAdmin(req, res) {
     }
 }
 
+async function deleteAdmin(req, res) {
+    try {
+        const { id } = req.params;
+        if (parseInt(req.userId) !== parseInt(id)) {
+            return res.status(403).json({ status: false, message: "Acesso negado." });
+        }
+        const deleteAdmin = await adminServices.deleteAdmin(id);
+        res.json({ status: true, message: deleteAdmin });
+        console.log("Controlador executado.");
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ status: false, message: error.message });
+    }
+}
+
 async function adminCreationPower(req,res){
     try{
         const {novoAdmin} = req.body;
@@ -77,21 +80,6 @@ async function adminCreationPower(req,res){
     }
 }
 
-async function deleteAdmin(req, res) {
-    try {
-        const { id } = req.params;
-        if (parseInt(req.userId) !== parseInt(id)) {
-            return res.status(403).json({ status: false, message: "Acesso negado." });
-        }
-        const deleteAdmin = await adminServices.deleteAdmin(id);
-        res.json({ status: true, message: deleteAdmin });
-        console.log("Controlador executado.");
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ status: false, message: error.message });
-    }
-}
-
 module.exports = {
-    createAdmin,updateAdmin,deleteAdmin,loginAdmin,viewAdmin,adminCreationPower
+    createAdmin,updateAdmin,deleteAdmin,viewAdmin,adminCreationPower
 }
