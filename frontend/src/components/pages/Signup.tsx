@@ -9,7 +9,7 @@ import { TbLock } from "react-icons/tb";
 
 export default function Signup() {
     return (
-        <div className="absolute left-0 top-0 bg-blue-700 w-full h-full">
+        <div className="w-full h-full">
             <InformationBox>
                 <h1 className="font-bold text-4xl text-center">Crie seu cadastro</h1>
                 <form className="flex flex-col px-10 py-5">
