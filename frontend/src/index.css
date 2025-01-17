@@ -5,6 +5,6 @@
 @layer utilities {
     .layout-boxed {
         @apply mx-auto lg:max-w-6xl xl:max-w-7xl w-full;
-        @apply px-7 xl:px-0;
+        /* @apply px-7 xl:px-0; */
     }
 }
