@@ -5,10 +5,10 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <div className="w-full h-full absolute"> {/*Container 1*/}
+    <div className="w-full h-full"> {/*Container 1*/}
       {/*Logo*/}
       <header className="flex justify-between items-center text-white py-6 px-8 md:px-32 bg-[#0D5FAA]">
-        <a href="/home">
+        <a href="/">
           <img
             src={logo}
             alt=""
@@ -24,7 +24,7 @@ function Header() {
             <input
               type="text"
               placeholder="Busque aqui um produto..."
-              className="w-full py-2 pl-5 pr-10 rounded-2xl border-2 border-blue-300 focus:bg-slate-100 focus:outline-sky-500"
+              className="w-full py-2 pl-5 pr-10 rounded-2xl border-2 border-blue-300 focus:outline-sky-500 text-black"
             />
           </div>
 
@@ -105,7 +105,7 @@ function Header() {
           <div>
             <ul className="flex gap-10 font-semibold text-base pr-6">
               <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                <a href="/cadastro">Cadastrar-se</a>
+                <a href="/signup">Cadastrar-se</a>
               </li>
               <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                 <a href="login">Entrar</a>

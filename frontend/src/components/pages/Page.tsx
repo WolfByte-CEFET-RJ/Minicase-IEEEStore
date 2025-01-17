@@ -13,7 +13,7 @@ export default function Page(props: PageProps) {
     let backgroundColor = 'bg-white'
 
     if(location.pathname === '/signup' || location.pathname === '/login') {
-        backgroundColor = "bg-blue-700"
+        backgroundColor = "bg-[#0D5FAA]"
     }
 
     return (

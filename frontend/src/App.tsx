@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router'
 import Product from './components/pages/Product'
 import Signup from './components/pages/Signup'
 import Login from './components/pages/Login'
+import Header from './components/layout/Header'
 import './App.css'
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
 
   return (
     <>
+      <Header />
       <Page>
         <Routes>
           <Route path="/" element={<Home />} />
