@@ -11,7 +11,7 @@ function App() {
 
 
   return (
-    <>
+    <div className='flex flex-col h-screen'>
       <Header />
       <Page>
         <Routes>
@@ -21,7 +21,7 @@ function App() {
           <Route path="/login" element={<Login />} />
         </Routes>
       </Page>
-    </>
+    </div>
   )
 }
 

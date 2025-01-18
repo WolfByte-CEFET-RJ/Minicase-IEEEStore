@@ -5,7 +5,7 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <div className="w-full h-full"> {/*Container 1*/}
+    <div className="w-full"> {/*Container 1*/}
       {/*Logo*/}
       <header className="flex justify-between items-center text-white py-6 px-8 md:px-32 bg-[#0D5FAA]">
         <a href="/">

@@ -17,7 +17,7 @@ export default function Page(props: PageProps) {
     }
 
     return (
-        <div className={`flex flex-col min-h-screen lg:px-0 ${backgroundColor}`}>
+        <div className={`flex flex-col flex-1 lg:px-0 ${backgroundColor}`}>
             <div className="layout-boxed">{props.children}</div>
         </div>
     )
