@@ -1,6 +1,7 @@
 import InformationBox from "../layout/InformationBox"
 import Input from "../form/Input"
 import SubmitButton from "../form/SubmitButton";
+import Select from "../form/Select";
 import { RiIdCardLine } from "react-icons/ri";
 import { Bs123 } from "react-icons/bs";
 import { MdOutlineLocalPhone, MdAlternateEmail, MdWorkOutline, MdDiversity2 } from "react-icons/md";
@@ -52,21 +53,67 @@ export default function Signup() {
                     </div>
                     <div className="flex flex-col gap-8">
                         <h2 className="text-xl font-semibold before:content-['.'] before:ml-0.5 before:text-6xl">Você é membro do IEEE?</h2>
+                        <div className="flex">    
+                            <Select 
+                                group_options={
+                                    {
+                                        'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
+                                        'Marketing': ['Marketing'],
+                                        'RocketWolf': ['Aerodinâmica', 'Estruturas', 'Recuperação', 'Eletrônica', 'Propulsão'],
+                                        'WolfPower': ['Eletrônica/Programação', 'Mecânica', 'Divulgação'],
+                                        'WolfBotz': ['Seguidor de Linha', 'Mini Sumô', 'Combate'],
+                                        'SocialWolf': ['Mecânica', 'Programação', 'Eletrônica', 'Educacional'],
+                                        'WolfByte': ['Inteligência Artificial (IA)', 'Web/App', 'Hardware', 'Games']
+                                    }
+                                }
+                                text="equipe" />
+                            
+                            <Select
+                                options={['Lider', 'Membro']}
+                                text="cargo"
+                            />
+                        </div>
+                        <div className="flex">    
+                            <Select 
+                                group_options={
+                                    {
+                                        'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
+                                        'Marketing': ['Marketing'],
+                                        'RocketWolf': ['Aerodinâmica', 'Estruturas', 'Recuperação', 'Eletrônica', 'Propulsão'],
+                                        'WolfPower': ['Eletrônica/Programação', 'Mecânica', 'Divulgação'],
+                                        'WolfBotz': ['Seguidor de Linha', 'Mini Sumô', 'Combate'],
+                                        'SocialWolf': ['Mecânica', 'Programação', 'Eletrônica', 'Educacional'],
+                                        'WolfByte': ['Inteligência Artificial (IA)', 'Web/App', 'Hardware', 'Games']
+                                    }
+                                }
+                                text="equipe" />
+                            
+                            <Select
+                                options={['Lider', 'Membro']}
+                                text="cargo"
+                            />
+                        </div>
+                        <div className="flex">    
+                            <Select 
+                                group_options={
+                                    {
+                                        'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
+                                        'Marketing': ['Marketing'],
+                                        'RocketWolf': ['Aerodinâmica', 'Estruturas', 'Recuperação', 'Eletrônica', 'Propulsão'],
+                                        'WolfPower': ['Eletrônica/Programação', 'Mecânica', 'Divulgação'],
+                                        'WolfBotz': ['Seguidor de Linha', 'Mini Sumô', 'Combate'],
+                                        'SocialWolf': ['Mecânica', 'Programação', 'Eletrônica', 'Educacional'],
+                                        'WolfByte': ['Inteligência Artificial (IA)', 'Web/App', 'Hardware', 'Games']
+                                    }
+                                }
+                                text="equipe" />
+                            
+                            <Select
+                                options={['Lider', 'Membro']}
+                                text="cargo"
+                            />
+                        </div>
 
-                        <Input
-                            type="text"
-                            placeholder="Digite sua equipe"
-                            name="equipe"
-                            size={40}
-                            icon={<MdDiversity2 size={30} />}
-                        />
-                        <Input
-                            type="text"
-                            placeholder="Digite seu cargo"
-                            name="cargo"
-                            size={40}
-                            icon={<MdWorkOutline size={30} />}
-                        />
                         <Input
                             type="checkbox"
                             name="pagante"
