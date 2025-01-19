@@ -6,10 +6,12 @@ import { RiIdCardLine } from "react-icons/ri";
 import { Bs123 } from "react-icons/bs";
 import { MdOutlineLocalPhone, MdAlternateEmail, MdWorkOutline, MdDiversity2 } from "react-icons/md";
 import { TbLock } from "react-icons/tb";
+import Page from "./Page"
 
 
 export default function Signup() {
     return (
+        <Page>
         <InformationBox>
             <h1 className="font-bold text-4xl text-center">Crie seu cadastro</h1>
             <form className="flex flex-col px-10 py-5">
@@ -127,5 +129,6 @@ export default function Signup() {
                 </div>
             </form>
         </InformationBox>
+        </Page>
     )
 }
