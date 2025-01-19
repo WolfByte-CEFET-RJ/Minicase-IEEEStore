@@ -4,6 +4,7 @@ import { Link } from "react-router";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isAdm, setIsAdm] = useState(true)
 
   return (
     <div className="w-full"> {/*Container 1*/}
@@ -64,36 +65,66 @@ function Header() {
             </i>
  
             {/*Menu lateral*/}
-            <div
-            className={`absolute top-0 right-0 h-screen w-1/4 bg-[#0D5FAA] flex flex-col items-center gap-6 font-semibold transition-transform duration-300 z-40
-            ${isMenuOpen ? "translate-x-0 opacity-100 pointer-events-auto" : "-translate-x-full opacity-0 pointer-events-none"}`}
-            style={{ transition: "transform 0.3s ease, opacity 0.3s ease" }}>
-              
-              <h1 className="mt-8 text-3xl underline pb-5">Menu</h1>
-              <ul className="w-full mt-12">
-                <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <Link to="/todos-os-produtos">Todos os produtos</Link>
-                </li>
-                <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <Link to="/camisas">Camisas</Link>
-                </li>
-                <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <Link to="/coposecanecas">Copos e canecas</Link>
-                </li>
-                <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <Link to="/bottons">Bottons</Link>
-                </li>
-                <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <Link to="/ecobags">Ecobags</Link>
-                </li>
-                <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <Link to="/meus-pedidos">Meus pedidos</Link>
-                </li>
-                <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <Link to="/meu-perfil">Meu perfil</Link>
-                </li>
-              </ul>
-            </div>
+            {!isAdm ? (
+              <div
+              className={`absolute top-0 right-0 h-screen w-1/4 bg-[#0D5FAA] flex flex-col items-center gap-6 font-semibold transition-transform duration-300 z-40
+              ${isMenuOpen ? "translate-x-0 opacity-100 pointer-events-auto" : "-translate-x-full opacity-0 pointer-events-none"}`}
+              style={{ transition: "transform 0.3s ease, opacity 0.3s ease" }}>
+                
+                <h1 className="mt-8 text-3xl underline pb-5">Menu</h1>
+                <ul className="w-full mt-12">
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/todos-os-produtos">Todos os produtos</Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/camisas">Camisas</Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/coposecanecas">Copos e canecas</Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/bottons">Bottons</Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/ecobags">Ecobags</Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/meus-pedidos">Meus pedidos</Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/meu-perfil">Meu perfil</Link>
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <div
+              className={`absolute top-0 right-0 h-screen w-1/4 bg-[#0D5FAA] flex flex-col items-center gap-6 font-semibold transition-transform duration-300 z-40
+              ${isMenuOpen ? "translate-x-0 opacity-100 pointer-events-auto" : "-translate-x-full opacity-0 pointer-events-none"}`}
+              style={{ transition: "transform 0.3s ease, opacity 0.3s ease" }}>
+                
+                <h1 className="mt-8 text-3xl underline pb-5">Menu</h1>
+                <ul className="w-full mt-12">
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/todos-os-produtos">Cadastrar Produto</Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/camisas">Aba de pedidos</Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/coposecanecas">Lista de usuários</Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/bottons">Lista de produtos</Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/ecobags">Relatórios</Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link to="/meu-perfil">Meu perfil</Link>
+                  </li>
+                </ul>
+              </div>
+            )}
             {/*Overlay para destacar a abertura do menu*/}
             {isMenuOpen && (
                 <div
