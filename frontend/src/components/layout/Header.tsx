@@ -1,5 +1,6 @@
 import logo from "../../assets/logo.png"
 import { useState } from "react"
+import { Link } from "react-router-dom";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -8,13 +9,13 @@ function Header() {
     <div className="w-full"> {/*Container 1*/}
       {/*Logo*/}
       <header className="flex justify-between items-center text-white py-6 px-8 md:px-32 bg-[#0D5FAA]">
-        <a href="/">
+        <Link to="/">
           <img
             src={logo}
             alt=""
             className="w-52 hover:scale-110 transition-all"
           ></img>
-        </a>
+        </Link>
 
       {/*Container 2*/}
         <div className="w-2/5 flex flex-col gap-y-5">
@@ -31,16 +32,16 @@ function Header() {
           {/*Lista de navegação*/}
           <ul className="flex justify-center items-center gap-12 font-semibold text-base">
             <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-              <a href="/coposecanecas">Copos e canecas</a>
+              <Link to="/coposecanecas">Copos e canecas</Link>
             </li>
             <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-              <a href="/camisas">Camisas</a>
+              <Link to="/camisas">Camisas</Link>
             </li>
             <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-              <a href="/bottons">Bottons</a>
+              <Link to="/bottons">Bottons</Link>
             </li>
             <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-              <a href="/ecobags">Ecobags</a>
+              <Link to="/ecobags">Ecobags</Link>
             </li>
           </ul>
         </div>
@@ -49,12 +50,12 @@ function Header() {
         <div className="flex flex-col gap-y-5 max-w-full">
           <div className="flex gap-20 items-center pl-8">
             {/*Botões ícones interativos(páginas de carrinho e de favoritos-opcional)*/}
-            <a href="/meus-favoritos">
+            <Link to="/meus-favoritos">
               <i className="bx bx-heart bx-lg bx-tada-hover" style={{ cursor: "pointer" }}></i>
-            </a>
-            <a href="/meu-carrinho">
+            </Link>
+            <Link to="/meu-carrinho">
               <i className="bx bx-cart bx-lg bx-tada-hover" style={{ cursor: "pointer" }}></i>
-            </a>
+            </Link>
 
           {/*Ícone do menu*/}
             <i
@@ -71,25 +72,25 @@ function Header() {
               <h1 className="mt-8 text-3xl underline pb-5">Menu</h1>
               <ul className="w-full mt-12">
                 <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <a href="/todos-os-produtos">Todos os produtos</a>
+                  <Link to="/todos-os-produtos">Todos os produtos</Link>
                 </li>
                 <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <a href="/camisas">Camisas</a>
+                  <Link to="/camisas">Camisas</Link>
                 </li>
                 <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <a href="/coposecanecas">Copos e canecas</a>
+                  <Link to="/coposecanecas">Copos e canecas</Link>
                 </li>
                 <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <a href="/bottons">Bottons</a>
+                  <Link to="/bottons">Bottons</Link>
                 </li>
                 <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <a href="/ecobags">Ecobags</a>
+                  <Link to="/ecobags">Ecobags</Link>
                 </li>
                 <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <a href="/meus-pedidos">Meus pedidos</a>
+                  <Link to="/meus-pedidos">Meus pedidos</Link>
                 </li>
                 <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  <a href="/meu-perfil">Meu perfil</a>
+                  <Link to="/meu-perfil">Meu perfil</Link>
                 </li>
               </ul>
             </div>
@@ -105,10 +106,10 @@ function Header() {
           <div>
             <ul className="flex gap-10 font-semibold text-base pr-6">
               <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                <a href="/signup">Cadastrar-se</a>
+                <Link to="/signup">Cadastrar-se</Link>
               </li>
               <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                <a href="login">Entrar</a>
+                <Link to="login">Entrar</Link>
               </li>
             </ul>
           </div>  
