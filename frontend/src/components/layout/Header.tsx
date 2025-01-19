@@ -60,7 +60,8 @@ function Header() {
 
           {/*Ícone do menu*/}
             <i
-              className="bx bx-menu block text-5xl cursor-pointer absolute top-6 right-8 z-50"
+              className={`bx bx-menu block text-5xl cursor-pointer absolute top-6 right-8 z-50 
+              transition-transform duration-300 ${isMenuOpen ? "rotate-90" : "rotate-0"}`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}>
             </i>
  
@@ -105,19 +106,19 @@ function Header() {
                 <h1 className="mt-8 text-3xl underline pb-5">Menu</h1>
                 <ul className="w-full mt-12">
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/todos-os-produtos">Cadastrar Produto</Link>
+                    <Link to="/cadastrar-produto">Cadastrar Produto</Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/camisas">Aba de pedidos</Link>
+                    <Link to="/aba-de-pedidos">Aba de pedidos</Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/coposecanecas">Lista de usuários</Link>
+                    <Link to="/lista-de-usuarios">Lista de usuários</Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/bottons">Lista de produtos</Link>
+                    <Link to="/lista-de-produtos">Lista de produtos</Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/ecobags">Relatórios</Link>
+                    <Link to="/relatorios">Relatórios</Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                     <Link to="/meu-perfil">Meu perfil</Link>
