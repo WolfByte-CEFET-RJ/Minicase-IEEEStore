@@ -22,7 +22,7 @@ async function viewProdutoId(id) {
 
 async function createProduto({ nome, preco, disponivel, foto, qt_estrelas, media_avaliacao }) {
     try {
-        const produtoExistente = await knex("produto").select("*").where({id}).first();
+        const produtoExistente = await knex("produto").select("*").where({ nome }).first();
         if(produtoExistente){
             throw new Error("Já existe um produto com esse nome.");
         } 
@@ -34,6 +34,9 @@ async function createProduto({ nome, preco, disponivel, foto, qt_estrelas, media
         }
         if (typeof qt_estrelas !== 'number' || qt_estrelas < 0 || qt_estrelas > 5) {
             throw new Error("A quantidade de estrelas deve ser um número entre 0 e 5.");
+        }
+        if(qt_estrelas % 0.5 !== 0){
+            throw new Error("Quantidade de estrelas pode apenas ser múltiplo de 1/2. Ex: 4.5, 5.")
         }
         if (typeof disponivel !== 'boolean') {
             throw new Error("O campo 'disponivel' deve ser um valor booleano.");
