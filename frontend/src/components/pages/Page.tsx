@@ -7,8 +7,6 @@ interface PageProps {
 
 export default function Page(props: PageProps) {
     const location = useLocation()
-    
-    console.log(location)
 
     let backgroundColor = 'bg-white'
 

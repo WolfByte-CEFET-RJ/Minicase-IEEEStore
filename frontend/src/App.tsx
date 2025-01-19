@@ -1,6 +1,6 @@
 
 import Home from './components/pages/Home'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router'
 import Product from './components/pages/Product'
 import Signup from './components/pages/Signup'
 import Login from './components/pages/Login'
@@ -11,12 +11,15 @@ import Bottons from './components/pages/Bottons'
 import Ecobags from './components/pages/Ecobags'
 import MeusFavoritos from './components/pages/Meus_Favoritos'
 import MeuCarrinho from './components/pages/Meu_Carrinho'
+import Page from './components/pages/Page'
+import Header from './components/layout/Header'
 
 function App() {
 
   return (
-    <Router>
-      <div className='flex flex-col w-full h-screen'>
+    <div className='flex flex-col w-full h-screen'>
+        <Header />
+        <Page>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/product" element={<Product />} />
@@ -29,9 +32,11 @@ function App() {
             <Route path="/meus-favoritos" element={<MeusFavoritos />} />
             <Route path="/meu-carrinho" element={<MeuCarrinho />} />
           </Routes>
+        </Page>
         
+ 
+ 
       </div>
-    </Router>
   )
 }
 
