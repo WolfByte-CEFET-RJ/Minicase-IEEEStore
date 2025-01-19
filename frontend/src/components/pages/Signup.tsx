@@ -4,7 +4,7 @@ import SubmitButton from "../form/SubmitButton";
 import Select from "../form/Select";
 import { RiIdCardLine } from "react-icons/ri";
 import { Bs123 } from "react-icons/bs";
-import { MdOutlineLocalPhone, MdAlternateEmail, MdWorkOutline, MdDiversity2 } from "react-icons/md";
+import { MdOutlineLocalPhone, MdAlternateEmail } from "react-icons/md";
 import { TbLock } from "react-icons/tb";
 
 
