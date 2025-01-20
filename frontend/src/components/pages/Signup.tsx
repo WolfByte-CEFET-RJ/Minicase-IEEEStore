@@ -10,8 +10,6 @@ import Logo from "../layout/Logo";
 
 export default function Signup() {
     return (
-    <>
-        <Logo />
         <InformationBox>
             <h1 className="font-bold text-4xl text-center">Crie seu cadastro</h1>
             <form className="flex flex-col px-10 py-5">
@@ -129,6 +127,5 @@ export default function Signup() {
                 </div>
             </form>
         </InformationBox>
-    </>
     )
 }

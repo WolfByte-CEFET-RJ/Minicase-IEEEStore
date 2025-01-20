@@ -3,7 +3,7 @@ import logo from "../../assets/Logo_signup_login.png"
 
 function Logo(){
     return(
-        <div className="flex justify-center pt-8">
+        <div className="flex justify-center pt-8 bg-[#0D5FAA]">
             <Link to="/">
             <img
                 src={logo}

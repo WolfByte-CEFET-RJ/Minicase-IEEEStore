@@ -2,6 +2,7 @@ import logoHeader from "../../assets/logo.png"
 import { useState } from "react"
 import { useLocation } from "react-router";
 import { Link } from "react-router";
+import Logo from "./Logo";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -10,7 +11,7 @@ function Header() {
   const hideHeaderRoutes = ["/signup", "/login"]
 
   if(hideHeaderRoutes.includes(location.pathname)){ //Condição que verifica o caminho atual para não renderizar o Header se for signup ou login
-    return null
+    return <Logo />
   }
 
   return (
