@@ -3,10 +3,13 @@ import Input from "../form/Input"
 import SubmitButton from "../form/SubmitButton"
 import { MdAlternateEmail } from "react-icons/md";
 import { TbLock } from "react-icons/tb";
-
+import Logo from "../layout/Logo";
 
 export default function Login() {
     return (
+    <>
+      <Logo />
+        
         <InformationBox className="w-fit m-auto">
             <h1 className="font-bold text-4xl text-center">Insira seu login</h1>
             <form className="flex flex-col px-10 py-5 gap-8">
@@ -38,5 +41,6 @@ export default function Login() {
                 </div>
             </form>
         </InformationBox>
+    </>
     )
 }

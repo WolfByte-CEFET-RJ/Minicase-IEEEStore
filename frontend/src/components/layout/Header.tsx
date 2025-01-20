@@ -1,10 +1,17 @@
-import logo from "../../assets/logo.png"
+import logoHeader from "../../assets/logo.png"
 import { useState } from "react"
+import { useLocation } from "react-router";
 import { Link } from "react-router";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isAdm, setIsAdm] = useState(true)
+  const location = useLocation();
+  const hideHeaderRoutes = ["/signup", "/login"]
+
+  if(hideHeaderRoutes.includes(location.pathname)){ //Condição que verifica o caminho atual para não renderizar o Header se for signup ou login
+    return null
+  }
 
   return (
     <div className="w-full"> {/*Container 1*/}
@@ -12,14 +19,14 @@ function Header() {
       <header className="flex justify-between items-center text-white py-6 px-8 md:px-32 bg-[#0D5FAA]">
         <Link to="/">
           <img
-            src={logo}
+            src={logoHeader}
             alt=""
             className="w-52 hover:scale-110 transition-all"
           ></img>
         </Link>
 
       {/*Container 2*/}
-        <div className="w-2/5 flex flex-col gap-y-5">
+        <div className="w-2/5 flex flex-col gap-y-9">
           {/*Barra de busca*/}
           <div className="relative flex justify-center">
             <i className="bx bx-search absolute right-3 top-1/2 transform -translate-y-1/2 text-2xl text-gray-500"></i>
@@ -32,23 +39,39 @@ function Header() {
 
           {/*Lista de navegação*/}
           <ul className="flex justify-center items-center gap-12 font-semibold text-base">
-            <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-              <Link to="/coposecanecas">Copos e canecas</Link>
+            <li>
+              <Link 
+                to="/coposecanecas" 
+                className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                Copos e canecas
+              </Link>
             </li>
-            <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-              <Link to="/camisas">Camisas</Link>
+            <li>
+              <Link 
+                to="/camisas"
+                className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                Camisas
+              </Link>
             </li>
-            <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-              <Link to="/bottons">Bottons</Link>
+            <li>
+              <Link 
+                to="/bottons"
+                className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                Bottons
+              </Link>
             </li>
-            <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-              <Link to="/ecobags">Ecobags</Link>
+            <li>
+              <Link 
+                to="/ecobags"
+                className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                Ecobags
+              </Link>
             </li>
           </ul>
         </div>
 
       {/*Container 3*/}
-        <div className="flex flex-col gap-y-5 max-w-full">
+        <div className="flex flex-col gap-y-7 max-w-full">
           <div className="flex gap-20 items-center pl-8">
             {/*Botões ícones interativos(páginas de carrinho e de favoritos-opcional)*/}
             <Link to="/meus-favoritos">
@@ -61,7 +84,7 @@ function Header() {
           {/*Ícone do menu*/}
             <i
               className={`bx bx-menu block text-5xl cursor-pointer absolute top-6 right-8 z-50 
-              transition-transform duration-300 ${isMenuOpen ? "rotate-90" : "rotate-0"}`}
+              transition-transform duration-300 ${isMenuOpen ? "bx-x rotate-180" : "bx-menu rotate-0"}`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}>
             </i>
  
@@ -75,25 +98,46 @@ function Header() {
                 <h1 className="mt-8 text-3xl underline pb-5">Menu</h1>
                 <ul className="w-full mt-12">
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/todos-os-produtos">Todos os produtos</Link>
+                    <Link 
+                      to="/todos-os-produtos">
+                      Todos os produtos
+                    </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/camisas">Camisas</Link>
+                    <Link
+                      to="/camisas">
+                      Camisas
+                    </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/coposecanecas">Copos e canecas</Link>
+                    <Link 
+                      to="/coposecanecas">
+                      Copos e canecas
+                    </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/bottons">Bottons</Link>
+                    <Link 
+                      to="/bottons">
+                      Bottons
+                    </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/ecobags">Ecobags</Link>
+                    <Link 
+                      to="/ecobags">
+                      Ecobags
+                    </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/meus-pedidos">Meus pedidos</Link>
+                    <Link 
+                      to="/meus-pedidos">
+                      Meus pedidos
+                    </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/meu-perfil">Meu perfil</Link>
+                    <Link 
+                      to="/meu-perfil">
+                      Meu perfil
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -106,22 +150,40 @@ function Header() {
                 <h1 className="mt-8 text-3xl underline pb-5">Menu</h1>
                 <ul className="w-full mt-12">
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/cadastrar-produto">Cadastrar Produto</Link>
+                    <Link 
+                      to="/cadastrar-produto">
+                      Cadastrar Produto
+                    </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/aba-de-pedidos">Aba de pedidos</Link>
+                    <Link 
+                      to="/aba-de-pedidos">
+                      Aba de pedidos
+                    </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/lista-de-usuarios">Lista de usuários</Link>
+                    <Link 
+                      to="/lista-de-usuarios">
+                      Lista de usuários
+                    </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/lista-de-produtos">Lista de produtos</Link>
+                    <Link 
+                      to="/lista-de-produtos">
+                      Lista de produtos
+                    </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/relatorios">Relatórios</Link>
+                    <Link 
+                      to="/relatorios">
+                      Relatórios
+                    </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                    <Link to="/meu-perfil">Meu perfil</Link>
+                    <Link 
+                      to="/meu-perfil">
+                      Meu perfil
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -137,11 +199,19 @@ function Header() {
 
           <div>
             <ul className="flex gap-10 font-semibold text-base pr-6">
-              <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                <Link to="/signup">Cadastrar-se</Link>
+              <li>
+                <Link 
+                  to="/signup"
+                  className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                  Cadastrar-se
+                </Link>
               </li>
-              <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                <Link to="login">Entrar</Link>
+              <li>
+                <Link 
+                  to="login"
+                  className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                  Entrar
+                </Link>
               </li>
             </ul>
           </div>  
