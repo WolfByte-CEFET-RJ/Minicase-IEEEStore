@@ -6,9 +6,19 @@ import { RiIdCardLine } from "react-icons/ri";
 import { Bs123 } from "react-icons/bs";
 import { MdOutlineLocalPhone, MdAlternateEmail } from "react-icons/md";
 import { TbLock } from "react-icons/tb";
-import Logo from "../layout/Logo";
 
 export default function Signup() {
+
+    const team = {
+        'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
+        'Marketing': ['Marketing'],
+        'RocketWolf': ['Aerodinâmica', 'Estruturas', 'Recuperação', 'Eletrônica', 'Propulsão'],
+        'WolfPower': ['Eletrônica/Programação', 'Mecânica', 'Divulgação'],
+        'WolfBotz': ['Seguidor de Linha', 'Mini Sumô', 'Combate'],
+        'SocialWolf': ['Mecânica', 'Programação', 'Eletrônica', 'Educacional'],
+        'WolfByte': ['Inteligência Artificial (IA)', 'Web/App', 'Hardware', 'Games']
+    }
+
     return (
         <InformationBox>
             <h1 className="font-bold text-4xl text-center">Crie seu cadastro</h1>
@@ -55,17 +65,7 @@ export default function Signup() {
                         <h2 className="text-xl font-semibold before:content-['.'] before:ml-0.5 before:text-6xl">Você é membro do IEEE?</h2>
                         <div className="flex">    
                             <Select 
-                                group_options={
-                                    {
-                                        'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
-                                        'Marketing': ['Marketing'],
-                                        'RocketWolf': ['Aerodinâmica', 'Estruturas', 'Recuperação', 'Eletrônica', 'Propulsão'],
-                                        'WolfPower': ['Eletrônica/Programação', 'Mecânica', 'Divulgação'],
-                                        'WolfBotz': ['Seguidor de Linha', 'Mini Sumô', 'Combate'],
-                                        'SocialWolf': ['Mecânica', 'Programação', 'Eletrônica', 'Educacional'],
-                                        'WolfByte': ['Inteligência Artificial (IA)', 'Web/App', 'Hardware', 'Games']
-                                    }
-                                }
+                                group_options={team}
                                 text="equipe" />
                             
                             <Select
@@ -75,17 +75,7 @@ export default function Signup() {
                         </div>
                         <div className="flex">    
                             <Select 
-                                group_options={
-                                    {
-                                        'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
-                                        'Marketing': ['Marketing'],
-                                        'RocketWolf': ['Aerodinâmica', 'Estruturas', 'Recuperação', 'Eletrônica', 'Propulsão'],
-                                        'WolfPower': ['Eletrônica/Programação', 'Mecânica', 'Divulgação'],
-                                        'WolfBotz': ['Seguidor de Linha', 'Mini Sumô', 'Combate'],
-                                        'SocialWolf': ['Mecânica', 'Programação', 'Eletrônica', 'Educacional'],
-                                        'WolfByte': ['Inteligência Artificial (IA)', 'Web/App', 'Hardware', 'Games']
-                                    }
-                                }
+                                group_options={team}
                                 text="equipe" />
                             
                             <Select
@@ -95,17 +85,7 @@ export default function Signup() {
                         </div>
                         <div className="flex">    
                             <Select 
-                                group_options={
-                                    {
-                                        'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
-                                        'Marketing': ['Marketing'],
-                                        'RocketWolf': ['Aerodinâmica', 'Estruturas', 'Recuperação', 'Eletrônica', 'Propulsão'],
-                                        'WolfPower': ['Eletrônica/Programação', 'Mecânica', 'Divulgação'],
-                                        'WolfBotz': ['Seguidor de Linha', 'Mini Sumô', 'Combate'],
-                                        'SocialWolf': ['Mecânica', 'Programação', 'Eletrônica', 'Educacional'],
-                                        'WolfByte': ['Inteligência Artificial (IA)', 'Web/App', 'Hardware', 'Games']
-                                    }
-                                }
+                                group_options={team}
                                 text="equipe" />
                             
                             <Select

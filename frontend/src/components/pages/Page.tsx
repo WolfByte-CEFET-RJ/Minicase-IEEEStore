@@ -10,7 +10,9 @@ export default function Page(props: PageProps) {
 
     let backgroundColor = 'bg-white'
 
-    if(location.pathname === '/signup' || location.pathname === '/login') {
+    const bgBlueRoutes = ["/signup", "/login"]
+
+    if(bgBlueRoutes.includes(location.pathname)){ 
         backgroundColor = "bg-[#0D5FAA]"
     }
 
