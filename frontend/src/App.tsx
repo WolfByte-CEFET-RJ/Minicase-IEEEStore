@@ -3,6 +3,7 @@ import Home from './components/pages/Home'
 import { Routes, Route } from 'react-router'
 import Product from './components/pages/Product'
 import Signup from './components/pages/Signup'
+import SignupAdm from './components/pages/SignupAdm'
 import Login from './components/pages/Login'
 import './App.css'
 import CoposeCanecas from './components/pages/Copos_e_Canecas'
@@ -13,6 +14,7 @@ import MeusFavoritos from './components/pages/Meus_Favoritos'
 import MeuCarrinho from './components/pages/Meu_Carrinho'
 import Page from './components/pages/Page'
 import Header from './components/layout/Header'
+
 
 function App() {
 
@@ -31,6 +33,7 @@ function App() {
             <Route path="/ecobags" element={<Ecobags />} />
             <Route path="/meus-favoritos" element={<MeusFavoritos />} />
             <Route path="/meu-carrinho" element={<MeuCarrinho />} />
+            <Route path="/signup-adm" element={<SignupAdm />} />
           </Routes>
         </Page>
         

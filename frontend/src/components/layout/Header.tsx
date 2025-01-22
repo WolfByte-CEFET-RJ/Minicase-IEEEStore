@@ -8,7 +8,7 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isAdm, setIsAdm] = useState(true)
   const location = useLocation();
-  const hideHeaderRoutes = ["/signup", "/login"]
+  const hideHeaderRoutes = ["/signup", "/login", "/signup-adm"]
 
   if(hideHeaderRoutes.includes(location.pathname)){ //Condição que verifica o caminho atual para não renderizar o Header se for signup ou login
     return <Logo />
