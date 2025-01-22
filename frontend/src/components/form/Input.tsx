@@ -14,13 +14,13 @@ interface InputProps {
 export default function Input(props: InputProps) {
 
     const [inputSize, setInputSize] = useState(props.size)
-
+    
     useEffect(()=> {
 
         const handleSize = () => {
             if(window.innerWidth < 640) {
                 setInputSize(props.size/2)
-            } else if(window.innerWidth < 1024) {
+            } else {
                 setInputSize(props.size)
             }
         }

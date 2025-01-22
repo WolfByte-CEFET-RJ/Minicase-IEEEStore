@@ -63,7 +63,7 @@ export default function Signup() {
                     </div>
                     <div className="flex flex-col gap-8">
                         <h2 className="text-xl font-semibold before:content-['.'] before:ml-0.5 before:text-6xl">Você é membro do IEEE?</h2>
-                        <div className="flex">    
+                        <div className="flex flex-wrap">    
                             <Select 
                                 group_options={team}
                                 text="equipe" />
@@ -73,7 +73,7 @@ export default function Signup() {
                                 text="cargo"
                             />
                         </div>
-                        <div className="flex">    
+                        <div className="flex flex-wrap">    
                             <Select 
                                 group_options={team}
                                 text="equipe" />
@@ -83,7 +83,7 @@ export default function Signup() {
                                 text="cargo"
                             />
                         </div>
-                        <div className="flex">    
+                        <div className="flex flex-wrap">    
                             <Select 
                                 group_options={team}
                                 text="equipe" />
