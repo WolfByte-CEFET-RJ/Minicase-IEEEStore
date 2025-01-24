@@ -20,6 +20,20 @@ async function viewProdutoId(id) {
     }
 }
 
+async function viewAllProduto(){
+    try{
+        const produto = await knex("produto").select("*");
+        if (produto.length === 0){
+            throw new Error("Sem produtos no registro.");
+        }
+        
+        return produto;
+
+    }catch(erro){
+        throw(erro);
+    }
+}
+
 async function createProduto({ nome, preco, disponivel, foto, qt_estrelas, media_avaliacao }) {
     try {
         const produtoExistente = await knex("produto").select("*").where({ nome }).first();
@@ -54,5 +68,6 @@ async function createProduto({ nome, preco, disponivel, foto, qt_estrelas, media
 
 module.exports = {
     viewProdutoId,
-    createProduto,
+    viewAllProduto,
+    createProduto,    
 };

@@ -16,7 +16,9 @@ router.delete("/admin/:id",adminAutentication,adminController.deleteAdmin);
 
 //PRODUTO
 router.get("/produto/:id", produtoController.viewProdutoId);
+router.get("/produto", produtoController.viewAllProduto)
 router.post("/produto", produtoController.createProduto);
+
 
 
 module.exports = router;

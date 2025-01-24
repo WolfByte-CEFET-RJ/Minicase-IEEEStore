@@ -18,6 +18,16 @@ async function viewProdutoId(req, res) {
     }
 }
 
+async function viewAllProduto(req, res){
+    try{
+        const readAllService = await produtoServices.viewAllProduto();
+        res.json({status: true, message: readAllService});
+        console.log("Controlador executado.");        
+    }catch(erro){
+        console.error("Erro no controller:", erro);
+        res.jons({status: false, message: erro.message});
+}
+}
 async function createProduto(req, res) {
     try {
         const { nome, preco, disponivel, foto, qt_estrelas } = req.body;
@@ -27,10 +37,12 @@ async function createProduto(req, res) {
     } catch (erro) {
         console.error("Erro no controller:", erro);
         res.json({ status: false, message: erro.message });
-    }
+        }
 }
+
 
 module.exports = {
     viewProdutoId,
+    viewAllProduto,
     createProduto,
 };

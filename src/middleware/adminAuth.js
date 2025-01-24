@@ -16,7 +16,7 @@ const adminAutentication = (req, res, next) => {
         req.userId = decoded.id; 
         const analysis = knex("administrador").select("*").where(req.userId).first();
         if(!analysis){
-            return res.status(403).json({message: "Acesso negado! Não existe no banco"})
+            return res.status(403).json({message: "Acesso negado!"})
         }
         next();
     } catch (error) {
