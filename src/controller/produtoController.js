@@ -40,9 +40,36 @@ async function createProduto(req, res) {
         }
 }
 
+async function updateProduto(req, res) {
+    try {
+        const id = req.params.id;
+        const { nome, preco, disponivel, foto, qt_estrelas } = req.body; 
+        console.log("Dados recebidos no controller:", { nome, preco, disponivel, foto, qt_estrelas });
+        const mensagem = await produtoServices.updateProduto(id, { nome, preco, disponivel, foto, qt_estrelas });
+
+        res.status(200).json({ status: true, message: mensagem });
+    } catch (erro) {
+        console.error("Erro no controller:", erro);
+        res.status(400).json({ status: false, message: erro.message });
+    }
+}
+
+async function deleteProduto(req, res) {
+    try {
+        const { id } = req.params;
+        const deleteproduto = await produtoServices.deleteProduto(id);
+        res.json({ status: true, message: deleteproduto });
+        console.log("Controlador executado.");
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ status: false, message: error.message });
+    }
+}
 
 module.exports = {
     viewProdutoId,
     viewAllProduto,
     createProduto,
+    updateProduto,
+    deleteProduto
 };
