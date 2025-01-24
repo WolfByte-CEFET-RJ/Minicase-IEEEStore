@@ -11,7 +11,7 @@ const adminAutentication = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_KEY);
         if(decoded.role!=="admin"){
-            return res.status(403).json({message:"Acesso negado! Não é administrador."})
+            return res.status(403).json({message:"Acesso negado!"})
         }
         req.userId = decoded.id; 
         const analysis = knex("administrador").select("*").where(req.userId).first();

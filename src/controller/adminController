@@ -37,9 +37,17 @@ async function updateAdmin(req, res) {
             return res.status(403).json({ status: false, message: "Acesso negado." });
         }
 
+        const updateData = {};
         const { nome, cargo, cpf, telefone, senha } = req.body;
-        const updateService = await adminServices.updateAdmin(id, nome, cargo, cpf, telefone, senha);
 
+        if(nome) updateData.nome = nome;
+        if(cargo) updateData.cargo = cargo;
+        if(cpf) updateData.cpf = cpf;
+        if(telefone) updateData.telefone = telefone;
+        if(senha) updateData.senha = senha;
+
+        const updateService = await adminServices.updateAdmin(id, updateData);
+        if(!!updateService) console.log("Erro ao atualizar user")/
         res.json({ status: true, message: updateService });
         console.log("Controlador executado.");
     } catch (error) {

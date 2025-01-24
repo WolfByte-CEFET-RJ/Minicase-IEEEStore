@@ -92,7 +92,7 @@ async function createAdmin({nome, cargo, cpf, telefone, senha}) {
 }
 
 
-async function updateAdmin(id, nome, cargo, cpf, telefone, senha) {
+async function updateAdmin(id, updateData) {
     try {
         const idExiste = await knex("administrador")
             .where({ id })
@@ -102,31 +102,55 @@ async function updateAdmin(id, nome, cargo, cpf, telefone, senha) {
             throw new Error("Administrador não encontrado.");
         }
 
-        if (!nome || !cargo || !cpf || !telefone || !senha) {
-            throw new Error("Todos os campos devem ser preenchidos.");
-        }
+        
+        const fieldsToUpdate = {};
 
-        if (!Array.isArray(cargo)) {
-            throw new Error("Cargo deve ser um array.");
-        }
-
-        for (let item of cargo) {
-            if (typeof item !== 'string') {
-                throw new Error("Cada item do cargo deve ser uma string.");
+        
+        if (updateData.cargo) {
+            if (!Array.isArray(updateData.cargo)) {
+                throw new Error("Cargo deve ser um array.");
             }
+            for (let item of updateData.cargo) {
+                if (typeof item !== 'string') {
+                    throw new Error("Cada item do cargo deve ser uma string.");
+                }
+            }
+            fieldsToUpdate.cargo = JSON.stringify(updateData.cargo);  // Adiciona o campo 'cargo' ao objeto de atualização
         }
 
-        const senhaHasheada = await gerarHashSenha(senha);
+        
+        if (updateData.nome) {
+            fieldsToUpdate.nome = updateData.nome;
+        }
 
+        
+        if (updateData.cpf) {
+            fieldsToUpdate.cpf = updateData.cpf;
+        }
+
+        
+        if (updateData.telefone) {
+            fieldsToUpdate.telefone = updateData.telefone;
+        }
+
+        
+        if (updateData.senha) {
+            if (updateData.senha.length < 6) {
+                throw new Error("A senha deve ter no mínimo 6 caracteres.");
+            }
+            const senhaHasheada = await gerarHashSenha(updateData.senha);
+            fieldsToUpdate.senha = senhaHasheada;
+        }
+
+        
+        if (Object.keys(fieldsToUpdate).length === 0) {
+            throw new Error("Nenhum campo válido para atualizar.");
+        }
+
+        
         await knex("administrador")
             .where({ id })
-            .update({
-                nome,
-                cargo: JSON.stringify(cargo),
-                cpf,
-                telefone,
-                senha: senhaHasheada,
-            });
+            .update(fieldsToUpdate);
 
         return "Admin atualizado com sucesso!";
     } catch (error) {
@@ -134,6 +158,7 @@ async function updateAdmin(id, nome, cargo, cpf, telefone, senha) {
     }
 }
 
+    
 async function deleteAdmin(id) {
     try {
   
