@@ -6,11 +6,11 @@ const jwt = require("jsonwebtoken");
 configDotenv();
 
 function gerarTokenAdmin(admin){
-    const token = jwt.sign({ id:admin.id, role: "admin"}, process.env.JWT_KEY,{expiresIn: "1h"});
+    const token = jwt.sign({ id:admin.id, role: "admin"}, process.env.JWT_KEY,{expiresIn: "24h"});
     return token;
 }
 function gerarTokenUser(user){
-    const token = jwt.sign({ id:user.id}, process.env.JWT_KEY,{expiresIn: "1h"});
+    const token = jwt.sign({ id:user.id}, process.env.JWT_KEY,{expiresIn: "24h"});
     return token;
 }
 async function login({cpf,email,senha}){
