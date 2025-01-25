@@ -3,11 +3,11 @@ const adminServices = require("../services/adminServices.js");
 
 async function viewAdmin(req,res){
     try{
-        const {id} = req.params;
-        if (parseInt(req.userId) !== parseInt(id)) {
+        const idAdmin = req.userId;
+        if (parseInt(req.userId) !== parseInt(idAdmin)) {
             return res.status(403).json({ status: false, message: "Acesso negado." });
         }
-        const viewService = await adminServices.viewAdmin(id);
+        const viewService = await adminServices.viewAdmin(idAdmin);
 
         res.status(200).json({status: true, message: viewService})
         console.log("Controlador executado.")
@@ -31,9 +31,9 @@ async function createAdmin(req, res){
 
 async function updateAdmin(req, res) {
     try {
-        const { id } = req.params;
+        const idAdmin = req.userId
 
-        if (parseInt(req.userId) !== parseInt(id)) {
+        if (parseInt(req.userId) !== parseInt(idAdmin)) {
             return res.status(403).json({ status: false, message: "Acesso negado." });
         }
 
@@ -46,7 +46,7 @@ async function updateAdmin(req, res) {
         if(telefone) updateData.telefone = telefone;
         if(senha) updateData.senha = senha;
 
-        const updateService = await adminServices.updateAdmin(id, updateData);
+        const updateService = await adminServices.updateAdmin(idAdmin, updateData);
         if(!!updateService) console.log("Erro ao atualizar user")/
         res.json({ status: true, message: updateService });
         console.log("Controlador executado.");
@@ -58,11 +58,12 @@ async function updateAdmin(req, res) {
 
 async function deleteAdmin(req, res) {
     try {
-        const { id } = req.params;
-        if (parseInt(req.userId) !== parseInt(id)) {
+        const idAdmin = req.userId;
+        if (parseInt(req.userId) !== parseInt(idAdmin)) {
+            console.log("Ta aq o erro");
             return res.status(403).json({ status: false, message: "Acesso negado." });
         }
-        const deleteAdmin = await adminServices.deleteAdmin(id);
+        const deleteAdmin = await adminServices.deleteAdmin(idAdmin);
         res.json({ status: true, message: deleteAdmin });
         console.log("Controlador executado.");
     } catch (error) {

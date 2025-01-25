@@ -5,6 +5,21 @@ const { configDotenv } = require("dotenv");
 const jwt = require("jsonwebtoken");
 configDotenv();
 
+
+async function checkAdminId(id){
+    try{
+        if(!id){
+            throw new Error("Insira o id");
+        }
+        const analysis = await knex("administrador").select("*").where({id}).first();
+        if(!analysis){
+            throw new Error("Acesso negado!");
+        }
+        return {message:"Acesso garantido!"};
+    }catch(error){
+        throw error;
+    }
+}
 async function checkAdmin(cpf, senha) {
     try {
         if (!cpf) {
@@ -35,8 +50,9 @@ async function gerarHashSenha(senha) {
     const senhaHasheada = await bcrypt.hash(senha, saltRounds);
     return senhaHasheada;
 }
-async function viewAdmin(id){
+async function viewAdmin(idAdmin){
     try{
+        const id = idAdmin;
         if(!id){
             throw new Error("Administrador não encontrado.");
         }
@@ -92,10 +108,11 @@ async function createAdmin({nome, cargo, cpf, telefone, senha}) {
 }
 
 
-async function updateAdmin(id, updateData) {
+async function updateAdmin(idAdmin, updateData) {
     try {
+        const id= idAdmin;
         const idExiste = await knex("administrador")
-            .where({ id })
+            .where({id})
             .first();
 
         if (!idExiste) {
@@ -159,9 +176,9 @@ async function updateAdmin(id, updateData) {
 }
 
     
-async function deleteAdmin(id) {
+async function deleteAdmin(idAdmin) {
     try {
-  
+        const id = idAdmin;
       const adminExistente = await knex("administrador").select("*").where({ id });
       
       if (!adminExistente) {
@@ -179,5 +196,5 @@ async function deleteAdmin(id) {
   
 
 module.exports = {
-    createAdmin,updateAdmin,deleteAdmin,viewAdmin,checkAdmin,
+    createAdmin,updateAdmin,deleteAdmin,viewAdmin,checkAdmin,checkAdminId,
 };
