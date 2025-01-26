@@ -2,6 +2,8 @@ interface SelectionProps {
     group_options?: {[key: string]: string[]}
     text: string
     options?: string[]
+    name: string
+    value: string
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; 
 }
 
