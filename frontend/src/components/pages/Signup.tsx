@@ -32,7 +32,7 @@ export default function Signup() {
             ...formData,
             [name]: value,
         });
-        
+        console.log(formData)
     };
 
     const handleForm = async (event: FormEvent<HTMLFormElement>) => {
@@ -74,7 +74,6 @@ export default function Signup() {
                             name="nome"
                             size={40}
                             icon={<RiIdCardLine size={30} />}
-                            value ={formData.nome}
                             onChange={(e) => {handleFormEdit(e)}}
                         />
                         <Input
@@ -83,7 +82,6 @@ export default function Signup() {
                             name="CPF"
                             size={40}
                             icon={<Bs123 size={30} />}
-                            value ={formData.CPF}
                             onChange={(e) => {handleFormEdit(e)}}
                         />
                         <Input
@@ -92,7 +90,6 @@ export default function Signup() {
                             name="telefone"
                             size={40}
                             icon={<MdOutlineLocalPhone size={30} />}
-                            value ={formData.telefone}
                             onChange={(e) => {handleFormEdit(e)}}
                         />
                         <Input
@@ -101,7 +98,6 @@ export default function Signup() {
                             name="email"
                             size={40}
                             icon={<MdAlternateEmail size={30} />}
-                            value ={formData.email}
                             onChange={(e) => {handleFormEdit(e)}}
                         />
                         <Input
@@ -110,7 +106,6 @@ export default function Signup() {
                             name="senha"
                             size={40}
                             icon={<TbLock size={30} />}
-                            value ={formData.senha}
                             onChange={(e) => {handleFormEdit(e)}}
                         />
                     </div>
@@ -120,14 +115,12 @@ export default function Signup() {
                             <Select 
                                 group_options={team}
                                 text="equipe"
-                                value={formData.equipe}
                                 onChange={(e) => handleFormEdit(e)} 
                             />
                             
                             <Select
                                 options={['Lider', 'Membro']}
                                 text="cargo"
-                                value={formData.cargo}
                                 onChange={(e) => handleFormEdit(e)} 
                             />
                         </div>
@@ -135,14 +128,12 @@ export default function Signup() {
                             <Select 
                                 group_options={team}
                                 text="equipe"
-                                value={formData.equipe}
                                 onChange={(e) => handleFormEdit(e)} 
                             />
                             
                             <Select
                                 options={['Lider', 'Membro']}
                                 text="cargo"
-                                value={formData.cargo}
                                 onChange={(e) => handleFormEdit(e)}
                             />
                         </div>
@@ -150,14 +141,12 @@ export default function Signup() {
                             <Select 
                                 group_options={team}
                                 text="equipe" 
-                                value={formData.equipe}
                                 onChange={(e) => handleFormEdit(e)}
                             />
                             
                             <Select
                                 options={['Lider', 'Membro']}
                                 text="cargo"
-                                value={formData.cargo}
                                 onChange={(e) => handleFormEdit(e)}
                             />
                         </div>

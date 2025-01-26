@@ -5,14 +5,17 @@ import { MdAlternateEmail } from "react-icons/md";
 import { TbLock } from "react-icons/tb";
 import { Link } from "react-router";
 import { useState } from "react";
+import axios from "axios";
 
 export default function Login() {
 
     const [login, setLogin] = useState({})
+    let stayConnected = false
+    const url = 'http://localhost:8080'
 
     function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
         if(e.target.name === 'conectado') {
-            setLogin({...login, [e.target.name]: e.target.checked})
+            stayConnected = e.target.checked
         } else {
             setLogin({...login, [e.target.name]: e.target.value})
         }
@@ -21,7 +24,13 @@ export default function Login() {
 
     function submit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        console.log('Form submitted')
+        axios.post(url, login)
+        .then((res) => {
+            console.log(res)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
     }
 
     return (
