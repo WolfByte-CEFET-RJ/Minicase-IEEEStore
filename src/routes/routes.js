@@ -4,6 +4,7 @@ const {adminAutentication} = require("../middleware/adminAuth.js");
 const adminController = require("../controller/adminController");
 const loginController = require("../controller/loginController");
 const produtoController = require("../controller/produtoController.js");
+const {autenticar} = require("../middleware/auth.js");
 
 //ADMINISTRADOR
 //Substituir autenticar por adminAutentication
@@ -15,11 +16,11 @@ router.patch("/admin/:id",adminAutentication,adminController.updateAdmin);
 router.delete("/admin/:id",adminAutentication,adminController.deleteAdmin);
 
 //PRODUTO
-router.get("/produto/:id", produtoController.viewProdutoId);
-router.get("/produto", produtoController.viewAllProduto);
-router.post("/produto", produtoController.createProduto);
-router.patch("/produto/:id", produtoController.updateProduto);
-router.delete("/produto/:id",produtoController.deleteProduto);
+router.get("/produto/:id",adminAutentication || autenticar, produtoController.viewProdutoId);
+router.get("/produto", adminAutentication || autenticar, produtoController.viewAllProduto);
+router.post("/produto", adminAutentication,produtoController.createProduto);
+router.patch("/produto/:id", adminAutentication,produtoController.updateProduto);
+router.delete("/produto/:id",adminAutentication,produtoController.deleteProduto);
 
 
 module.exports = router;
