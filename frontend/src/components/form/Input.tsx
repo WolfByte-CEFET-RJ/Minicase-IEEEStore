@@ -8,6 +8,7 @@ interface InputProps {
     icon?: ReactNode
     size: number
     checkbox?: string
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 
@@ -43,24 +44,27 @@ export default function Input(props: InputProps) {
                     <input
                         type={props.type}
                         name={props.name}
+                        id={props.name}
                         placeholder={props.placeholder}
                         className="focus:outline-none bg-amber-50 text-xl placeholder-gray-600"
                         size={inputSize}
                         autoComplete="off"
+                        onChange={props.onChange}
                     />
                     <label htmlFor={props.name}>{props.icon}</label>
                 </div>
             ) : (
                 <div className="flex p-1 ">
-                    <p className="text-xl mr-5">{props.checkbox}</p>
+                    <label htmlFor={props.name} className="text-xl mr-5">{props.checkbox}</label>
                     <input
                         type={props.type}
                         name={props.name}
+                        id={props.name}
                         className="w-4"
                         size={inputSize}
                         autoComplete="off"
+                        onChange={props.onChange}
                     />
-                    <label htmlFor={props.name}>{props.icon}</label>
                 </div>
             )}
         </>
