@@ -1,6 +1,7 @@
 interface SubmitButtonProps {
     text: string
     className: string
+    disable?: boolean
 }
 
 export default function SubmitButton(props: SubmitButtonProps) {

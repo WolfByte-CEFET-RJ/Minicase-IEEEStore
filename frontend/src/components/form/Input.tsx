@@ -8,7 +8,9 @@ interface InputProps {
     icon?: ReactNode
     size: number
     checkbox?: string
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+    value?: string
+    checked?: boolean
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 
