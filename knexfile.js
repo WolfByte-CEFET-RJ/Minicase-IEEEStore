@@ -26,10 +26,6 @@ module.exports = {
       directory: path.resolve(__dirname, './src/db/migrations'),
       tableName: 'knex_migrations',
     },
-    seeds: {
-      directory: path.resolve(__dirname, './src/db/seeds'),
-
-    }
   },
   production: {
     client: 'mysql2',
@@ -44,9 +40,5 @@ module.exports = {
       directory: path.resolve(__dirname, './src/db/migrations'),
       tableName: 'knex_migrations',
     },
-    seeds: {
-      directory: path.resolve(__dirname, './src/db/seeds'),
-
-    }
   },
 };
