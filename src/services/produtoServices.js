@@ -88,7 +88,7 @@ async function updateProduto(id, campos) {
         }
 
         if (campos.disponivel !== undefined && typeof campos.disponivel === "boolean") {
-            camposAtualizar.disponivel = disponivel
+            camposAtualizar.disponivel = campos.disponivel
         } else if (campos.disponivel !== undefined) {
             throw new Error("O campo 'disponivel' precisa ser um booleano.");
         }
