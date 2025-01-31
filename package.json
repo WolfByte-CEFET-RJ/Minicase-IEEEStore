@@ -1,6 +1,7 @@
 {
   "name": "minicase",
   "version": "1.0.0",
+  "description": "",
   "keywords": [],
   "homepage": "https://github.com/WolfByte-CEFET-RJ/Minicase-IEEEStore#readme",
   "bugs": {
@@ -28,5 +29,5 @@
     "mysql2": "^3.12.0",
     "nodemon": "^3.1.9"
   },
-  "description": ""
+  "devDependencies": {}
 }

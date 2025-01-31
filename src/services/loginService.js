@@ -14,10 +14,10 @@ function gerarTokenUser(user){
     return token;
 }
 async function login({cpf,email,senha}){
+    //const id = req.userId;
     try{
          if(cpf){
             const admin = await knex("administrador").where({cpf}).first();
-            
             if(!admin){
                 throw new Error("Administrador não encontrado.");
             }
@@ -26,6 +26,7 @@ async function login({cpf,email,senha}){
                 throw new Error("Senha incorreta.");
             }
             const token = gerarTokenAdmin(admin);
+            const login = await knex("controle_login").insert({id_admin: admin.id})
             return { message: 'Login bem-sucedido!', token };
          }
          else if(email){
