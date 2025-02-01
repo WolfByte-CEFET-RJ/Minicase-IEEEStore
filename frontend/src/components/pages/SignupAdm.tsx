@@ -6,8 +6,11 @@ import { RiIdCardLine } from "react-icons/ri";
 import { Bs123 } from "react-icons/bs";
 import { MdOutlineLocalPhone } from "react-icons/md";
 import { TbLock } from "react-icons/tb";
+import { useState } from "react";
 
 export default function SignupAdm() {
+
+    const [signupAdm, setSignupAdm] = useState({})
 
     const team = {
         'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
@@ -17,6 +20,13 @@ export default function SignupAdm() {
         'WolfBotz': ['Seguidor de Linha', 'Mini Sumô', 'Combate'],
         'SocialWolf': ['Mecânica', 'Programação', 'Eletrônica', 'Educacional'],
         'WolfByte': ['Inteligência Artificial (IA)', 'Web/App', 'Hardware', 'Games']
+    }
+
+    function handleOnchange(e: React.ChangeEvent<HTMLInputElement>) {
+        e.preventDefault()
+        const {name, value} = e.target
+        setSignupAdm({...signupAdm, [name]: value})
+        console.log(signupAdm);
     }
 
     return (
@@ -31,6 +41,7 @@ export default function SignupAdm() {
                                         name="nome"
                                         size={40}
                                         icon={<RiIdCardLine size={30} />}
+                                        onChange={handleOnchange}
                                     />
                                     <Input
                                         type="text"
@@ -38,6 +49,7 @@ export default function SignupAdm() {
                                         name="CPF"
                                         size={40}
                                         icon={<Bs123 size={30} />}
+                                        onChange={handleOnchange}
                                     />
                                     <Input
                                         type="password"
@@ -45,6 +57,7 @@ export default function SignupAdm() {
                                         name="senha"
                                         size={40}
                                         icon={<TbLock size={30} />}
+                                        onChange={handleOnchange}
                                     />
                                     <Input
                                         type="text"
@@ -52,6 +65,7 @@ export default function SignupAdm() {
                                         name="telefone"
                                         size={40}
                                         icon={<MdOutlineLocalPhone size={30} />}
+                                        onChange={handleOnchange}
                                     />
                                 </div>
                                 <div className="flex flex-col gap-8">
