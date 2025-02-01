@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 interface InputProps {
     type: string
     name: string
+    value?: string
     placeholder?: string
     icon?: ReactNode
     size: number

@@ -12,37 +12,31 @@ import axios from "axios";
 export default function Signup() {
 
     const[formData, setFormData] = useState({
-        nome: " ",
-        CPF: " ", 
-        telefone: " ", 
-        email: " ", 
-        senha: " ", 
-        equipe: " ", 
-        cargo: " ", 
+        nome: "",
+        CPF: "", 
+        telefone: "", 
+        email: "", 
+        senha: "", 
+        equipe: "", 
+        cargo: "", 
         pagante: false, 
     })
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(" ")
-    const [success, setSuccess] = useState(false);
 
-    const handleFormEdit = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-        console.log(formData)
+    const handleFormEdit = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        setFormData({...formData, [event.target.name]: event.target.value})
     };
 
     const handleForm = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         setLoading(true)
+        console.log(formData)
 
         try{ //Tem que confirmar qual a URL e o endpoint usado pelo backend
             //const response = await axios.post("http://localhost:3000/cadastro",formData)
             //console.log("Resposta do servidor:", response.data);
-            setSuccess(true)
         }catch(error){
             console.error("Erro ao enviar o formulário:", error)
             setError("Ocorreu um erro ao enviar os dados. Tente novamente.")
@@ -73,6 +67,7 @@ export default function Signup() {
                             placeholder="Digite seu nome"
                             name="nome"
                             size={40}
+                            value ={formData.nome}
                             icon={<RiIdCardLine size={30} />}
                             onChange={(e) => {handleFormEdit(e)}}
                         />
@@ -81,6 +76,7 @@ export default function Signup() {
                             placeholder="Digite seu CPF"
                             name="CPF"
                             size={40}
+                            value ={formData.CPF}
                             icon={<Bs123 size={30} />}
                             onChange={(e) => {handleFormEdit(e)}}
                         />
@@ -89,6 +85,7 @@ export default function Signup() {
                             placeholder="Digite seu telefone"
                             name="telefone"
                             size={40}
+                            value ={formData.telefone}
                             icon={<MdOutlineLocalPhone size={30} />}
                             onChange={(e) => {handleFormEdit(e)}}
                         />
@@ -97,6 +94,7 @@ export default function Signup() {
                             placeholder="Digite seu email"
                             name="email"
                             size={40}
+                            value ={formData.email}
                             icon={<MdAlternateEmail size={30} />}
                             onChange={(e) => {handleFormEdit(e)}}
                         />
@@ -105,6 +103,7 @@ export default function Signup() {
                             placeholder="Crie uma senha"
                             name="senha"
                             size={40}
+                            value ={formData.senha}
                             icon={<TbLock size={30} />}
                             onChange={(e) => {handleFormEdit(e)}}
                         />
@@ -115,38 +114,50 @@ export default function Signup() {
                             <Select 
                                 group_options={team}
                                 text="equipe"
-                                onChange={(e) => handleFormEdit(e)} 
+                                name="equipe"
+                                value={formData.equipe}
+                                onChange={(e) => handleFormEdit(e)}
                             />
                             
                             <Select
                                 options={['Lider', 'Membro']}
                                 text="cargo"
-                                onChange={(e) => handleFormEdit(e)} 
+                                name="cargo"
+                                value={formData.cargo}
+                                onChange={(e) => handleFormEdit(e)}
                             />
                         </div>
                         <div className="flex flex-wrap">    
                             <Select 
                                 group_options={team}
                                 text="equipe"
+                                name="equipe"
+                                value={formData.equipe}
                                 onChange={(e) => handleFormEdit(e)} 
                             />
                             
                             <Select
                                 options={['Lider', 'Membro']}
                                 text="cargo"
+                                name="cargo"
+                                value={formData.cargo}
                                 onChange={(e) => handleFormEdit(e)}
                             />
                         </div>
                         <div className="flex flex-wrap">    
                             <Select 
                                 group_options={team}
-                                text="equipe" 
+                                text="equipe"
+                                name="equipe" 
+                                value={formData.equipe}
                                 onChange={(e) => handleFormEdit(e)}
                             />
                             
                             <Select
                                 options={['Lider', 'Membro']}
                                 text="cargo"
+                                name="cargo"
+                                value={formData.cargo}
                                 onChange={(e) => handleFormEdit(e)}
                             />
                         </div>
@@ -168,12 +179,10 @@ export default function Signup() {
                 </div>
                 <div className="flex justify-center items-center mt-5">
                     <SubmitButton 
-                        text={loading ? "...Cadastrando" : "Cadastrar"}
+                        text={"Cadastrar"}
                         className="bg-blue-900 hover:bg-blue-950 text-white px-10 py-3"
-                        disable={loading} 
                     />
                 </div>
-                {success && <p className="text-black text-xl text-center mt-3">Cadastro realizado com sucesso!</p>}
                 {error && <p className="text-black text-xl text-center mt-3">{error}</p>}
             </form>
         </InformationBox>
