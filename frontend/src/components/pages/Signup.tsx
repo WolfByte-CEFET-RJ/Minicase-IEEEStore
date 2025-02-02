@@ -17,16 +17,32 @@ export default function Signup() {
         telefone: "", 
         email: "", 
         senha: "", 
-        equipe: "", 
-        cargo: "", 
+        equipeCargo: [],
         pagante: false, 
     })
+
+    const [selectData, setSelectData] = useState<{ equipe: string; cargo: string }[]>(
+        Array(3).fill({ equipe: "", cargo: "" }) // Cria um array inicial com 3 objetos, cada um contendo "equipe" e "cargo" vazios.
+        // Se quiser 50 selects no futuro, basta mudar "Array(3)" para "Array(50)".
+      );
+
+      const handleSelectEdit = (index: number, field: "equipe" | "cargo", value: string) => {
+        setSelectData(prev => 
+            prev.map((item, i) => 
+                i === index ? { ...item, [field]: value } : item 
+                // Se o índice atual for o mesmo do item modificado, atualiza o valor do campo (equipe ou cargo).
+                // Se não, mantém o item original.
+            )
+        );
+        console.log(selectData)
+    };
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(" ")
 
     const handleFormEdit = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData({...formData, [event.target.name]: event.target.value})
+        console.log(formData)
     };
 
     const handleForm = async (event: FormEvent<HTMLFormElement>) => {
@@ -110,57 +126,30 @@ export default function Signup() {
                     </div>
                     <div className="flex flex-col gap-8">
                         <h2 className="text-xl font-semibold before:content-['.'] before:ml-0.5 before:text-6xl">Você é membro do IEEE?</h2>
-                        <div className="flex flex-wrap">    
-                            <Select 
-                                group_options={team}
-                                text="equipe"
-                                name="equipe"
-                                value={formData.equipe}
-                                onChange={(e) => handleFormEdit(e)}
-                            />
-                            
-                            <Select
-                                options={['Lider', 'Membro']}
-                                text="cargo"
-                                name="cargo"
-                                value={formData.cargo}
-                                onChange={(e) => handleFormEdit(e)}
-                            />
-                        </div>
-                        <div className="flex flex-wrap">    
-                            <Select 
-                                group_options={team}
-                                text="equipe"
-                                name="equipe"
-                                value={formData.equipe}
-                                onChange={(e) => handleFormEdit(e)} 
-                            />
-                            
-                            <Select
-                                options={['Lider', 'Membro']}
-                                text="cargo"
-                                name="cargo"
-                                value={formData.cargo}
-                                onChange={(e) => handleFormEdit(e)}
-                            />
-                        </div>
-                        <div className="flex flex-wrap">    
-                            <Select 
-                                group_options={team}
-                                text="equipe"
-                                name="equipe" 
-                                value={formData.equipe}
-                                onChange={(e) => handleFormEdit(e)}
-                            />
-                            
-                            <Select
-                                options={['Lider', 'Membro']}
-                                text="cargo"
-                                name="cargo"
-                                value={formData.cargo}
-                                onChange={(e) => handleFormEdit(e)}
-                            />
-                        </div>
+                        {/* Mapeia os selects dinamicamente com base no estado "formData" */}
+                            {selectData.map((item, index) => (
+                                <div key={index} className="flex flex-wrap">
+                                    {/* Select para escolher a equipe */}
+                                    <Select
+                                        group_options={team} // Lista de equipes disponível
+                                        text="equipe"
+                                        name="equipe"
+                                        value={item.equipe} // Valor da equipe referente ao índice atual
+                                        onChange={(event) => handleSelectEdit(index, "equipe", event.target.value)} 
+                                        // Chama handleSelectEdit passando o índice, "equipe" e o novo valor selecionado
+                                    />
+                                    
+                                    {/* Select para escolher o cargo */}
+                                    <Select
+                                        options={['Lider', 'Membro']} // Lista fixa de cargos
+                                        text="cargo"
+                                        name="cargo"
+                                        value={item.cargo} // Valor do cargo referente ao índice atual
+                                        onChange={(event) => handleSelectEdit(index, "cargo", event.target.value)} 
+                                        // Chama handleSelectEdit passando o índice, "cargo" e o novo valor selecionado
+                                    />
+                                </div>
+                            ))}
 
                         <Input
                             type="checkbox"
@@ -174,13 +163,13 @@ export default function Signup() {
                                     pagante: e.target.checked,
                                 })
                             }
-                        />
+                            />
                     </div>
                 </div>
                 <div className="flex justify-center items-center mt-5">
                     <SubmitButton 
                         text={"Cadastrar"}
-                        className="bg-blue-900 hover:bg-blue-950 text-white px-10 py-3"
+                        className="bg-blue-900 hover:bg-blue-950 text-white px-10 py-3 text-2xl"
                     />
                 </div>
                 {error && <p className="text-black text-xl text-center mt-3">{error}</p>}

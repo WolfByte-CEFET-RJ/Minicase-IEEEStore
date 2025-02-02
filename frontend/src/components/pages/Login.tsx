@@ -65,7 +65,7 @@ export default function Login() {
                     <a href="#" className="text-gray-600 hover:text-gray-900 font-semibold">Esqueci minha senha</a>
                 </div>
                 <div className="flex justify-center items-center mt-5">
-                    <SubmitButton text="Entrar" className="bg-blue-900 hover:bg-blue-950 text-white px-10 py-3 text-xl w-full" />
+                    <SubmitButton text="Entrar" className="bg-blue-900 hover:bg-blue-950 text-white px-10 py-3 text-2xl mt-5" />
                 </div>
             </form>
         </InformationBox>
