@@ -7,7 +7,7 @@ exports.up = function(knex) {
       table.increments('id');
       table.string('nome').notNullable();
       table.float('preco').notNullable();
-      table.boolean('disponivel').notNullable();
+      table.integer('quantidade').notNullable();
       table.string('foto').notNullable();
       table.float('media_avaliacao').notNullable();
       table.integer('qt_avaliacoes');

@@ -30,9 +30,9 @@ async function viewAllProduto(req, res){
 }
 async function createProduto(req, res) {
     try {
-        const { nome, preco, disponivel, foto, qt_estrelas } = req.body;
-        console.log("Dados recebidos no controller:", { nome, preco, disponivel, foto, qt_estrelas });
-        const createService = await produtoServices.createProduto({ nome, preco, disponivel, foto, qt_estrelas });
+        const { nome, preco, quantidade, foto, qt_estrelas } = req.body;
+        console.log("Dados recebidos no controller:", { nome, preco, quantidade, foto, qt_estrelas });
+        const createService = await produtoServices.createProduto({ nome, preco, quantidade, foto, qt_estrelas });
         res.json({ status: true, message: createService });
     } catch (erro) {
         console.error("Erro no controller:", erro);
@@ -43,9 +43,9 @@ async function createProduto(req, res) {
 async function updateProduto(req, res) {
     try {
         const id = req.params.id;
-        const { nome, preco, disponivel, foto, qt_estrelas } = req.body; 
-        console.log("Dados recebidos no controller:", { nome, preco, disponivel, foto, qt_estrelas });
-        const mensagem = await produtoServices.updateProduto(id, { nome, preco, disponivel, foto, qt_estrelas });
+        const { nome, preco, quantidade, foto, qt_estrelas } = req.body; 
+        console.log("Dados recebidos no controller:", { nome, preco, quantidade, foto, qt_estrelas });
+        const mensagem = await produtoServices.updateProduto(id, { nome, preco, quantidade, foto, qt_estrelas });
 
         res.status(200).json({ status: true, message: mensagem });
     } catch (erro) {

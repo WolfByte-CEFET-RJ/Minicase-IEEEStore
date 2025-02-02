@@ -34,29 +34,24 @@ async function viewAllProduto(){
     }
 }
 
-async function createProduto({ nome, preco, disponivel, foto, qt_estrelas, media_avaliacao }) {
+async function createProduto({ nome, preco, quantidade, foto, qt_estrelas, media_avaliacao }) {
     try {
         const produtoExistente = await knex("produto").select("*").where({ nome }).first();
         if(produtoExistente){
             throw new Error("Já existe um produto com esse nome.");
         } 
-        if(nome === "" || preco === "" || disponivel === "" || foto === ""){
+        if(nome === "" || preco === "" || quantidade === "" || foto === ""){
             throw new Error("preencha todos os campos obrigatórios");
         }
         if (typeof preco !== 'number' || preco <= 0) {
             throw new Error("O preço do produto deve ser um número positivo.");
         }
-        if (typeof qt_estrelas !== 'number' || qt_estrelas < 0 || qt_estrelas > 5) {
-            throw new Error("A quantidade de estrelas deve ser um número entre 0 e 5.");
-        }
-        if(qt_estrelas % 0.5 !== 0){
-            throw new Error("Quantidade de estrelas pode apenas ser múltiplo de 1/2. Ex: 4.5, 5.")
-        }
-        if (typeof disponivel !== 'boolean') {
-            throw new Error("O campo 'disponivel' deve ser um valor booleano.");
+        
+        if (!Number.isInteger(quantidade)) {
+            throw new Error("O campo 'quantidade' deve ser um valor inteiro.");
         }
 
-     const [id] = await knex('produto').insert({nome, preco, disponivel, foto, qt_estrelas: qt_estrelas || 0, media_avaliacao: media_avaliacao || 0}).returning("*");
+     const [id] = await knex('produto').insert({nome, preco, quantidade, foto, qt_estrelas: 0, media_avaliacao: 0, qt_avaliacoes: 0});
      return "Produto criado com sucesso.";
 
     } catch (erro) {
@@ -81,16 +76,20 @@ async function updateProduto(id, campos) {
             throw new Error("O campo 'nome' precisa ser uma string válida.");
         }
 
-        if (campos.preco && typeof campos.preco === "number") {
-            camposAtualizar.preco = campos.preco;
-        } else if (campos.preco !== undefined) {
-            throw new Error("O campo 'preco' precisa ser um número válido.");
+        if (campos.preco !== undefined) {
+            if (typeof campos.preco === "number" && campos.preco > 0) {
+                camposAtualizar.preco = campos.preco;
+            } else {
+                throw new Error("O campo 'preco' precisa ser um número válido e maior que zero.");
+            }
         }
 
-        if (campos.disponivel !== undefined && typeof campos.disponivel === "boolean") {
-            camposAtualizar.disponivel = campos.disponivel
-        } else if (campos.disponivel !== undefined) {
-            throw new Error("O campo 'disponivel' precisa ser um booleano.");
+        if (campos.quantidade !== undefined) {
+            if (Number.isInteger(campos.quantidade)) {
+                camposAtualizar.quantidade = campos.quantidade;
+            } else {
+                throw new Error("O campo 'quantidade' precisa ser um valor inteiro.");
+            }
         }
 
         if (campos.foto && typeof campos.foto === "string" && campos.foto.trim() !== "") {
@@ -99,10 +98,18 @@ async function updateProduto(id, campos) {
             throw new Error("O campo 'foto' precisa ser uma string válida.");
         }
 
-        if (campos.qt_estrelas && typeof campos.qt_estrelas === "number") {
-            camposAtualizar.qt_estrelas = campos.qt_estrelas;
-        } else if (campos.qt_estrelas !== undefined) {
-            throw new Error("O campo 'qt_estrelas' precisa ser um número válido.");
+        if (campos.qt_estrelas !== undefined) {
+            if (typeof campos.qt_estrelas !== "number" || campos.qt_estrelas < 0 || campos.qt_estrelas > 5 || campos.qt_estrelas % 0.5 !== 0) {
+                throw new Error("A quantidade de estrelas deve ser um número entre 0 e 5, múltiplo de 0.5.");
+            }
+
+            if (produto.qt_avaliacoes === 0) {
+                camposAtualizar.media_avaliacao = campos.qt_estrelas;
+                camposAtualizar.qt_avaliacoes = 1;
+            } else {
+                camposAtualizar.media_avaliacao = (produto.media_avaliacao * produto.qt_avaliacoes + campos.qt_estrelas) / (produto.qt_avaliacoes + 1);
+                camposAtualizar.qt_avaliacoes = produto.qt_avaliacoes + 1;
+            }
         }
 
         if (Object.keys(camposAtualizar).length === 0) {
@@ -117,6 +124,7 @@ async function updateProduto(id, campos) {
         throw new Error("Falha ao atualizar o produto.");
     }
 }
+
 
 async function deleteProduto(id) {
     try {
