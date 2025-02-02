@@ -34,10 +34,10 @@ export default function Login() {
     }
 
     return (
-        <InformationBox className="w-fit m-auto">
+        <InformationBox className="w-fit m-auto bg-amber-50">
             <h1 className="font-bold text-4xl text-center">Insira seu login</h1>
             <p className="text-center">Não tem conta? <Link to="/signup" className="text-gray-600 hover:text-gray-900 font-semibold">Cadastre-se</Link></p>
-            <form className="flex flex-col px-10 py-5 gap-8" onSubmit={submit}>
+            <form className="flex flex-col px-10 py-5" onSubmit={submit}>
                 <Input
                     type="email"
                     placeholder="Digite seu email"
@@ -65,7 +65,7 @@ export default function Login() {
                     <a href="#" className="text-gray-600 hover:text-gray-900 font-semibold">Esqueci minha senha</a>
                 </div>
                 <div className="flex justify-center items-center mt-5">
-                    <SubmitButton text="Entrar" className="bg-blue-900 hover:bg-blue-950 text-white px-10 py-3" />
+                    <SubmitButton text="Entrar" className="bg-blue-900 hover:bg-blue-950 text-white px-10 py-3 text-xl w-full" />
                 </div>
             </form>
         </InformationBox>
