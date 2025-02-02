@@ -61,7 +61,7 @@ export default function Signup() {
             <h1 className="font-bold text-4xl text-center">Crie seu cadastro</h1>
             <form className="flex flex-col px-10 py-5" onSubmit={handleForm}>
                 <div className="flex flex-row flex-wrap px-10 py-5 justify-around">
-                    <div className="flex flex-col gap-8">
+                    <div className="flex flex-col">
                         <Input
                             type="text"
                             placeholder="Digite seu nome"

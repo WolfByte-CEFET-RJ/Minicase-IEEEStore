@@ -13,6 +13,9 @@ import MeusFavoritos from './components/pages/Meus_Favoritos'
 import MeuCarrinho from './components/pages/Meu_Carrinho'
 import Page from './components/pages/Page'
 import Header from './components/layout/Header'
+import SignupProduct from './components/pages/product/SignupProduct'
+import EditProduct from './components/pages/product/EditProduct'
+import Payment from './components/pages/Payment'
 
 
 function App() {
@@ -33,6 +36,9 @@ function App() {
             <Route path="/meus-favoritos" element={<MeusFavoritos />} />
             <Route path="/meu-carrinho" element={<MeuCarrinho />} />
             <Route path="/signup-adm" element={<SignupAdm />} />
+            <Route path="/signup-product" element={<SignupProduct />} />
+            <Route path="/edit-product" element={<EditProduct />} />
+            <Route path="/payment" element={<Payment />} />
           </Routes>
         </Page>
         

@@ -11,6 +11,7 @@ interface InputProps {
     checkbox?: string
     checked?: boolean
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+    className?: string
 }
 
 
@@ -42,13 +43,13 @@ export default function Input(props: InputProps) {
 
         <>
             {props.type !== 'checkbox' ? (
-                <div className="flex justify-between border-b border-gray-500 p-1">
+                <div className="flex justify-between border-b border-gray-500 p-1 items-center mb-8">
                     <input
                         type={props.type}
                         name={props.name}
                         id={props.name}
                         placeholder={props.placeholder}
-                        className="focus:outline-none bg-amber-50 text-xl placeholder-gray-600"
+                        className={`focus:outline-none text-xl placeholder-gray-600 ${props.className ? props.className : 'bg-amber-50'}`}
                         size={inputSize}
                         autoComplete="off"
                         onChange={props.onChange}
