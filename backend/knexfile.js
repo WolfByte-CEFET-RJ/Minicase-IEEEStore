@@ -13,6 +13,11 @@ module.exports = {
     directory: path.resolve(__dirname, './src/db/migrations'),
     tableName: 'knex_migrations',
   },
+  seeds: {
+    directory: path.resolve(__dirname, './src/db/seeds'),
+    tableName: 'knex_seeds',
+
+  },
   development: {
     client: 'mysql2',
     connection: {
@@ -25,6 +30,11 @@ module.exports = {
     migrations: {
       directory: path.resolve(__dirname, './src/db/migrations'),
       tableName: 'knex_migrations',
+    },
+    seeds: {
+      directory: path.resolve(__dirname, './src/db/seeds'),
+      tableName: 'knex_seeds',
+
     },
   },
   production: {
@@ -39,6 +49,11 @@ module.exports = {
     migrations: {
       directory: path.resolve(__dirname, './src/db/migrations'),
       tableName: 'knex_migrations',
+    },
+    seeds: {
+      directory: path.resolve(__dirname, './src/db/seeds'),
+      tableName: 'knex_seeds',
+
     },
   },
 };
