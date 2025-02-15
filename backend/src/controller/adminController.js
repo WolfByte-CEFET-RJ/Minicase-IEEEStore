@@ -73,15 +73,15 @@ async function deleteAdmin(req, res) {
 
 async function adminCreationPower(req,res){
     try{
-        const {novoAdmin} = req.body;
-        const { nome, cargo, cpfNovo, telefone, senhaNovo } = novoAdmin || {};
+        const { nome, cargo, cpf, telefone, senha } = req.body;
         const criarAdminService = await adminServices.createAdmin({
             nome,
             cargo,
-            cpf: cpfNovo,
+            cpf,
             telefone,
-            senha: senhaNovo
-        });  
+            senha
+        });
+        console.log("Se liga",cpf)
         return res.json({status:true,message: criarAdminService})
     }catch(err){
         res.status(500).json({status: false, message:err.message});

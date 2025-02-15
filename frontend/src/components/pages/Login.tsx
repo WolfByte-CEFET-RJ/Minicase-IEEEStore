@@ -11,7 +11,7 @@ export default function Login() {
 
     const [login, setLogin] = useState({})
     let stayConnected = false
-    const url = 'http://localhost:8080'
+    const url = 'http://localhost:8080/login'
 
     function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
         if(e.target.name === 'conectado') {
@@ -39,9 +39,9 @@ export default function Login() {
             <p className="text-center">Não tem conta? <Link to="/signup" className="text-gray-600 hover:text-gray-900 font-semibold">Cadastre-se</Link></p>
             <form className="flex flex-col px-10 py-5" onSubmit={submit}>
                 <Input
-                    type="email"
-                    placeholder="Digite seu email"
-                    name="email"
+                    type="text"
+                    placeholder="Digite seu cpf"
+                    name="cpf"
                     size={40}
                     icon={<MdAlternateEmail size={30} />}
                     onChange={handleOnChange}

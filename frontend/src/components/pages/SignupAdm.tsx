@@ -49,14 +49,29 @@ export default function SignupAdm() {
         e.preventDefault()
         setSignupAdm({...signupAdm, ["cargo"]: teams})
         console.log(signupAdm)
-        try{ //Tem que confirmar qual a URL e o endpoint usado pelo backend
-            const response = await axios.post("http://localhost:3000/cadastro", signupAdm)
+        try {
+            // Defina o token (pode ser pego do localStorage, state, etc.)
+            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzM5NjYwNDM2LCJleHAiOjE3Mzk3NDY4MzZ9.LUwUBdP1nZtkU27k6wdSKUb_CK5HfYg_308RqthYUMQ";
+        
+            const response = await axios.post(
+              "http://localhost:8080/admin/criar",
+              signupAdm,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json", // Tipo de conteúdo // Caso precise de um header extra
+                },
+              }
+            );
+        
             console.log("Resposta do servidor:", response.data);
-        }catch(error){
-            console.error("Erro ao enviar o formulário:", error)
-            console.log("Ocorreu um erro ao enviar os dados. Tente novamente.")
+          } catch (error) {
+            console.error("Erro ao enviar o formulário:", error);
+            console.log("Ocorreu um erro ao enviar os dados. Tente novamente.");
+          }
         }
-    }
+        
+    
 
     return (
         <InformationBox>
@@ -75,7 +90,7 @@ export default function SignupAdm() {
                                     <Input
                                         type="text"
                                         placeholder="Digite o CPF"
-                                        name="CPF"
+                                        name="cpf"
                                         size={40}
                                         icon={<Bs123 size={30} />}
                                         onChange={handleOnchange}

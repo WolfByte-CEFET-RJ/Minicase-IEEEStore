@@ -4,9 +4,13 @@ const adminRouter= require("./src/routes/routes.js");
 const cors = require('cors');
 //config.Dotenv();
 const app = express();
+
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: ["GET","POST","PATCH","DELETE"],   
+}));
 app.use(express.json());
 app.use(adminRouter); 
-app.use(cors())
 
 
 
