@@ -51,8 +51,8 @@ export default function Signup() {
         console.log(formData)
 
         try{ //Tem que confirmar qual a URL e o endpoint usado pelo backend
-            //const response = await axios.post("http://localhost:3000/cadastro",formData)
-            //console.log("Resposta do servidor:", response.data);
+            const response = await axios.post("http://localhost:3000/cadastro",formData)
+            console.log("Resposta do servidor:", response.data);
         }catch(error){
             console.error("Erro ao enviar o formulário:", error)
             setError("Ocorreu um erro ao enviar os dados. Tente novamente.")
