@@ -52,6 +52,7 @@ async function viewAdmin(id){
 
 async function createAdmin({nome, cargo, cpf, telefone, senha}) {
     try {
+        console.log("VAi tomando",nome)
         const cpfExistente = await knex("administrador").select("*").where({ cpf }).first();
         if (cpfExistente) {
             throw new Error("Já existe um administrador registrado com esse CPF.");
