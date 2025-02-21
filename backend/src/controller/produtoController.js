@@ -30,9 +30,18 @@ async function viewAllProduto(req, res){
 }
 async function createProduto(req, res) {
     try {
-        const { nome, preco, quantidade, foto, qt_estrelas } = req.body;
-        console.log("Dados recebidos no controller:", { nome, preco, quantidade, foto, qt_estrelas });
-        const createService = await produtoServices.createProduto({ nome, preco, quantidade, foto, qt_estrelas });
+        let {nome, preco, quantidade, media_avaliacao, qt_avaliacoes, qt_estrelas} = req.body;
+        const foto = req.file.path;
+
+        quantidade = parseInt(quantidade);
+        preco = parseFloat(preco);
+        
+        if (!req.file){
+            return req.stauts(400).json({status: false, message: "O arquivo da foto do produto é obrigatória."});
+        }
+
+        console.log("Dados recebidos no controller:", { nome, preco, quantidade, foto, qt_estrelas, qt_avaliacoes });
+        const createService = await produtoServices.createProduto({ nome, preco, quantidade, foto, media_avaliacao, qt_estrelas, qt_avaliacoes });
         res.json({ status: true, message: createService });
     } catch (erro) {
         console.error("Erro no controller:", erro);

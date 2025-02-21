@@ -34,14 +34,17 @@ async function viewAllProduto(){
     }
 }
 
-async function createProduto({ nome, preco, quantidade, foto, qt_estrelas, media_avaliacao }) {
+async function createProduto({ nome, preco, quantidade, foto, media_avaliacao, qt_avaliacoes, qt_estrelas }) {
     try {
         const produtoExistente = await knex("produto").select("*").where({ nome }).first();
         if(produtoExistente){
             throw new Error("Já existe um produto com esse nome.");
         } 
-        if(nome === "" || preco === "" || quantidade === "" || foto === ""){
+        if(nome === "" || preco === "" || quantidade === ""){
             throw new Error("preencha todos os campos obrigatórios");
+        }
+        if(!foto){
+            throw new Error("Foto do produto é obrigatória.");
         }
         if (typeof preco !== 'number' || preco <= 0) {
             throw new Error("O preço do produto deve ser um número positivo.");
@@ -50,8 +53,20 @@ async function createProduto({ nome, preco, quantidade, foto, qt_estrelas, media
         if (!Number.isInteger(quantidade)) {
             throw new Error("O campo 'quantidade' deve ser um valor inteiro.");
         }
-
-     const [id] = await knex('produto').insert({nome, preco, quantidade, foto, qt_estrelas: 0, media_avaliacao: 0, qt_avaliacoes: 0});
+        
+        if(media_avaliacao != undefined){
+            throw new Error("não dê um valor para media avaliacao");
+        }
+        
+        if(qt_avaliacoes != null){
+            throw new Error("qt avaliacoes deve ser nulo");
+        }
+        if(qt_estrelas != null){
+            throw new Error("não dê um valor para qt avaliacoes");
+        }
+     const [id] = await knex('produto').insert({
+        nome, preco, quantidade, foto, media_avaliacao: 0, qt_avaliacoes: 0,  qt_estrelas: 0
+    });
      return "Produto criado com sucesso.";
 
     } catch (erro) {

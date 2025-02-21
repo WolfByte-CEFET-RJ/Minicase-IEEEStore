@@ -4,6 +4,7 @@ const {adminAutentication} = require("../middleware/adminAuth.js");
 const adminController = require("../controller/adminController.js");
 const loginController = require("../controller/loginController.js");
 const produtoController = require("../controller/produtoController.js");
+const {upload} = require("../middleware/upload");
 const {autenticar} = require("../middleware/auth.js");
 
 //ADMINISTRADOR
@@ -17,9 +18,9 @@ router.delete("/admin/:id",adminAutentication,adminController.deleteAdmin);
 //PRODUTO
 router.get("/produto/:id",adminAutentication || autenticar, produtoController.viewProdutoId);
 router.get("/produto", adminAutentication || autenticar, produtoController.viewAllProduto);
-router.post("/produto", adminAutentication,produtoController.createProduto);
-router.patch("/produto/:id", adminAutentication,produtoController.updateProduto);
-router.delete("/produto/:id",adminAutentication,produtoController.deleteProduto);
+router.post("/produto", adminAutentication, upload.single("foto"), produtoController.createProduto);
+router.patch("/produto/:id", adminAutentication, produtoController.updateProduto);
+router.delete("/produto/:id",adminAutentication, produtoController.deleteProduto);
 
 
 module.exports = router;
