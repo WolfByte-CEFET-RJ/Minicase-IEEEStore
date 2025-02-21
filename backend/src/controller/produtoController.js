@@ -52,16 +52,29 @@ async function createProduto(req, res) {
 async function updateProduto(req, res) {
     try {
         const id = req.params.id;
-        const { nome, preco, quantidade, foto, qt_estrelas } = req.body; 
-        console.log("Dados recebidos no controller:", { nome, preco, quantidade, foto, qt_estrelas });
-        const mensagem = await produtoServices.updateProduto(id, { nome, preco, quantidade, foto, qt_estrelas });
+        let { nome, preco, quantidade, qt_estrelas } = req.body;
+        const foto = req.file ? req.file.path : null;
 
-        res.status(200).json({ status: true, message: mensagem });
+        if (preco !== undefined) preco = parseFloat(preco);
+        if (quantidade !== undefined) quantidade = parseInt(quantidade);
+        if (qt_estrelas !== undefined) qt_estrelas = parseFloat(qt_estrelas);
+
+        console.log("Dados recebidos no controller:", { nome, preco, quantidade, foto, qt_estrelas });
+
+        const resultado = await produtoServices.updateProduto(id, nome, preco, quantidade, foto, qt_estrelas);
+
+        if (resultado.status) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(400).json(resultado);
+        }
     } catch (erro) {
         console.error("Erro no controller:", erro);
-        res.status(400).json({ status: false, message: erro.message });
+        res.status(500).json({ status: false, message: erro.message });
     }
 }
+
+
 
 async function deleteProduto(req, res) {
     try {

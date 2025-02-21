@@ -76,69 +76,65 @@ async function createProduto({ nome, preco, quantidade, foto, media_avaliacao, q
 }
 
 
-async function updateProduto(id, campos) {
+async function updateProduto(id, nome, preco, quantidade, foto, qt_estrelas) {
     try {
         const produto = await knex("produto").select("*").where({ id }).first();
         if (!produto) {
-            throw new Error("Produto não encontrado.");
+            return { status: false, message: "Produto não encontrado." };
         }
 
         const camposAtualizar = {};
 
-        if (campos.nome && typeof campos.nome === "string" && campos.nome.trim() !== "") {
-            camposAtualizar.nome = campos.nome.trim();
-        } else if (campos.nome !== undefined) {
-            throw new Error("O campo 'nome' precisa ser uma string válida.");
+        if (nome !== undefined && typeof nome === "string") {
+            camposAtualizar.nome = nome.trim();
         }
 
-        if (campos.preco !== undefined) {
-            if (typeof campos.preco === "number" && campos.preco > 0) {
-                camposAtualizar.preco = campos.preco;
-            } else {
-                throw new Error("O campo 'preco' precisa ser um número válido e maior que zero.");
+        if (preco !== undefined) {
+            const precoFloat = parseFloat(preco);
+            if (!isNaN(precoFloat) && precoFloat > 0) {
+                camposAtualizar.preco = precoFloat;
             }
         }
 
-        if (campos.quantidade !== undefined) {
-            if (Number.isInteger(campos.quantidade)) {
-                camposAtualizar.quantidade = campos.quantidade;
-            } else {
-                throw new Error("O campo 'quantidade' precisa ser um valor inteiro.");
+        if (quantidade !== undefined) {
+            const quantidadeInt = parseInt(quantidade);
+            if (!isNaN(quantidadeInt)) {
+                camposAtualizar.quantidade = quantidadeInt;
             }
         }
 
-        if (campos.foto && typeof campos.foto === "string" && campos.foto.trim() !== "") {
-            camposAtualizar.foto = campos.foto.trim();
-        } else if (campos.foto !== undefined) {
-            throw new Error("O campo 'foto' precisa ser uma string válida.");
+        if (foto !== undefined && typeof foto === "string" && foto.trim() !== "") {
+            camposAtualizar.foto = foto.trim();
         }
 
-        if (campos.qt_estrelas !== undefined) {
-            if (typeof campos.qt_estrelas !== "number" || campos.qt_estrelas < 0 || campos.qt_estrelas > 5 || campos.qt_estrelas % 0.5 !== 0) {
-                throw new Error("A quantidade de estrelas deve ser um número entre 0 e 5, múltiplo de 0.5.");
-            }
+        if (qt_estrelas !== undefined) {
+            const estrelasFloat = parseFloat(qt_estrelas);
+            if (!isNaN(estrelasFloat) && estrelasFloat >= 0 && estrelasFloat <= 5 && estrelasFloat % 0.5 === 0) {
+                camposAtualizar.qt_estrelas = estrelasFloat;
 
-            if (produto.qt_avaliacoes === 0) {
-                camposAtualizar.media_avaliacao = campos.qt_estrelas;
-                camposAtualizar.qt_avaliacoes = 1;
-            } else {
-                camposAtualizar.media_avaliacao = (produto.media_avaliacao * produto.qt_avaliacoes + campos.qt_estrelas) / (produto.qt_avaliacoes + 1);
-                camposAtualizar.qt_avaliacoes = produto.qt_avaliacoes + 1;
+                if (produto.qt_avaliacoes === 0) {
+                    camposAtualizar.media_avaliacao = estrelasFloat;
+                    camposAtualizar.qt_avaliacoes = 1;
+                } else {
+                    camposAtualizar.media_avaliacao = ((produto.media_avaliacao * produto.qt_avaliacoes) + estrelasFloat) / (produto.qt_avaliacoes + 1);
+                    camposAtualizar.qt_avaliacoes = produto.qt_avaliacoes + 1;
+                }
             }
         }
 
         if (Object.keys(camposAtualizar).length === 0) {
-            throw new Error("Nenhum campo válido para atualizar foi fornecido.");
+            return { status: false, message: "Nenhum campo válido para atualização." };
         }
 
         await knex("produto").where({ id }).update(camposAtualizar);
 
-        return "Produto atualizado com sucesso.";
-    } catch (erro) {
-        console.error("Erro no serviço de atualização:", erro.message);
-        throw new Error("Falha ao atualizar o produto.");
+        return { status: true, message: "Produto atualizado com sucesso!" };
+
+    } catch (error) {
+        return { status: false, message: error.message };
     }
 }
+
 
 
 async function deleteProduto(id) {

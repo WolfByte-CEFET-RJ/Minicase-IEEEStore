@@ -19,7 +19,7 @@ router.delete("/admin/:id",adminAutentication,adminController.deleteAdmin);
 router.get("/produto/:id",adminAutentication || autenticar, produtoController.viewProdutoId);
 router.get("/produto", adminAutentication || autenticar, produtoController.viewAllProduto);
 router.post("/produto", adminAutentication, upload.single("foto"), produtoController.createProduto);
-router.patch("/produto/:id", adminAutentication, produtoController.updateProduto);
+router.patch("/produto/:id", adminAutentication, upload.single("foto"), produtoController.updateProduto);
 router.delete("/produto/:id",adminAutentication, produtoController.deleteProduto);
 
 
