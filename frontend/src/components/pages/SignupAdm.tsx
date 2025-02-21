@@ -51,7 +51,7 @@ export default function SignupAdm() {
         console.log(signupAdm)
         try {
             // Defina o token (pode ser pego do localStorage, state, etc.)
-            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzM5NjYwNDM2LCJleHAiOjE3Mzk3NDY4MzZ9.LUwUBdP1nZtkU27k6wdSKUb_CK5HfYg_308RqthYUMQ";
+            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQwMTQ3Mzk1LCJleHAiOjE3NDAyMzM3OTV9.nEXqvTSf1vymIwoRYbcO1NXyRudQAsJGmV76Zr-BKbo";
         
             const response = await axios.post(
               "http://localhost:8080/admin/criar",

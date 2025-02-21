@@ -52,10 +52,12 @@ async function viewAdmin(id){
 
 async function createAdmin({nome, cargo, cpf, telefone, senha}) {
     try {
-        console.log("VAi tomando",nome)
         const cpfExistente = await knex("administrador").select("*").where({ cpf }).first();
         if (cpfExistente) {
             throw new Error("Já existe um administrador registrado com esse CPF.");
+        }
+        if(senha.length<8){
+            throw new Error("A senha precisa ter no mínimo 8 caracteres");            
         }
 
         if (nome === "" || cargo === "" || cpf === "" || telefone === "" || senha === "") {
@@ -116,7 +118,7 @@ async function updateAdmin(id, updateData) {
                     throw new Error("Cada item do cargo deve ser uma string.");
                 }
             }
-            fieldsToUpdate.cargo = JSON.stringify(updateData.cargo);  // Adiciona o campo 'cargo' ao objeto de atualização
+            fieldsToUpdate.cargo = JSON.stringify(updateData.cargo); 
         }
 
         
@@ -136,8 +138,8 @@ async function updateAdmin(id, updateData) {
 
         
         if (updateData.senha) {
-            if (updateData.senha.length < 6) {
-                throw new Error("A senha deve ter no mínimo 6 caracteres.");
+            if (updateData.senha.length < 8) {
+                throw new Error("A senha deve ter no mínimo 8 caracteres.");
             }
             const senhaHasheada = await gerarHashSenha(updateData.senha);
             fieldsToUpdate.senha = senhaHasheada;
