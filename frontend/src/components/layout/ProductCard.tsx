@@ -21,7 +21,7 @@ export default function ProductCard(props: ProductCardProps) {
                 <p><span className="font-bold">Preço:</span> R${props.price}</p>
                 <p><span className="font-bold">Disponível:</span> {props.available}</p>
                 <p><span className="font-bold">Avaliação:</span> {props.rating}</p>
-                <button className="bg-blue-500 hover:bg-blue-600 w-full text-white font-bold py-1 rounded" onClick={() => navigate('/product')}>Ver Produto</button>
+                <button className="bg-blue-500 hover:bg-blue-600 w-full text-white font-bold py-1 rounded" onClick={() => navigate('/product/1')}>Ver Produto</button>
                 <button className="bg-blue-700 hover:bg-blue-800 w-full text-white font-bold py-1 rounded">Adicionar ao Carrinho</button>
             </div>
         </div>
