@@ -157,6 +157,12 @@ function Header() {
                     </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                  <Link 
+                      to="/signup-adm">
+                      Cadastrar Administrador
+                    </Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                     <Link 
                       to="/aba-de-pedidos">
                       Aba de pedidos
