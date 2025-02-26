@@ -152,7 +152,7 @@ function Header() {
                 <ul className="w-full mt-12">
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                     <Link 
-                      to="/cadastrar-produto">
+                      to="/signup-product">
                       Cadastrar Produto
                     </Link>
                   </li>
