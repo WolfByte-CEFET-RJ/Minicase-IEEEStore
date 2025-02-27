@@ -32,6 +32,7 @@ async function createProduto(req, res) {
     try {
         let {nome, preco, quantidade, media_avaliacao, qt_avaliacoes, qt_estrelas} = req.body;
         const foto = req.file.path;
+        
 
         quantidade = parseInt(quantidade);
         preco = parseFloat(preco);
@@ -48,6 +49,8 @@ async function createProduto(req, res) {
         res.json({ status: false, message: erro.message });
         }
 }
+
+
 
 async function updateProduto(req, res) {
     try {
