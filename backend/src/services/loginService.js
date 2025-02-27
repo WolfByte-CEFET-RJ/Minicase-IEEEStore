@@ -47,6 +47,23 @@ async function login({cpf,email,senha}){
     }
 }
 
+async function viewLogin(){
+    try{
+        const view = await knex("controle_login").select("*");
+        console.log(view)
+        if(!view){
+            throw new Error("Erro ao exibir logs");
+        }
+        if(view.length ===0){
+            throw new Error("Não foi possível encontrar alteracoes");
+        }
+        return view
+    }catch(error){
+        console.log("Erro ao visualizar os logs");
+        throw error;
+    }
+
+}
 module.exports = {
-    login,
+    login,viewLogin,
 };

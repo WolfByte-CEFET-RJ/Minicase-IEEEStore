@@ -22,5 +22,7 @@ router.post("/produto", adminAutentication, upload.single("foto"), produtoContro
 router.patch("/produto/:id", adminAutentication, upload.single("foto"), produtoController.updateProduto);
 router.delete("/produto/:id",adminAutentication, produtoController.deleteProduto);
 
-
+//RELATORIO
+router.get("/logs-login",adminAutentication, loginController.viewLogin)
+router.get("/alteracao/produto", adminAutentication, produtoController.viewAlteracao);
 module.exports = router;

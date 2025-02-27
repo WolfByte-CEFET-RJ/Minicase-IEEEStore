@@ -3,6 +3,20 @@ const knex = require("knex")(knexConfig.development);
 const { configDotenv } = require("dotenv");
 configDotenv();
 
+async function viewAlteracao() {
+    try {
+        const alteracao = await knex("alteracao_produto").select("*");
+        if (alteracao.length === 0) {
+            throw new Error("Não foi possível encontrar alteracoes");
+        }
+
+        return alteracao;
+
+    } catch (erro) {
+        throw (erro);
+    }
+}
+
 async function viewProdutoId(id) {
     try {
         console.log("ID recebido:", id);
@@ -97,7 +111,7 @@ async function alteracaoProduto(id,id_adm){
     }
 }
 
-async function updateProduto(id,nome, preco, quantidade, foto, qt_estrelas) {
+async function updateProduto(id,id_adm,nome, preco, quantidade, foto, qt_estrelas) {
     try {
         const produto = await knex("produto").select("*").where({ id }).first();
         if (!produto) {
@@ -148,6 +162,13 @@ async function updateProduto(id,nome, preco, quantidade, foto, qt_estrelas) {
         }
 
         await knex("produto").where({ id }).update(camposAtualizar);
+        if(camposAtualizar.preco){
+            const result = alteracaoProduto(id,id_adm);
+            if(!result){
+                return {status:false, message:"Erro ao adicionar alteracao."}
+            }
+        }
+        
         return { status: true, message: "Produto atualizado com sucesso!" };
 
     } catch (error) {
@@ -182,4 +203,5 @@ module.exports = {
     updateProduto,
     deleteProduto,
     alteracaoProduto,
+    viewAlteracao,
 };

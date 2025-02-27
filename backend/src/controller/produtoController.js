@@ -1,5 +1,16 @@
 const produtoServices = require("../services/produtoServices.js");
 
+
+async function viewAlteracao(req,res){
+    try{
+        const viewAlteracaoService = await produtoServices.viewAlteracao();
+        res.json({status: true, message: viewAlteracaoService});
+        console.log("controlador executado");
+    }catch{erro}{
+        console.erro("Erro no controller", error)
+        res.json({status: false, message: error.message});
+    }
+}
 async function viewProdutoId(req, res) {
     try {
         const { id } = req.params;
@@ -64,12 +75,12 @@ async function updateProduto(req, res) {
         if (qt_estrelas !== undefined) qt_estrelas = parseFloat(qt_estrelas);
 
         console.log("Dados recebidos no controller:", { nome, preco, quantidade, foto, qt_estrelas });
-        const resultado = await produtoServices.updateProduto(id,nome, preco, quantidade, foto, qt_estrelas);
-        const alterar = await produtoServices.alteracaoProduto(id,id_admin);
+        const resultado = await produtoServices.updateProduto(id,id_admin,nome, preco, quantidade, foto, qt_estrelas);
+        //const alterar = await produtoServices.alteracaoProduto(id,id_admin);
         if (resultado) {
-            res.status(200).json({resultado,alterar});
+            res.status(200).json({resultado});
         } else {
-            res.status(400).json({resultado,alterar});
+            res.status(400).json({resultado});
         }
     } catch (erro) {
         console.log("Erro no controller:", erro);
@@ -96,5 +107,6 @@ module.exports = {
     viewAllProduto,
     createProduto,
     updateProduto,
-    deleteProduto
+    deleteProduto,
+    viewAlteracao,
 };
