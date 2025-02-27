@@ -67,7 +67,10 @@ async function createProduto({ nome, preco, quantidade, foto, media_avaliacao, q
      const [id] = await knex('produto').insert({
         nome, preco, quantidade, foto, media_avaliacao: 0, qt_avaliacoes: 0,  qt_estrelas: 0
     });
-     return "Produto criado com sucesso.";
+    return{
+        message: "Produto criado com sucesso.",
+        id
+    };
 
     } catch (erro) {
         console.error("Erro no service:", erro.message);
@@ -75,8 +78,26 @@ async function createProduto({ nome, preco, quantidade, foto, media_avaliacao, q
     }
 }
 
+async function alteracaoProduto(id,id_adm){
+    try{
+        const resultado = await knex("produto").select("preco").where({ id }).first();
+        
+        if (!resultado || resultado.preco === null || resultado.preco === undefined) {
+            throw new Error("Preço não encontrado.");
+        }
+        const valor_att = parseFloat(resultado.preco);
 
-async function updateProduto(id, nome, preco, quantidade, foto, qt_estrelas) {
+        const alterar = await knex("alteracao_produto").insert({id_produto: id,id_adm, novo_valor:valor_att});
+        if(!alterar){
+            throw new Error("Falha ao salvar alteracao.");
+        }
+    }catch(error){
+        console.log("Erro no service", error.message);
+        throw new Error("Falha ao alterar produto.")
+    }
+}
+
+async function updateProduto(id,nome, preco, quantidade, foto, qt_estrelas) {
     try {
         const produto = await knex("produto").select("*").where({ id }).first();
         if (!produto) {
@@ -127,7 +148,6 @@ async function updateProduto(id, nome, preco, quantidade, foto, qt_estrelas) {
         }
 
         await knex("produto").where({ id }).update(camposAtualizar);
-
         return { status: true, message: "Produto atualizado com sucesso!" };
 
     } catch (error) {
@@ -160,5 +180,6 @@ module.exports = {
     viewAllProduto,
     createProduto,    
     updateProduto,
-    deleteProduto
+    deleteProduto,
+    alteracaoProduto,
 };

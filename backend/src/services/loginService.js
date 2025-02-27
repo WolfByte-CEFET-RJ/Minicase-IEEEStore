@@ -26,6 +26,7 @@ async function login({cpf,email,senha}){
                 throw new Error("Senha incorreta.");
             }
             const token = gerarTokenAdmin(admin);
+            const login = await knex("controle_login").insert({id_admin: admin.id})
             return { message: 'Login bem-sucedido!', token };
          }
          else if(email){
@@ -38,6 +39,7 @@ async function login({cpf,email,senha}){
                 throw new Error("Senha incorreta.");
             }
             const token = gerarTokenUser(user);
+            const login = await knex("controle_login").insert({id_cliente: user.id})
             return { message: 'Login bem-sucedido!', token };
          }
     }catch(error){
