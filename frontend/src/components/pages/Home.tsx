@@ -2,6 +2,7 @@ import ProductCategorySection from "../layout/ProductCategorySection"
 import ProductCard from "../layout/ProductCard"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { useNavigate } from "react-router";
 
 
 export default function Home() {
@@ -17,11 +18,13 @@ export default function Home() {
         qt_estrelas: number
     };
 
+    const navigate = useNavigate()
+
     const [products, setProducts] = useState<Product[]>([])
     const url = 'http://localhost:8080/produto'
     const token = sessionStorage.getItem('token') ? sessionStorage.getItem('token') : localStorage.getItem('token')
     let shirt = products.filter((product: Product) => product.nome.includes('Camisa'))
-    console.log(shirt)
+
 
     useEffect(() => {
         async function getProduct() {
@@ -35,6 +38,7 @@ export default function Home() {
                 setProducts(response.data.message)
             } catch (error) {
                 console.error(error)
+                navigate('/login')
             }
         }
         getProduct()

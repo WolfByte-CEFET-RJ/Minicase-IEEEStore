@@ -14,7 +14,7 @@ export default function Login() {
     let stayConnected = false
     const url = 'http://localhost:8080/login'
 
-    const [msg, setMsg] = useState('')
+    const [msg, setMsg] = useState<string>('')
 
     function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
         if(e.target.name === 'conectado') {
@@ -26,6 +26,10 @@ export default function Login() {
 
     function submit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
+
+        localStorage.removeItem('token')
+        sessionStorage.removeItem('token')
+
         axios.post(url, login)
         .then((res) => res.data)
         .then((data) => {
@@ -36,7 +40,7 @@ export default function Login() {
                 sessionStorage.setItem('token', data.message.token)
                 navigate('/')
             }
-            setMsg(data.message)
+            setMsg(data.message?.message || data.message)
         })
         .catch((error) => {
             console.log(error)
