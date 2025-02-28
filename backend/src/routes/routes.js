@@ -4,6 +4,7 @@ const {adminAutentication} = require("../middleware/adminAuth.js");
 const adminController = require("../controller/adminController.js");
 const loginController = require("../controller/loginController.js");
 const produtoController = require("../controller/produtoController.js");
+const clienteController = require("../controller/clienteController.js");
 const {upload} = require("../middleware/upload");
 const {autenticar} = require("../middleware/auth.js");
 
@@ -25,4 +26,9 @@ router.delete("/produto/:id",adminAutentication, produtoController.deleteProduto
 //RELATORIO
 router.get("/logs-login",adminAutentication, loginController.viewLogin)
 router.get("/alteracao/produto", adminAutentication, produtoController.viewAlteracao);
+
+//CLIENTE
+router.post("/cliente", clienteController.createUser);
+router.get("/cliente/:id", clienteController.viewUser);
+
 module.exports = router;

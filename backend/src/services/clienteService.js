@@ -1,0 +1,84 @@
+const knexConfig = require("../../knexfile.js");
+const knex = require("knex")(knexConfig.development);
+const bcrypt = require("bcrypt");
+const { configDotenv } = require("dotenv");
+const jwt = require("jsonwebtoken");
+configDotenv();
+
+async function gerarHashSenha(senha) {
+  const saltRounds = 10;
+  const senhaHasheada = await bcrypt.hash(senha, saltRounds);
+  return senhaHasheada;
+}
+
+async function viewUser(idUser){
+    try{
+        const id = idUser;
+        if (!id){
+            throw new Error("Não foi possível encontrar esse usuário.");
+        };
+        const userInfo = await knex("cliente").select("*").where({id}).first();
+        if (!userInfo){
+            throw new Error("Erro ao exibir informações.");
+        };
+        return {message: "exibindo informacoes", userInfo}
+    }catch(erro){
+        console.error("erro ao encontrar o usuário.");
+        return{ message: "erro ao exibir informações do cliente.", error: erro.message};
+    }
+}
+
+async function createUser({nome, cpf, idade, telefone, email, cargo, membro_pagante, senha}){
+    try{
+        const cpfExistente = await knex("cliente").select("*").where({cpf}).first();
+        const emailExistente = await knex("cliente").select("*").where({email}).first();
+
+        if(nome === "" || cpf === "" || idade === "" || telefone === "" || membro_pagante === "" || senha === ""){
+            throw new Error("Preencha todos os campos obrigatórios.");
+        }
+        if(cpfExistente || emailExistente){
+            throw new Error("Email ou CPF do usuário não podem estar em uso.");
+        }
+        if (cpf.length !== 11 || !/^\d+$/.test(cpf)) {
+            throw new Error(
+              "CPF deve ter 11 dígitos e ser composto por apenas números."
+            );
+        }
+        if(typeof membro_pagante != "boolean"){
+            throw new Error("membro pagante deve receber apenas valores booleanos.")
+        }
+        if (!Number.isInteger(idade)) {
+            throw new Error("O campo idade deve ser um valor inteiro.");
+        }
+        if (cargo && (!Array.isArray(cargo) || cargo.some(item => typeof item !== "string"))) {
+            throw new Error("O campo cargo deve ser um array de strings.");
+        }
+      
+        const senhaHasheada = await gerarHashSenha(senha);
+
+        const [id] = await knex("cliente").insert({
+            nome,
+            cpf,
+            idade,
+            telefone,
+            email,
+            cargo: JSON.stringify(cargo),
+            membro_pagante,
+            senha: senhaHasheada
+        });
+
+        return{
+            message: "cliente criado com sucesso!",
+            id
+        } 
+    }catch(erro){
+       console.error("erro ao criar o usuário:", erro);
+       throw new error("erro ao criar o usuário, tente novamente");
+    }
+
+}
+
+module.exports = {
+    createUser,
+    viewUser,
+}

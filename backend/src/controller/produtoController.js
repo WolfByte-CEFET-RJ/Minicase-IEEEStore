@@ -36,7 +36,7 @@ async function viewAllProduto(req, res){
         console.log("Controlador executado.");        
     }catch(erro){
         console.error("Erro no controller:", erro);
-        res.jons({status: false, message: erro.message});
+        res.json({status: false, message: erro.message});
 }
 }
 async function createProduto(req, res) {
