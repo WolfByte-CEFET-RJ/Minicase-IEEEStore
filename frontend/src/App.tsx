@@ -16,6 +16,7 @@ import Header from './components/layout/Header'
 import SignupProduct from './components/pages/product/SignupProduct'
 import EditProduct from './components/pages/product/EditProduct'
 import Payment from './components/pages/Payment'
+import Perfil from './components/pages/Perfil'
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
             <Route path="/signup-product" element={<SignupProduct />} />
             <Route path="/edit-product" element={<EditProduct />} />
             <Route path="/payment" element={<Payment />} />
+            <Route path="/meu-perfil/:id" element={<Perfil />} />
           </Routes>
         </Page>
         

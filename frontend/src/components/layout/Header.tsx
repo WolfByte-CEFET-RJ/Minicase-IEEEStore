@@ -1,14 +1,24 @@
 import logoHeader from "../../assets/logo.png"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useLocation } from "react-router";
 import { Link } from "react-router";
 import Logo from "./Logo";
+import { jwtDecode } from "jwt-decode";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isAdm, setIsAdm] = useState(true)
   const location = useLocation();
   const hideHeaderRoutes = ["/signup", "/login", "/signup-adm"]
+  const [isAdm, setIsAdm] = useState(false)
+  const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
+  const [userId, setUSerId] = useState(0)
+  useEffect(() => {
+    if(token) {
+      let decodedToken:{id:number, role?:string, iat:number, exp:number} = jwtDecode(token)
+      setIsAdm(decodedToken?.role == 'admin' ? true : false)
+      setUSerId(decodedToken.id)
+    }
+  }, [isAdm, userId])
 
   if(hideHeaderRoutes.includes(location.pathname)){ //Condição que verifica o caminho atual para não renderizar o Header se for signup ou login
     return <Logo />
@@ -188,7 +198,7 @@ function Header() {
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                     <Link 
-                      to="/meu-perfil">
+                      to={`/meu-perfil/${userId}`}>
                       Meu perfil
                     </Link>
                   </li>
