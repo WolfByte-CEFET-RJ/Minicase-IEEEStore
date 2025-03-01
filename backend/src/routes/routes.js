@@ -30,5 +30,7 @@ router.get("/alteracao/produto", adminAutentication, produtoController.viewAlter
 //CLIENTE
 router.post("/cliente", clienteController.createUser);
 router.get("/cliente/:id", clienteController.viewUser);
+router.patch("/cliente/:id", autenticar, clienteController.updateUser);
+router.delete("/cliente/:id", autenticar || adminAutentication, clienteController.deleteUser);
 
 module.exports = router;
