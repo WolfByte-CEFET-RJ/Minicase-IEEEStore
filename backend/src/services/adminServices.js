@@ -200,8 +200,9 @@ async function deleteAdmin(idAdmin) {
       throw new Error("Administrador não encontrado.");
     }
 
+    await knex("controle_login").where({id_admin: id}).del();
     await knex("administrador").where({ id }).del();
-
+    
     return "Administrador deletado com sucesso!";
   } catch (erro) {
     throw erro;
