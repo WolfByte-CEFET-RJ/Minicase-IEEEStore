@@ -73,7 +73,7 @@ async function createUser({nome, cpf, idade, telefone, email, cargo, membro_paga
         } 
     }catch(erro){
        console.error("erro ao criar o usuário:", erro);
-       throw new error("erro ao criar o usuário, tente novamente");
+       throw ("erro ao criar o usuário, tente novamente", erro.message);
     }
 
 }

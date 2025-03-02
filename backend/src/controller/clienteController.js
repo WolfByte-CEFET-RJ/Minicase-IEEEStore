@@ -32,6 +32,7 @@ async function createUser(req, res){
         console.log("Controlador executado com sucesso");
         res.json({status: true, message: createService});
         }catch(erro){
+            console.log(erro)
             res.json({status: false, message: erro});
         }
 }
