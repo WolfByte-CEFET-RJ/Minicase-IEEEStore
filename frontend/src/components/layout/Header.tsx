@@ -180,7 +180,7 @@ function Header() {
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                     <Link 
-                      to="/lista-de-usuarios">
+                      to="/Lista_de_usuarios">
                       Lista de usuários
                     </Link>
                   </li>
