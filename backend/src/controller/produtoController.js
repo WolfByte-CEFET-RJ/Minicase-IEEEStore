@@ -6,7 +6,7 @@ async function viewAlteracao(req,res){
         const viewAlteracaoService = await produtoServices.viewAlteracao();
         res.json({status: true, message: viewAlteracaoService});
         console.log("controlador executado");
-    }catch{erro}{
+    }catch(error){
         console.erro("Erro no controller", error)
         res.json({status: false, message: error.message});
     }
