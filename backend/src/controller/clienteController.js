@@ -1,5 +1,15 @@
 const clienteServices = require("../services/clienteService.js");
 
+async function viewAllUsers(req,res){
+    try{
+        const viewService = await clienteServices.viewAllUsers();
+        res.json({status: true, message: viewService});
+        console.log("controlador executado");
+    }catch(erro){
+        res.json({status: false, message: erro.message});
+    }
+}
+
 async function viewUser(req,res){
     try{
         idUser = req.params.id;
@@ -99,6 +109,7 @@ async function deleteUser(req, res) {
 module.exports = {
     createUser,
     viewUser,
+    viewAllUsers,
     updateUser,
     deleteUser,
 }
