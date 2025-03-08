@@ -27,6 +27,11 @@ export default function Home() {
 
 
     useEffect(() => {
+        if(token === null) {
+            navigate('/login')
+        } else {
+            getProduct()
+        }
         async function getProduct() {
             try {
                 const response = await axios.get(url, {
@@ -38,10 +43,8 @@ export default function Home() {
                 setProducts(response.data.message)
             } catch (error) {
                 console.error(error)
-                navigate('/login')
             }
         }
-        getProduct()
     }, [])
 
     return (

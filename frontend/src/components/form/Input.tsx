@@ -52,7 +52,7 @@ export default function Input(props: InputProps) {
                         className={`focus:outline-none text-xl placeholder-gray-600 ${props.className ? props.className : 'bg-amber-50'}`}
                         size={inputSize}
                         autoComplete="off"
-                        value={props.value ? props.value : ''}
+                        value={props.value}
                         onChange={props.onChange}
                     />
                     <label htmlFor={props.name}>{props.icon}</label>

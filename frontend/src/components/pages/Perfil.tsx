@@ -2,26 +2,39 @@ import Input from "../form/Input"
 import SubmitButton from "../form/SubmitButton"
 import Select from "../form/Select"
 import { BiEditAlt } from "react-icons/bi";
-import { useEffect, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import { useParams } from "react-router"
 import axios from "axios"
 
 export default function Perfil() {
 
     type UserType = {
-        id: number, 
+        id: number,
         nome: string,
-        cargo: [],
+        cargo: string[],
         cpf: string,
-        telefone:string,
-        email?: string
+        telefone: string,
+        email?: string,
+    }
+    
+    const { id } = useParams()
+    const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
+    const [isAdm, setIsAdm] = useState(true)
+    const selectNumberTeams = 3
+    const [user, setUser] = useState<UserType>({ id: 0, nome: '', cargo: Array(selectNumberTeams).fill(" - "), cpf: '', telefone: '' })
+    
+    console.log(user)
+    
+    const team = {
+        'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
+        'Marketing': ['Marketing'],
+        'RocketWolf': ['Aerodinâmica', 'Estruturas', 'Recuperação', 'Eletrônica', 'Propulsão'],
+        'WolfPower': ['Eletrônica/Programação', 'Mecânica', 'Divulgação'],
+        'WolfBotz': ['Seguidor de Linha', 'Mini Sumô', 'Combate'],
+        'SocialWolf': ['Mecânica', 'Programação', 'Eletrônica', 'Educacional'],
+        'WolfByte': ['Inteligência Artificial (IA)', 'Web/App', 'Hardware', 'Games']
     }
 
-    const {id} = useParams()
-    const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
-    const [user, setUser] = useState<UserType>({id: 0, nome: '', cargo: [], cpf: '', telefone:''})
-    const [isAdm, setIsAdm] = useState(true)
-    console.log(user)
     useEffect(() => {
         const url = `http://localhost:8080/admin/${id}`
         async function getUser() {
@@ -39,11 +52,45 @@ export default function Perfil() {
         getUser()
     }, [])
 
+    function handleSelectEdit(index:number, value:string, type: "equipe" | "cargo") {
+        setUser((prevUser) => ({ 
+            ...prevUser,
+            cargo: prevUser.cargo.map((item, i) => {
+                if(i === index) {
+                    const [equipe, cargo] = item.split(" - ")
+                    return type === 'equipe' ? `${value} - ${cargo}` : `${equipe} - ${value}`
+                }
+                return item
+            })
+        }))
+    }
+    
+    function handleOnChage(e: React.ChangeEvent<HTMLInputElement>) {
+        const {name, value} = e.target
+        setUser({...user, [name]: value})
+    }
+    
+    async function submit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+        const url = `http://localhost:8080/admin/${id}`
+        try {
+            const response = await axios.patch(url, user, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div>
-            <h1>Meu perfil</h1>
-            <p>Clique nos campos abaixo para editar suas informações</p>
-            <form>
+            <h1 className="font-bold text-4xl pt-10 pb-2">Meu perfil</h1>
+            <p className="pb-7 text-gray-500">Clique nos campos abaixo para editar suas informações</p>
+            <form onSubmit={submit}>
                 {isAdm ? (
                     <>
                         <Input
@@ -53,6 +100,7 @@ export default function Perfil() {
                             value={user.nome}
                             className="bg-white"
                             icon={<BiEditAlt size={30} />}
+                            onChange={handleOnChage}
                         />
                         <Input
                             type="text"
@@ -61,6 +109,7 @@ export default function Perfil() {
                             value={user.cpf}
                             className="bg-white"
                             icon={<BiEditAlt size={30} />}
+                            onChange={handleOnChage}
                         />
                         <Input
                             type="text"
@@ -69,15 +118,39 @@ export default function Perfil() {
                             value={user.telefone}
                             className="bg-white"
                             icon={<BiEditAlt size={30} />}
+                            onChange={handleOnChage}
                         />
                         <Input
-                            type="text"
+                            type="password"
                             name="senha"
                             placeholder="Altere a sua senha"
                             size={30}
                             className="bg-white"
                             icon={<BiEditAlt size={30} />}
+                            onChange={handleOnChage}
                         />
+                        <div className="flex flex-col gap-8 pb-10">
+                            <h2 className="text-xl font-semibold before:content-['.'] before:ml-0.5 before:text-6xl"> Equipes do IEEE</h2>
+                            {user.cargo.map((item, index) => (
+                                <div key={index} className="flex flex-wrap">
+                                    <Select
+                                        group_options={team}
+                                        text="equipe"
+                                        value={item.split("-")[0].trim()}
+                                        onChange={(event) => handleSelectEdit(index, event.target.value, "equipe")}
+                                        className="bg-white"
+                                    />
+
+                                    <Select
+                                        options={['Lider', 'Membro']}
+                                        text="cargo"
+                                        value={item.split("-")[1].trim()}
+                                        onChange={(event) => handleSelectEdit(index, event.target.value, "cargo")}
+                                        className="bg-white"
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </>
                 ) : (
                     <>

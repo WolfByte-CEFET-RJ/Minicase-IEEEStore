@@ -81,7 +81,7 @@ export default function SignupProduct() {
                     onChange={handleOnChange}
                  />
                 <Input 
-                    type="file" 
+                    type="text" 
                     name="foto" 
                     size={30} 
                     placeholder="Imagem do produto" 
