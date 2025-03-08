@@ -26,7 +26,6 @@ export default function SignupProduct() {
         } else {
             setProduct({...product, [name]: value})
         }
-        console.log(product)
     }
 
     async function submit(e: FormEvent<HTMLFormElement>) {

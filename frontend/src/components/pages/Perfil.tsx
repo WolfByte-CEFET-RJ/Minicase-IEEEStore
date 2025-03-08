@@ -3,7 +3,7 @@ import SubmitButton from "../form/SubmitButton"
 import Select from "../form/Select"
 import { BiEditAlt } from "react-icons/bi";
 import { FormEvent, useEffect, useState } from "react"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import axios from "axios"
 import useUserContext from "../../hooks/useUseContext";
 import Modal from "../layout/Modal";
@@ -22,8 +22,10 @@ export default function Perfil() {
     const { id } = useParams()
     const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
     let {isAdm} = useUserContext()
+    const navigate = useNavigate()
     const selectNumberTeams = 3
     const [user, setUser] = useState<UserType>({ id: 0, nome: '', cargo: Array(selectNumberTeams).fill(" - "), cpf: '', telefone: '' })
+    const [isOpen, setIsOpen] = useState(false)
         
     const team = {
         'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
@@ -81,6 +83,23 @@ export default function Perfil() {
                 }
             })
             console.log(response)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function deleteUser() {
+        const url = `http://localhost:8080/admin/${id}`
+        try {
+            await axios.delete(url, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            localStorage.removeItem('token')
+            sessionStorage.removeItem('token')
+            navigate('/login')
         } catch (error) {
             console.log(error)
         }
@@ -158,9 +177,14 @@ export default function Perfil() {
                 )}
                 <div className="flex flex-row gap-4">
                     <SubmitButton text="Salvar" className="bg-blue-900 hover:bg-blue-950 text-white px-8 py-2 text-2xl" />
-                    
+                    <button type="button" className="bg-red-700 hover:bg-red-500 text-white px-8 py-2 text-2xl rounded-xl font-semibold" onClick={() => setIsOpen((prev) => !prev)}>Excluir usuário</button>
                 </div>
             </form>
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen} className="h-36 px-10 py-7">
+                    <p className="text-lg font-semibold">Deseja realmente <span className="text-red-500">excluir</span> seu usuário?</p>
+                    <button type="button" className="bg-blue-900 hover:bg-blue-950 text-white px-5 py-2 rounded-xl mt-5" onClick={() => setIsOpen(false)}>Não</button>
+                    <button type="button" className="bg-red-700 hover:bg-red-500 text-white px-5 py-2 rounded-xl mt-5 ml-3" onClick={deleteUser}>Sim</button>
+            </Modal>
         </div>
     )
 

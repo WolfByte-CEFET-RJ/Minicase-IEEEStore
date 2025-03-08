@@ -44,10 +44,12 @@ export default function Login() {
                 navigate('/')
             }
             let token = data.message?.token
-            let decodedToken:{id:number, role?:string, iat:number, exp:number} = jwtDecode(token)
-            setUserId(decodedToken.id)
-            if(decodedToken?.role === 'admin') {
-                setIsAdm(true)
+            if (token) {
+                let decodedToken:{id:number, role?:string, iat:number, exp:number} = jwtDecode(token)
+                setUserId(decodedToken.id)
+                if(decodedToken?.role === 'admin') {
+                    setIsAdm(true)
+                }
             }
             setMsg(data.message?.message || data.message)
         })
