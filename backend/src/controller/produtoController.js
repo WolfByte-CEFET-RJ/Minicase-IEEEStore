@@ -1,5 +1,16 @@
 const produtoServices = require("../services/produtoServices.js");
+const express = require("express");
 
+async function serveImage(req,res){
+    try{
+        const {id} = req.params;
+        const imagem = await produtoServices.serveImage(id);
+        res.sendFile(imagem);
+        
+    }catch(err){
+        res.status(500).json({message:"Erro ao enviar imagem"})
+    }
+}
 
 async function viewAlteracao(req,res){
     try{
@@ -109,4 +120,5 @@ module.exports = {
     updateProduto,
     deleteProduto,
     viewAlteracao,
+    serveImage,
 };
