@@ -4,21 +4,13 @@ import { useLocation } from "react-router";
 import { Link } from "react-router";
 import Logo from "./Logo";
 import { jwtDecode } from "jwt-decode";
+import useUserContext from "../../hooks/useUseContext";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const location = useLocation();
   const hideHeaderRoutes = ["/signup", "/login", "/signup-adm"]
-  const [isAdm, setIsAdm] = useState(false)
-  const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
-  const [userId, setUSerId] = useState(0)
-  useEffect(() => {
-    if(token) {
-      let decodedToken:{id:number, role?:string, iat:number, exp:number} = jwtDecode(token)
-      setIsAdm(decodedToken?.role == 'admin' ? true : false)
-      setUSerId(decodedToken.id)
-    }
-  }, [isAdm, userId])
+  let {isAdm, userId} = useUserContext()
 
   if(hideHeaderRoutes.includes(location.pathname)){ //Condição que verifica o caminho atual para não renderizar o Header se for signup ou login
     return <Logo />

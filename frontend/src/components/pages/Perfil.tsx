@@ -5,6 +5,8 @@ import { BiEditAlt } from "react-icons/bi";
 import { FormEvent, useEffect, useState } from "react"
 import { useParams } from "react-router"
 import axios from "axios"
+import useUserContext from "../../hooks/useUseContext";
+import Modal from "../layout/Modal";
 
 export default function Perfil() {
 
@@ -19,12 +21,10 @@ export default function Perfil() {
     
     const { id } = useParams()
     const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
-    const [isAdm, setIsAdm] = useState(true)
+    let {isAdm} = useUserContext()
     const selectNumberTeams = 3
     const [user, setUser] = useState<UserType>({ id: 0, nome: '', cargo: Array(selectNumberTeams).fill(" - "), cpf: '', telefone: '' })
-    
-    console.log(user)
-    
+        
     const team = {
         'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
         'Marketing': ['Marketing'],
@@ -156,7 +156,10 @@ export default function Perfil() {
                     <>
                     </>
                 )}
-                <SubmitButton text="Salvar" className="bg-blue-900 hover:bg-blue-950 text-white px-8 py-2 text-2xl" />
+                <div className="flex flex-row gap-4">
+                    <SubmitButton text="Salvar" className="bg-blue-900 hover:bg-blue-950 text-white px-8 py-2 text-2xl" />
+                    
+                </div>
             </form>
         </div>
     )

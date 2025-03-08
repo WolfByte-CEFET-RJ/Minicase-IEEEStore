@@ -6,6 +6,9 @@ import { TbLock } from "react-icons/tb";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import useUserContext from "../../hooks/useUseContext";
+
 
 export default function Login() {
 
@@ -15,7 +18,7 @@ export default function Login() {
     const url = 'http://localhost:8080/login'
 
     const [msg, setMsg] = useState<string>('')
-
+    const {setIsAdm, setUserId} = useUserContext()
     function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
         if(e.target.name === 'conectado') {
             stayConnected = e.target.checked
@@ -39,6 +42,12 @@ export default function Login() {
             } else if(data.status && !stayConnected) {
                 sessionStorage.setItem('token', data.message.token)
                 navigate('/')
+            }
+            let token = data.message?.token
+            let decodedToken:{id:number, role?:string, iat:number, exp:number} = jwtDecode(token)
+            setUserId(decodedToken.id)
+            if(decodedToken?.role === 'admin') {
+                setIsAdm(true)
             }
             setMsg(data.message?.message || data.message)
         })
