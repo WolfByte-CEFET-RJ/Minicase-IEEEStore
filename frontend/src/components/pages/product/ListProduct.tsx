@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import ProductCard from "../../layout/ProductCard";
+import Modal from "../../layout/Modal";
 
 type Product = {
     id: number,
@@ -20,7 +21,8 @@ export default function ListProduct() {
     const url = 'http://localhost:8080/produto'
     const token = sessionStorage.getItem('token') ? sessionStorage.getItem('token') : localStorage.getItem('token')
     const navigate = useNavigate()
-    
+    const [msg, setMsg] = useState('')
+    const [isOpen, setIsOpen] = useState(true)
 
     useEffect(() => {
         if (token === null) {
@@ -62,9 +64,23 @@ export default function ListProduct() {
                         type='adm'
                         products={products}
                         setProducts={setProducts}
+                        setMsg={setMsg}
                     />
                 ))}
             </div>
+            {msg === 'Produto deletado com sucesso!' && (
+                <Modal isOpen={isOpen} setIsOpen={setIsOpen} className="h-28 px-10 py-9">
+                    <div className="w-full h-full flex flex-col items-center justify-center">
+                        <p className="text-lg font-bold text-green-600">Produto deletado com sucesso!</p>
+                        <button type="button" className="bg-blue-900 hover:bg-blue-950 text-white px-5 py-2 rounded-xl mt-2" 
+                            onClick={() => {
+                                setIsOpen((prev)=>!prev); 
+                                setMsg("");
+                                setIsOpen((prev)=>!prev); 
+                                }}>OK</button>
+                    </div>
+                </Modal>
+            )}
         </>
     )
 }

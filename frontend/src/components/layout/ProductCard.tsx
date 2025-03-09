@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import Modal from "./Modal"
 import axios from "axios"
@@ -25,6 +25,7 @@ interface ProductCardProps {
     type: 'buy' | 'adm'
     products?: Product[]
     setProducts?: (listProducts: Product[]) => void
+    setMsg?: (msg: string) => void
 }
 
 export default function ProductCard(props: ProductCardProps) {
@@ -32,10 +33,8 @@ export default function ProductCard(props: ProductCardProps) {
     let navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
-    const [msg, setMsg] = useState('')
 
     async function deleteProduct() {
-        console.log('a')
         const url = `http://localhost:8080/produto/${props.id}`
         try {
             const response = await axios.delete(url, {
@@ -47,7 +46,7 @@ export default function ProductCard(props: ProductCardProps) {
             if(props.products && props.setProducts) {
                 props.setProducts(props.products.filter((product) => product.id !== props.id))
             }
-            setMsg(response.data?.message)
+            if(props.setMsg) props.setMsg(response.data?.message)
         } catch (error) {
             console.log(error)
         }
@@ -84,11 +83,11 @@ export default function ProductCard(props: ProductCardProps) {
                     </>
                 )}
             </div>
-            <Modal isOpen={isOpen} setIsOpen={setIsOpen} msg={msg} setMsg={setMsg} className="h-36 px-10 py-7">
-                <p className="text-lg font-semibold">Deseja realmente <span className="text-red-500">excluir</span> este produto?</p>
-                <button type="button" className="bg-blue-900 hover:bg-blue-950 text-white px-5 py-2 rounded-xl mt-5" onClick={() => setIsOpen(false)}>Não</button>
-                <button type="button" className="bg-red-700 hover:bg-red-500 text-white px-5 py-2 rounded-xl mt-5 ml-3" onClick={deleteProduct}>Sim</button>
-            </Modal>
+                <Modal isOpen={isOpen} setIsOpen={setIsOpen} className="h-36 px-10 py-7">
+                    <p className="text-lg font-semibold">Deseja realmente <span className="text-red-500">excluir</span> este produto?</p>
+                    <button type="button" className="bg-blue-900 hover:bg-blue-950 text-white px-5 py-2 rounded-xl mt-5" onClick={() => setIsOpen(false)}>Não</button>
+                    <button type="button" className="bg-red-700 hover:bg-red-500 text-white px-5 py-2 rounded-xl mt-5 ml-3" onClick={deleteProduct}>Sim</button>
+                </Modal>
         </>
     )
 }
