@@ -18,6 +18,7 @@ import EditProduct from './components/pages/product/EditProduct'
 import Payment from './components/pages/Payment'
 import Perfil from './components/pages/Perfil'
 import UserProvider from './context/userProvider'
+import ListProduct from './components/pages/product/ListProduct'
 
 function App() {
 
@@ -39,9 +40,10 @@ function App() {
               <Route path="/meu-carrinho" element={<MeuCarrinho />} />
               <Route path="/signup-adm" element={<SignupAdm />} />
               <Route path="/signup-product" element={<SignupProduct />} />
-              <Route path="/edit-product" element={<EditProduct />} />
+              <Route path="/editar-produto/:id" element={<EditProduct />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/meu-perfil/:id" element={<Perfil />} />
+              <Route path="listar-produtos" element={<ListProduct />} />
             </Routes>
           </Page>
         </UserProvider>

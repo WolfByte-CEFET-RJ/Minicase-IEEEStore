@@ -1,9 +1,8 @@
 import logoHeader from "../../assets/logo.png"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useLocation } from "react-router";
 import { Link } from "react-router";
 import Logo from "./Logo";
-import { jwtDecode } from "jwt-decode";
 import useUserContext from "../../hooks/useUseContext";
 
 function Header() {
@@ -178,7 +177,7 @@ function Header() {
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                     <Link 
-                      to="/lista-de-produtos">
+                      to="listar-produtos">
                       Lista de produtos
                     </Link>
                   </li>
