@@ -187,9 +187,8 @@ async function deleteProduto(id) {
         throw new Error("Produto não encontrado.");
       }
   
-
-      await knex("produto").where({ id }).del();
       await knex("alteracao_produto").where({ id_produto: id }).del();
+      await knex("produto").where({ id }).del();      
       
       return "Produto deletado com sucesso!";
     } catch (erro) {
