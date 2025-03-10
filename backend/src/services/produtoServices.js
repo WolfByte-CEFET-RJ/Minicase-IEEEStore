@@ -3,6 +3,20 @@ const knex = require("knex")(knexConfig.development);
 const { configDotenv } = require("dotenv");
 configDotenv();
 
+async function viewAlteracao() {
+    try {
+        const alteracao = await knex("alteracao_produto").select("*");
+        if (alteracao.length === 0) {
+            throw new Error("Não foi possível encontrar alteracoes");
+        }
+
+        return alteracao;
+
+    } catch (erro) {
+        throw (erro);
+    }
+}
+
 async function viewProdutoId(id) {
     try {
         console.log("ID recebido:", id);
@@ -67,7 +81,10 @@ async function createProduto({ nome, preco, quantidade, foto, media_avaliacao, q
      const [id] = await knex('produto').insert({
         nome, preco, quantidade, foto, media_avaliacao: 0, qt_avaliacoes: 0,  qt_estrelas: 0
     });
-     return "Produto criado com sucesso.";
+    return{
+        message: "Produto criado com sucesso.",
+        id
+    };
 
     } catch (erro) {
         console.error("Erro no service:", erro.message);
@@ -75,8 +92,26 @@ async function createProduto({ nome, preco, quantidade, foto, media_avaliacao, q
     }
 }
 
+async function alteracaoProduto(id,id_adm){
+    try{
+        const resultado = await knex("produto").select("preco").where({ id }).first();
+        
+        if (!resultado || resultado.preco === null || resultado.preco === undefined) {
+            throw new Error("Preço não encontrado.");
+        }
+        const valor_att = parseFloat(resultado.preco);
 
-async function updateProduto(id, nome, preco, quantidade, foto, qt_estrelas) {
+        const alterar = await knex("alteracao_produto").insert({id_produto: id,id_adm, novo_valor:valor_att});
+        if(!alterar){
+            throw new Error("Falha ao salvar alteracao.");
+        }
+    }catch(error){
+        console.log("Erro no service", error.message);
+        throw new Error("Falha ao alterar produto.")
+    }
+}
+
+async function updateProduto(id,id_adm,nome, preco, quantidade, foto, qt_estrelas) {
     try {
         const produto = await knex("produto").select("*").where({ id }).first();
         if (!produto) {
@@ -127,7 +162,13 @@ async function updateProduto(id, nome, preco, quantidade, foto, qt_estrelas) {
         }
 
         await knex("produto").where({ id }).update(camposAtualizar);
-
+        if(camposAtualizar.preco){
+            const result = alteracaoProduto(id,id_adm);
+            if(!result){
+                return {status:false, message:"Erro ao adicionar alteracao."}
+            }
+        }
+        
         return { status: true, message: "Produto atualizado com sucesso!" };
 
     } catch (error) {
@@ -146,8 +187,8 @@ async function deleteProduto(id) {
         throw new Error("Produto não encontrado.");
       }
   
-
-      await knex("produto").where({ id }).del();
+      await knex("alteracao_produto").where({ id_produto: id }).del();
+      await knex("produto").where({ id }).del();      
       
       return "Produto deletado com sucesso!";
     } catch (erro) {
@@ -160,5 +201,7 @@ module.exports = {
     viewAllProduto,
     createProduto,    
     updateProduto,
-    deleteProduto
+    deleteProduto,
+    alteracaoProduto,
+    viewAlteracao,
 };
