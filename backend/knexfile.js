@@ -1,5 +1,6 @@
 const path = require('path');
 require('dotenv').config();
+console.log(path.resolve('.'));
 module.exports = {
   client: 'mysql2',
   connection: {
