@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router"
 import Modal from "./Modal"
 import axios from "axios"
@@ -47,6 +47,7 @@ export default function ProductCard(props: ProductCardProps) {
                 props.setProducts(props.products.filter((product) => product.id !== props.id))
             }
             if(props.setMsg) props.setMsg(response.data?.message)
+            setIsOpen(false)
         } catch (error) {
             console.log(error)
         }

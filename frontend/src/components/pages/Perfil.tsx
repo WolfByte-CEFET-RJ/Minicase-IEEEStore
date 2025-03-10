@@ -26,6 +26,7 @@ export default function Perfil() {
     const selectNumberTeams = 3
     const [user, setUser] = useState<UserType>({ id: 0, nome: '', cargo: Array(selectNumberTeams).fill(" - "), cpf: '', telefone: '' })
     const [isOpen, setIsOpen] = useState(false)
+    const [msg, setMsg] = useState('')
         
     const team = {
         'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
@@ -46,7 +47,9 @@ export default function Perfil() {
                         Authorization: `Bearer ${token}`
                     }
                 })
-                setUser(response.data.message.adminInfo)
+                const user_response = response.data.message.adminInfo
+                const {senha, ...user_data} = user_response
+                setUser(user_data)
             } catch (error) {
                 console.log(error)
             }
@@ -82,7 +85,7 @@ export default function Perfil() {
                     'Content-Type': 'application/json'
                 }
             })
-            console.log(response)
+            setMsg(response.data?.message)
         } catch (error) {
             console.log(error)
         }
@@ -107,6 +110,7 @@ export default function Perfil() {
 
     return (
         <div>
+            <p className={`text-center font-semibold ${msg === "Admin atualizado com sucesso!" ? 'text-green-600' : 'text-red-600'}`}>{msg}</p>
             <h1 className="font-bold text-4xl pt-10 pb-2">Meu perfil</h1>
             <p className="pb-7 text-gray-500">Clique nos campos abaixo para editar suas informações</p>
             <form onSubmit={submit}>

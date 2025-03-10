@@ -68,10 +68,10 @@ export default function ListProduct() {
                     />
                 ))}
             </div>
-            {msg === 'Produto deletado com sucesso!' && (
+            {msg !== '' && (
                 <Modal isOpen={isOpen} setIsOpen={setIsOpen} className="h-28 px-10 py-9">
                     <div className="w-full h-full flex flex-col items-center justify-center">
-                        <p className="text-lg font-bold text-green-600">Produto deletado com sucesso!</p>
+                        <p className={`text-lg font-bold ${msg === 'Produto deletado com sucesso!' ? 'text-green-600' : 'text-red-600'} `}>Produto deletado com sucesso!</p>
                         <button type="button" className="bg-blue-900 hover:bg-blue-950 text-white px-5 py-2 rounded-xl mt-2" 
                             onClick={() => {
                                 setIsOpen((prev)=>!prev); 
