@@ -1,7 +1,20 @@
 const knexConfig = require("../../knexfile.js");
 const knex = require("knex")(knexConfig.development);
 const { configDotenv } = require("dotenv");
+const { get } = require("../routes/routes.js");
+const path = require("path");
 configDotenv();
+
+async function serveImage(id){                  
+    try{        
+        const get_image = await knex("produto").select("foto").where({id}).first();
+        const fileName = path.basename(get_image.foto);
+        const imagePath = path.resolve(__dirname, '../../fotosProduto', fileName);
+        return imagePath;
+    }catch(err){
+        return {status:false, message:"Erro ao buscar imagem"}
+    }
+}
 
 async function viewAlteracao() {
     try {
@@ -204,4 +217,5 @@ module.exports = {
     deleteProduto,
     alteracaoProduto,
     viewAlteracao,
+    serveImage,
 };
