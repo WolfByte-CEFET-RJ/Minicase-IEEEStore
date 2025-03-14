@@ -1,7 +1,34 @@
 const knexConfig = require("../../knexfile.js");
 const knex = require("knex")(knexConfig.development);
 const { configDotenv } = require("dotenv");
+const { get } = require("../routes/routes.js");
+const path = require("path");
 configDotenv();
+
+async function serveImage(id){                  
+    try{        
+        const get_image = await knex("produto").select("foto").where({id}).first();
+        const fileName = path.basename(get_image.foto);
+        const imagePath = path.resolve(__dirname, '../../fotosProduto', fileName);
+        return imagePath;
+    }catch(err){
+        return {status:false, message:"Erro ao buscar imagem"}
+    }
+}
+
+async function viewAlteracao() {
+    try {
+        const alteracao = await knex("alteracao_produto").select("*");
+        if (alteracao.length === 0) {
+            throw new Error("Não foi possível encontrar alteracoes");
+        }
+
+        return alteracao;
+
+    } catch (erro) {
+        throw (erro);
+    }
+}
 
 async function viewProdutoId(id) {
     try {
@@ -34,14 +61,17 @@ async function viewAllProduto(){
     }
 }
 
-async function createProduto({ nome, preco, quantidade, foto, qt_estrelas, media_avaliacao }) {
+async function createProduto({ nome, preco, quantidade, foto, media_avaliacao, qt_avaliacoes, qt_estrelas }) {
     try {
         const produtoExistente = await knex("produto").select("*").where({ nome }).first();
         if(produtoExistente){
             throw new Error("Já existe um produto com esse nome.");
         } 
-        if(nome === "" || preco === "" || quantidade === "" || foto === ""){
+        if(nome === "" || preco === "" || quantidade === ""){
             throw new Error("preencha todos os campos obrigatórios");
+        }
+        if(!foto){
+            throw new Error("Foto do produto é obrigatória.");
         }
         if (typeof preco !== 'number' || preco <= 0) {
             throw new Error("O preço do produto deve ser um número positivo.");
@@ -50,9 +80,24 @@ async function createProduto({ nome, preco, quantidade, foto, qt_estrelas, media
         if (!Number.isInteger(quantidade)) {
             throw new Error("O campo 'quantidade' deve ser um valor inteiro.");
         }
-
-     const [id] = await knex('produto').insert({nome, preco, quantidade, foto, qt_estrelas: 0, media_avaliacao: 0, qt_avaliacoes: 0});
-     return "Produto criado com sucesso.";
+        
+        if(media_avaliacao != undefined){
+            throw new Error("não dê um valor para media avaliacao");
+        }
+        
+        if(qt_avaliacoes != null){
+            throw new Error("qt avaliacoes deve ser nulo");
+        }
+        if(qt_estrelas != null){
+            throw new Error("não dê um valor para qt avaliacoes");
+        }
+     const [id] = await knex('produto').insert({
+        nome, preco, quantidade, foto, media_avaliacao: 0, qt_avaliacoes: 0,  qt_estrelas: 0
+    });
+    return{
+        message: "Produto criado com sucesso.",
+        id
+    };
 
     } catch (erro) {
         console.error("Erro no service:", erro.message);
@@ -60,70 +105,90 @@ async function createProduto({ nome, preco, quantidade, foto, qt_estrelas, media
     }
 }
 
+async function alteracaoProduto(id,id_adm){
+    try{
+        const resultado = await knex("produto").select("preco").where({ id }).first();
+        
+        if (!resultado || resultado.preco === null || resultado.preco === undefined) {
+            throw new Error("Preço não encontrado.");
+        }
+        const valor_att = parseFloat(resultado.preco);
 
-async function updateProduto(id, campos) {
+        const alterar = await knex("alteracao_produto").insert({id_produto: id,id_adm, novo_valor:valor_att});
+        if(!alterar){
+            throw new Error("Falha ao salvar alteracao.");
+        }
+    }catch(error){
+        console.log("Erro no service", error.message);
+        throw new Error("Falha ao alterar produto.")
+    }
+}
+
+async function updateProduto(id,id_adm,nome, preco, quantidade, foto, qt_estrelas) {
     try {
         const produto = await knex("produto").select("*").where({ id }).first();
         if (!produto) {
-            throw new Error("Produto não encontrado.");
+            return { status: false, message: "Produto não encontrado." };
         }
 
         const camposAtualizar = {};
 
-        if (campos.nome && typeof campos.nome === "string" && campos.nome.trim() !== "") {
-            camposAtualizar.nome = campos.nome.trim();
-        } else if (campos.nome !== undefined) {
-            throw new Error("O campo 'nome' precisa ser uma string válida.");
+        if (nome !== undefined && typeof nome === "string") {
+            camposAtualizar.nome = nome.trim();
         }
 
-        if (campos.preco !== undefined) {
-            if (typeof campos.preco === "number" && campos.preco > 0) {
-                camposAtualizar.preco = campos.preco;
-            } else {
-                throw new Error("O campo 'preco' precisa ser um número válido e maior que zero.");
+        if (preco !== undefined) {
+            const precoFloat = parseFloat(preco);
+            if (!isNaN(precoFloat) && precoFloat > 0) {
+                camposAtualizar.preco = precoFloat;
             }
         }
 
-        if (campos.quantidade !== undefined) {
-            if (Number.isInteger(campos.quantidade)) {
-                camposAtualizar.quantidade = campos.quantidade;
-            } else {
-                throw new Error("O campo 'quantidade' precisa ser um valor inteiro.");
+        if (quantidade !== undefined) {
+            const quantidadeInt = parseInt(quantidade);
+            if (!isNaN(quantidadeInt)) {
+                camposAtualizar.quantidade = quantidadeInt;
             }
         }
 
-        if (campos.foto && typeof campos.foto === "string" && campos.foto.trim() !== "") {
-            camposAtualizar.foto = campos.foto.trim();
-        } else if (campos.foto !== undefined) {
-            throw new Error("O campo 'foto' precisa ser uma string válida.");
+        if (foto !== undefined && typeof foto === "string" && foto.trim() !== "") {
+            camposAtualizar.foto = foto.trim();
         }
 
-        if (campos.qt_estrelas !== undefined) {
-            if (typeof campos.qt_estrelas !== "number" || campos.qt_estrelas < 0 || campos.qt_estrelas > 5 || campos.qt_estrelas % 0.5 !== 0) {
-                throw new Error("A quantidade de estrelas deve ser um número entre 0 e 5, múltiplo de 0.5.");
-            }
+        if (qt_estrelas !== undefined) {
+            const estrelasFloat = parseFloat(qt_estrelas);
+            if (!isNaN(estrelasFloat) && estrelasFloat >= 0 && estrelasFloat <= 5 && estrelasFloat % 0.5 === 0) {
+                camposAtualizar.qt_estrelas = estrelasFloat;
 
-            if (produto.qt_avaliacoes === 0) {
-                camposAtualizar.media_avaliacao = campos.qt_estrelas;
-                camposAtualizar.qt_avaliacoes = 1;
-            } else {
-                camposAtualizar.media_avaliacao = (produto.media_avaliacao * produto.qt_avaliacoes + campos.qt_estrelas) / (produto.qt_avaliacoes + 1);
-                camposAtualizar.qt_avaliacoes = produto.qt_avaliacoes + 1;
+                if (produto.qt_avaliacoes === 0) {
+                    camposAtualizar.media_avaliacao = estrelasFloat;
+                    camposAtualizar.qt_avaliacoes = 1;
+                } else {
+                    camposAtualizar.media_avaliacao = ((produto.media_avaliacao * produto.qt_avaliacoes) + estrelasFloat) / (produto.qt_avaliacoes + 1);
+                    camposAtualizar.qt_avaliacoes = produto.qt_avaliacoes + 1;
+                }
             }
         }
 
         if (Object.keys(camposAtualizar).length === 0) {
-            throw new Error("Nenhum campo válido para atualizar foi fornecido.");
+            return { status: false, message: "Nenhum campo válido para atualização." };
         }
 
         await knex("produto").where({ id }).update(camposAtualizar);
+        if(camposAtualizar.preco){
+            const result = alteracaoProduto(id,id_adm);
+            if(!result){
+                return {status:false, message:"Erro ao adicionar alteracao."}
+            }
+        }
+        
+        return { status: true, message: "Produto atualizado com sucesso!" };
 
-        return "Produto atualizado com sucesso.";
-    } catch (erro) {
-        console.error("Erro no serviço de atualização:", erro.message);
-        throw new Error("Falha ao atualizar o produto.");
+    } catch (error) {
+        return { status: false, message: error.message };
     }
 }
+
 
 
 async function deleteProduto(id) {
@@ -135,8 +200,8 @@ async function deleteProduto(id) {
         throw new Error("Produto não encontrado.");
       }
   
-
-      await knex("produto").where({ id }).del();
+      await knex("alteracao_produto").where({ id_produto: id }).del();
+      await knex("produto").where({ id }).del();      
       
       return "Produto deletado com sucesso!";
     } catch (erro) {
@@ -149,5 +214,8 @@ module.exports = {
     viewAllProduto,
     createProduto,    
     updateProduto,
-    deleteProduto
+    deleteProduto,
+    alteracaoProduto,
+    viewAlteracao,
+    serveImage,
 };

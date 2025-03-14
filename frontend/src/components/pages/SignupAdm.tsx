@@ -61,6 +61,7 @@ export default function SignupAdm() {
         e.preventDefault()
         setSignupAdm({...signupAdm, ["cargo"]: teams})
         try {
+
             const response = await axios.post(
                 "http://localhost:8080/admin/criar",
                 signupAdm,

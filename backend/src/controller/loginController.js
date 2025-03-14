@@ -18,7 +18,17 @@ async function login(req,res){
     }
 }
 
+async function viewLogin(req,res) {
+    try{
+        const logsService = await loginServices.viewLogin();
+        res.json({status:true,message:logsService})
+    }catch(err){
+        console.log(err);
+        res.json({status:false,message:err.message})
+    }
+    
+}
 
 module.exports = {
-    login,
+    login,viewLogin,
 };
