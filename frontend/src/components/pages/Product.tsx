@@ -1,39 +1,90 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router"
+import axios, { isAxiosError } from "axios"
 
 
 interface ProductProps {
     imgSrc?: string
     imgAlt?: string
-    nameProduct?: string
-    price?: string
-    available?: string
-    rating?: string
 }
 
 
-export default function Product(props: ProductProps) {
+export default function Product() {
+
+    const {id} = useParams()
+    const navigate = useNavigate()
+    const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
+    
+    const [product, setProduct] = useState({nome: "a", preco:0, quantidade:1})
+
+    useEffect(() => {
+
+        if(token == null) {
+            navigate('/login')
+        }
+
+        const fetchProduto = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/produto/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                setProduct(response.data.produto);
+            } catch (error) {
+                if(isAxiosError(error)) {
+                    console.log(error?.response?.data?.message);
+                }
+            }
+        };
+
+        fetchProduto();
+    }, [])
 
     const [quantity, setQuantity] = useState<number>(1)
-    let product: ProductProps = {imgSrc:"data:image/jpeg;base64,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", imgAlt:"imagem do produto", nameProduct:"Camisa Preta", price:"50,00" ,available:"Sim", rating:"10"}
+    let productInfo: ProductProps = {imgSrc:"data:image/jpeg;base64,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", imgAlt:"imagem do produto"}
 
     return (
         <section className="p-5 mt-10 shadow-md">
-            <div className="flex flex-row items-center">
-                <img src={product.imgSrc} alt={product.imgAlt} className="w-80" />
-                <div className="flex flex-col gap-6 border-l pl-10">
-                    <h2 className="font-bold text-3xl">{product.nameProduct}</h2>
-                    <p className="text-xl">R$ {product.price}</p>
-                    <div className="flex flex-row items-center border border-blue-800 justify-between px-2 py-1 rounded-xl w-24 text-xl">
-                        <button className="font-bold" onClick={() => setQuantity((quantity) => Math.max(quantity - 1, 1))}>-</button>
-                        <p>{quantity}</p>
-                        <button className="font-bold" onClick={() => setQuantity((quantity) => quantity + 1)}>+</button>
-                    </div>
-                    <div className="flex gap-2">
-                        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Comprar</button>
-                        <button className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-1 px-4 rounded">Adicionar ao Carrinho</button>
+            {product.quantidade>0 ? (
+                <div className="flex flex-row items-center">
+                    <img src={productInfo.imgSrc} alt={productInfo.imgAlt} className="w-80" />
+                    <div className="flex flex-col gap-6 border-l pl-10">
+                        <h2 className="font-bold text-3xl">{product.nome}</h2>
+                        <p className="text-xl">R$ {product.preco}</p>
+                        <div className="flex flex-row items-center border border-blue-800 justify-between px-2 py-1 rounded-xl w-24 text-xl">
+                            <button className="font-bold" onClick={() => setQuantity((quantity) => Math.max(quantity - 1, 1))}>-</button>
+                            <p>{quantity}</p>
+                            <button className="font-bold" onClick={() => setQuantity((quantity) => Math.min(quantity + 1, product?.quantidade))}>+</button>
+                        </div>
+                        <div className="flex gap-2">
+                            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Comprar</button>
+                            <button className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-1 px-4 rounded">Adicionar ao Carrinho</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            ): (
+                <>
+                    <p className="font-bold text-2xl text-red-500 pb-5">Produto Indisponível</p>
+                    <div className="flex flex-row items-center">
+                        <img src={productInfo.imgSrc} alt={productInfo.imgAlt} className="w-80 grayscale" />
+                        <div className="flex flex-col gap-6 border-l pl-10">
+                            <h2 className="font-bold text-3xl">{product.nome}</h2>
+                            <p className="text-xl">R$ {product.preco}</p>
+                            <div className="flex flex-row items-center border border-gray-800 justify-between px-2 py-1 rounded-xl w-24 text-xl">
+                                <button className="font-bold" onClick={() => setQuantity((quantity) => Math.max(quantity - 1, 1))}>-</button>
+                                <p>{quantity}</p>
+                                <button className="font-bold" onClick={() => setQuantity((quantity) => Math.min(quantity + 1, product?.quantidade))}>+</button>
+                            </div>
+                            <div className="flex gap-2">
+                                <button className="bg-gray-500 text-white font-bold py-2 px-4 rounded">Comprar</button>
+                                <button className="bg-gray-700 text-white font-bold py-1 px-4 rounded">Adicionar ao Carrinho</button>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
         </section>
     )
 }

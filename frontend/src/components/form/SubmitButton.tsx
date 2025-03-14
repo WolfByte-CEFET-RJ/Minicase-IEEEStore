@@ -1,6 +1,6 @@
 interface SubmitButtonProps {
     text: string
-    className: string
+    className?: string
     disable?: boolean
 }
 
