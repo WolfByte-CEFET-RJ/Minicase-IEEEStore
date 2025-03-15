@@ -75,8 +75,6 @@ export default function Perfil() {
         getUser()
     }, [])
 
-    console.log(user)
-
     function handleSelectEdit(index: number, value: string, type: "equipe" | "cargo") {
         setUser((prevUser) => ({
             ...prevUser,

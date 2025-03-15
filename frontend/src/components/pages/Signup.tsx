@@ -10,13 +10,6 @@ import { FormEvent, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
-type UserType = {
-    nome: string,
-    cpf: string,
-    telefone: string,
-    email?: string,
-    cargo: string[],
-}
 
 export default function Signup() {
 
