@@ -11,6 +11,7 @@ function Header() {
   const hideHeaderRoutes = ["/signup", "/login", "/signup-adm"]
   let {isAdm, userId} = useUserContext()
 
+
   if(hideHeaderRoutes.includes(location.pathname)){ //Condição que verifica o caminho atual para não renderizar o Header se for signup ou login
     return <Logo />
   }
@@ -137,7 +138,7 @@ function Header() {
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                     <Link 
-                      to="/meu-perfil">
+                      to={`/meu-perfil/${userId}`}>
                       Meu perfil
                     </Link>
                   </li>

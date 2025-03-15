@@ -36,11 +36,7 @@ export default function Signup() {
         idade: 0, 
         cargo: Array(selectNumberTeams).fill(" - ")
     })
-
-
-    console.log(formData);
     
-
     function handleSelectEdit(index:number, value:string, type: "equipe" | "cargo") {
         setFormData((prevUser) => ({ 
             ...prevUser,
