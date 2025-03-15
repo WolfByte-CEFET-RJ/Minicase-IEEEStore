@@ -8,6 +8,12 @@ import { useNavigate } from "react-router";
 import React, { FormEvent, useState } from "react";
 import axios from "axios";
 
+interface Product {
+    nome: string;
+    quantidade: string;
+    preco: string;
+    foto?: File; // `foto` é opcional
+}
 
 export default function SignupProduct() {
     const navigate  = useNavigate()
@@ -17,12 +23,16 @@ export default function SignupProduct() {
     let color = ''
     msg === 'Produto criado com sucesso.' ? color = 'text-green-600' : color = 'text-red-600'
 
-    const [product, setProduct] = useState({})
+    const [product, setProduct] = useState<Product>({
+        nome: "",
+        quantidade: "0",
+        preco: "0"
+    })
 
     function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const {name, value} = e.target
-        if(name === "preco" || name === "quantidade") {
-            setProduct({...product, [name]: Number(value)})
+        const {name, value, files} = e.target
+        if(name == "foto" && files && files.length > 0) {
+            setProduct({...product, [name]: files[0]}) 
         } else {
             setProduct({...product, [name]: value})
         }
@@ -30,21 +40,28 @@ export default function SignupProduct() {
 
     async function submit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
+        const formData = new FormData();
+        formData.append('nome', product.nome);
+        formData.append('quantidade', product.quantidade);
+        formData.append('preco', product.preco);
+        if (product.foto instanceof File) {
+            formData.append('foto', product.foto);
+        }
+
         try {
-            const response = await axios.post(url, product, {
+            const response = await axios.post(url, formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'multipart/form-data'
                 }
             })
-            setMsg(response.data.message)
-            console.log(response)
+            setMsg(response.data.message?.message)
         } catch (error) {
             if(axios.isAxiosError(error)) {
                 setMsg(error?.response?.data?.message)
             }
         }
-
+        
     }
 
     return (
@@ -80,7 +97,7 @@ export default function SignupProduct() {
                     onChange={handleOnChange}
                  />
                 <Input 
-                    type="text" 
+                    type="file" 
                     name="foto" 
                     size={30} 
                     placeholder="Imagem do produto" 
