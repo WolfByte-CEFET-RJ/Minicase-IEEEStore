@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import Modal from "./Modal"
 import axios from "axios"
@@ -30,9 +30,29 @@ interface ProductCardProps {
 
 export default function ProductCard(props: ProductCardProps) {
 
+    const [img, setImg] = useState<string | null>(null);
     let navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
+
+    useEffect(() => {
+        async function getImage(id: number) {
+            try {
+                const response = await axios.get(`http://localhost:8080/produto/imagem/${id}`,{
+                    responseType: 'blob', // Força a resposta a ser tratada como um arquivo binário
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                // Criar URL temporária para exibir a imagem
+                const imageUrl = URL.createObjectURL(response.data);
+                setImg(imageUrl);
+            } catch(error) {
+                console.log(error)
+            }
+        }
+        getImage(props.id)
+    }, [])
 
     async function deleteProduct() {
         const url = `http://localhost:8080/produto/${props.id}`
@@ -58,7 +78,10 @@ export default function ProductCard(props: ProductCardProps) {
             <div className="flex flex-col gap-2 w-64 border-zinc border-2 rounded-lg bg-white">
                 {props.type === 'buy' ? (
                     <>
-                        <div className="p-2"><img src={props.imgSrc} alt={props.imgAlt} className="w-64 h-64" /></div>
+                        <div className="p-2">
+                            {img && (<img src={img} alt={props.imgAlt} className="w-64 h-64" />)}
+                        </div>
+                            
                         <div className="border-t-2 p-2 flex flex-col gap-1.5">
                             <p><span className="font-bold">Nome:</span> {props.nameProduct}</p>
                             <p><span className="font-bold">Preço:</span> R${props.price}</p>

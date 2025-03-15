@@ -46,8 +46,6 @@ export default function Home() {
         }
     }, [])
 
-    console.log(products)
-
     return (
         <div>
             <ProductCategorySection nameCategory="Camisas">

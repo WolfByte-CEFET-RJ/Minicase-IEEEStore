@@ -9,33 +9,34 @@ import { TbLock } from "react-icons/tb";
 import { FormEvent, useState } from "react";
 import axios from "axios";
 
+
 export default function Signup() {
 
+    const selectNumberTeams = 3
     const[formData, setFormData] = useState({
         nome: "",
-        CPF: "", 
+        cpf: "", 
         telefone: "", 
         email: "", 
-        senha: "", 
-        equipeCargo: [],
+        senha: "",
         pagante: false, 
+        cargo: Array(selectNumberTeams).fill(" - ")
     })
 
-    const [selectData, setSelectData] = useState<{ equipe: string; cargo: string }[]>(
-        Array(3).fill({ equipe: "", cargo: "" }) // Cria um array inicial com 3 objetos, cada um contendo "equipe" e "cargo" vazios.
-        // Se quiser 50 selects no futuro, basta mudar "Array(3)" para "Array(50)".
-      );
+    console.log(formData)
 
-      const handleSelectEdit = (index: number, field: "equipe" | "cargo", value: string) => {
-        setSelectData(prev => 
-            prev.map((item, i) => 
-                i === index ? { ...item, [field]: value } : item 
-                // Se o índice atual for o mesmo do item modificado, atualiza o valor do campo (equipe ou cargo).
-                // Se não, mantém o item original.
-            )
-        );
-        console.log(selectData)
-    };
+    function handleSelectEdit(index:number, value:string, type: "equipe" | "cargo") {
+        setFormData((prevUser) => ({ 
+            ...prevUser,
+            cargo: prevUser.cargo.map((item, i) => {
+                if(i === index) {
+                    const [equipe, cargo] = item.split(" - ")
+                    return type === 'equipe' ? `${value} - ${cargo}` : `${equipe} - ${value}`
+                }
+                return item
+            })
+        }))
+    }
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(" ")
@@ -92,7 +93,7 @@ export default function Signup() {
                             placeholder="Digite seu CPF"
                             name="CPF"
                             size={40}
-                            value ={formData.CPF}
+                            value ={formData.cpf}
                             icon={<Bs123 size={30} />}
                             onChange={(e) => {handleFormEdit(e)}}
                         />
@@ -127,7 +128,7 @@ export default function Signup() {
                     <div className="flex flex-col gap-8">
                         <h2 className="text-xl font-semibold before:content-['.'] before:ml-0.5 before:text-6xl">Você é membro do IEEE?</h2>
                         {/* Mapeia os selects dinamicamente com base no estado "formData" */}
-                            {selectData.map((item, index) => (
+                            {formData.cargo.map((item, index) => (
                                 <div key={index} className="flex flex-wrap">
                                     {/* Select para escolher a equipe */}
                                     <Select
@@ -135,7 +136,7 @@ export default function Signup() {
                                         text="equipe"
                                         name="equipe"
                                         value={item.equipe} // Valor da equipe referente ao índice atual
-                                        onChange={(event) => handleSelectEdit(index, "equipe", event.target.value)} 
+                                        onChange={(event) => handleSelectEdit(index, event.target.value, "equipe")} 
                                         // Chama handleSelectEdit passando o índice, "equipe" e o novo valor selecionado
                                     />
                                     
@@ -145,7 +146,7 @@ export default function Signup() {
                                         text="cargo"
                                         name="cargo"
                                         value={item.cargo} // Valor do cargo referente ao índice atual
-                                        onChange={(event) => handleSelectEdit(index, "cargo", event.target.value)} 
+                                        onChange={(event) => handleSelectEdit(index, event.target.value, "cargo")} 
                                         // Chama handleSelectEdit passando o índice, "cargo" e o novo valor selecionado
                                     />
                                 </div>
