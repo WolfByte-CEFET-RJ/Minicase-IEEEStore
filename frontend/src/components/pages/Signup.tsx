@@ -8,22 +8,38 @@ import { MdOutlineLocalPhone, MdAlternateEmail } from "react-icons/md";
 import { TbLock } from "react-icons/tb";
 import { FormEvent, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
+type UserType = {
+    nome: string,
+    cpf: string,
+    telefone: string,
+    email?: string,
+    cargo: string[],
+}
 
 export default function Signup() {
 
     const selectNumberTeams = 3
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(" ")
+    const [msg, setMsg] = useState('')
+    const navigate = useNavigate()
+
     const[formData, setFormData] = useState({
         nome: "",
         cpf: "", 
         telefone: "", 
         email: "", 
         senha: "",
-        pagante: false, 
+        membro_pagante: false,
+        idade: 0, 
         cargo: Array(selectNumberTeams).fill(" - ")
     })
 
-    console.log(formData)
+
+    console.log(formData);
+    
 
     function handleSelectEdit(index:number, value:string, type: "equipe" | "cargo") {
         setFormData((prevUser) => ({ 
@@ -38,22 +54,26 @@ export default function Signup() {
         }))
     }
 
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(" ")
-
     const handleFormEdit = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setFormData({...formData, [event.target.name]: event.target.value})
-        console.log(formData)
+        if(event.target.name === 'idade') {
+            setFormData({...formData, [event.target.name]: Number(event.target.value)})
+        } else {
+            setFormData({...formData, [event.target.name]: event.target.value})
+        }
     };
 
     const handleForm = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         setLoading(true)
-        console.log(formData)
 
-        try{ //Tem que confirmar qual a URL e o endpoint usado pelo backend
-            const response = await axios.post("http://localhost:3000/cadastro",formData)
-            console.log("Resposta do servidor:", response.data);
+        try{
+            const response = await axios.post("http://localhost:8080/cliente",formData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            setMsg(response.data?.message?.message)
+            navigate('/login')
         }catch(error){
             console.error("Erro ao enviar o formulário:", error)
             setError("Ocorreu um erro ao enviar os dados. Tente novamente.")
@@ -76,6 +96,7 @@ export default function Signup() {
     return (
         <InformationBox>
             <h1 className="font-bold text-4xl text-center">Crie seu cadastro</h1>
+            <p className={`text-center font-semibold ${msg === "cliente criado com sucesso!" ? 'text-green-600' : 'text-red-600'}`}>{msg}</p>
             <form className="flex flex-col px-10 py-5" onSubmit={handleForm}>
                 <div className="flex flex-row flex-wrap px-10 py-5 justify-around">
                     <div className="flex flex-col">
@@ -91,7 +112,7 @@ export default function Signup() {
                         <Input
                             type="text"
                             placeholder="Digite seu CPF"
-                            name="CPF"
+                            name="cpf"
                             size={40}
                             value ={formData.cpf}
                             icon={<Bs123 size={30} />}
@@ -113,6 +134,15 @@ export default function Signup() {
                             size={40}
                             value ={formData.email}
                             icon={<MdAlternateEmail size={30} />}
+                            onChange={(e) => {handleFormEdit(e)}}
+                        />
+                        <Input
+                            type="number"
+                            placeholder="Digite sua idade"
+                            name="idade"
+                            size={40}
+                            value ={String(formData.idade)}
+                            icon={<Bs123 size={30} />}
                             onChange={(e) => {handleFormEdit(e)}}
                         />
                         <Input
@@ -157,11 +187,11 @@ export default function Signup() {
                             name="pagante"
                             size={40}
                             checkbox="Você é membro pagante da IEEE?"
-                            checked={formData.pagante}
+                            checked={formData.membro_pagante}
                             onChange={(e) => 
                                 setFormData({
                                     ...formData,
-                                    pagante: e.target.checked,
+                                    membro_pagante: e.target.checked,
                                 })
                             }
                             />
