@@ -47,7 +47,7 @@ async function createUser({nome, cpf, idade, telefone, email, cargo, membro_paga
         const cpfExistente = await knex("cliente").select("*").where({cpf}).first();
         const emailExistente = await knex("cliente").select("*").where({email}).first();
 
-        if(nome === "" || cpf === "" || idade === "" || telefone === "" || membro_pagante === "" || senha === ""){
+        if(nome === "" || cpf === "" || idade === "" || telefone === "" || membro_pagante === "" || senha === "" || email === ""){
             throw new Error("Preencha todos os campos obrigatórios.");
         }
         if(cpfExistente || emailExistente){
