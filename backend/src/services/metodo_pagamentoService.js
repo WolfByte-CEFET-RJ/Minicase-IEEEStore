@@ -41,7 +41,7 @@ async function updateMetodo_Pagamento(campos) {
 
         await knex("metodo_pagamento").update(camposAtualizar);
         
-        return "Produto atualizado com sucesso.";
+        return "Metodo pagamento atualizado com sucesso.";
     } catch (erro) {
         console.error("Erro no serviço de atualização:", erro.message);
         throw new Error("Falha ao atualizar o produto.");
