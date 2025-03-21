@@ -5,6 +5,7 @@ const adminController = require("../controller/adminController.js");
 const loginController = require("../controller/loginController.js");
 const produtoController = require("../controller/produtoController.js");
 const clienteController = require("../controller/clienteController.js");
+const pedidoController = require("../controller/pedidoController.js");
 const {upload} = require("../middleware/upload");
 const {autenticar} = require("../middleware/auth.js");
 
@@ -38,4 +39,6 @@ router.get("/cliente", adminAutentication, clienteController.viewAllUsers);
 router.patch("/cliente/:id", autenticar, clienteController.updateUser);
 router.delete("/cliente/:id", autenticar || adminAutentication, clienteController.deleteUser);
 
+//PEDIDO
+router.post("/pedido", autenticar, pedidoController.createOrder);
 module.exports = router;
