@@ -5,11 +5,26 @@ const { configDotenv } = require("dotenv");
 const jwt = require("jsonwebtoken");
 configDotenv();
 
+async function viewUserOrder(userId){
+    try{
+        const id = userId;
+        const viewOwnOrder = await knex("pedido").select("*").where({id_usuario: id});
+        if(!viewUserOrder){
+            throw new Error("Não há pedidos.");
+        }
+        return {pedidos: viewOwnOrder};
+    }catch(err){
+        console.error("Erro ao localizar pedidos.");
+    }
+}
+
+
 async function gerarHashSenha(senha) {
   const saltRounds = 10;
   const senhaHasheada = await bcrypt.hash(senha, saltRounds);
   return senhaHasheada;
 }
+
 
 async function viewAllUsers(){
     try{
@@ -181,4 +196,5 @@ module.exports = {
     viewAllUsers,
     updateUser,
     deleteUser,
+    viewUserOrder,
 }

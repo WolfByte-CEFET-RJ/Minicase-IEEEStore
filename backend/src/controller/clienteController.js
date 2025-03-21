@@ -1,5 +1,26 @@
 const clienteServices = require("../services/clienteService.js");
 
+
+
+async function viewUserOrder(req,res){
+    try{
+        const userId = req.params.id;
+        console.log("aaa",userId);
+        console.log("bbb",req.userId);
+        if(parseInt(userId)!==parseInt(req.userId)){
+            return  res.status(403).json({message:"Acesso negado"});
+            
+        }
+        const viewOwnOrder = await clienteServices.viewUserOrder(userId);
+        if(!viewOwnOrder){
+            throw new Error("Não há pedidos deste cliente.");
+        }
+        res.status(200).json({status:true, message: viewOwnOrder});
+
+    }catch(err){
+        res.status(500).json({status:false, message: err.message});
+    }
+}
 async function viewAllUsers(req,res){
     try{
         const viewService = await clienteServices.viewAllUsers();
@@ -112,4 +133,6 @@ module.exports = {
     viewAllUsers,
     updateUser,
     deleteUser,
+    viewUserOrder,
+
 }
