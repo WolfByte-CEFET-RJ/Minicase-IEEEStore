@@ -48,7 +48,7 @@ export default function Perfil() {
     useEffect(() => {
         let url = ''
         if (isAdm) {
-            url = `http://localhost:8080/admin/${id}`
+            url = `http://localhost:8080/admin/`
         } else {
             url = `http://localhost:8080/cliente/${id}`
         }
@@ -101,7 +101,7 @@ export default function Perfil() {
         e.preventDefault()
         let url = ''
         if(isAdm) {
-            url = `http://localhost:8080/admin/${id}`
+            url = `http://localhost:8080/admin/`
         } else {
             url = `http://localhost:8080/cliente/${id}`
         }
@@ -121,7 +121,7 @@ export default function Perfil() {
     async function deleteUser() {
         let url = ''
         if(isAdm) {
-            url = `http://localhost:8080/admin/${id}`
+            url = `http://localhost:8080/admin/`
         } else {
            url = `http://localhost:8080/cliente/${id}`   
         }
