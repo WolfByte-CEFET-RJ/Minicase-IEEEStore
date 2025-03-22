@@ -12,7 +12,7 @@ const {autenticar} = require("../middleware/auth.js");
 //ADMINISTRADOR
 //Substituir autenticar por adminAutentication
 router.get("/admin",adminAutentication,adminController.viewAdmin);
-router.get("admin/pedido/view", adminAutentication, adminController.viewAllPedidos);
+router.get("/admin/pedido/view", adminAutentication, adminController.viewAllPedidos);
 router.post("/admin/criar",adminAutentication,adminController.adminCreationPower);
 router.post("/login",loginController.login);
 router.patch("/admin",adminAutentication,adminController.updateAdmin);
