@@ -51,6 +51,8 @@ export default function Signup() {
         }
     };
 
+    console.log(formData)
+
     const handleForm = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         setLoading(true)

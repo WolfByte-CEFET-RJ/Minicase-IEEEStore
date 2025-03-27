@@ -1,16 +1,32 @@
 import logoHeader from "../../assets/logo.png"
-import { useState } from "react"
-import { useLocation } from "react-router";
+import { useEffect, useState } from "react"
+import { useLocation, useNavigate } from "react-router";
 import { Link } from "react-router";
 import Logo from "./Logo";
 import useUserContext from "../../hooks/useUseContext";
+import axios from "axios";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const location = useLocation();
   const hideHeaderRoutes = ["/signup", "/login", "/signup-adm"]
   let {isAdm, userId} = useUserContext()
+  const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
+  const [nome, setNome] = useState('')
+  const navigate = useNavigate()
 
+  useEffect(() => {
+    let url = 'http://localhost:8080'
+    isAdm ? url += '/admin' : url += `/cliente/${userId}`
+    axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+      setNome(isAdm ? res.data.message?.adminInfo?.nome.split(' ')[0] : res.data?.data?.userInfo?.nome.split(' ')[0])
+      console.log(nome)
+    })
+  }, [userId])
 
   if(hideHeaderRoutes.includes(location.pathname)){ //Condição que verifica o caminho atual para não renderizar o Header se for signup ou login
     return <Logo />
@@ -216,11 +232,15 @@ function Header() {
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="login"
-                  className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
-                  Entrar
-                </Link>
+                {nome !== '' ? (
+                  <p>Olá,<span className="p-3 hover:text-gray-800 rounded-md transition-all cursor-pointer" onClick={()=>navigate(`/meu-perfil/${userId}`)}>{nome}</span></p>
+                ) : (
+                  <Link 
+                    to="login"
+                    className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    Entrar
+                  </Link>
+                )}
               </li>
             </ul>
           </div>  
