@@ -12,12 +12,12 @@ const adminAutentication = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_KEY);
     if (decoded.role !== "admin") {
-      return res.status(403).json({ message: "Acesso negado! 2 " });
+      return res.status(403).json({ message: "Acesso negado!" });
     }
     req.userId = decoded.id;
     const analysis = await adminServices.checkAdminId(req.userId);
     if (!analysis) {
-      return res.status(403).json({ message: "Acesso negado! 3" });
+      return res.status(403).json({ message: "Acesso negado!" });
     }
     next();
   } catch (error) {

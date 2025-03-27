@@ -1,16 +1,5 @@
 const adminServices = require("../services/adminServices.js");
 
-
-async function viewAllPedidos(req,res){
-  try{
-    const viewAllPedidoService = await adminServices.viewAllPedidos();
-    res.status(200).json({status: true, viewAllPedidoService});
-  }catch(err){
-    console.log(err);
-    res.status(500).json({status: false, message: err.message})
-  }
-}
-
 async function viewAdmin(req, res) {
   try {
     const idAdmin = req.userId;
@@ -111,5 +100,4 @@ module.exports = {
   deleteAdmin,
   viewAdmin,
   adminCreationPower,
-  viewAllPedidos,
 };
