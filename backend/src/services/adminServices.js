@@ -6,18 +6,6 @@ const jwt = require("jsonwebtoken");
 configDotenv();
 
 
-async function viewAllPedidos(){
-  try{
-    const viewAllPedido = await knex("pedido").select("*").first();
-    if(!viewAllPedido){
-      throw new Error("Sem pedidos");
-    }
-    return {message: "Pedidos feitos:", viewAllPedido};
-  }catch(err){
-    throw err;
-  }
-}
-
 async function checkAdminId(id) {
   try {
     if (!id) {
@@ -229,5 +217,4 @@ module.exports = {
   viewAdmin,
   checkAdmin,
   checkAdminId,
-  viewAllPedidos,
 };

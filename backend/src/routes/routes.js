@@ -12,20 +12,18 @@ const {autenticar} = require("../middleware/auth.js");
 //ADMINISTRADOR
 //Substituir autenticar por adminAutentication
 router.get("/admin",adminAutentication,adminController.viewAdmin);
-router.get("admin/pedido/view", adminAutentication, adminController.viewAllPedidos);
 router.post("/admin/criar",adminAutentication,adminController.adminCreationPower);
 router.post("/login",loginController.login);
 router.patch("/admin",adminAutentication,adminController.updateAdmin);
 router.delete("/admin",adminAutentication,adminController.deleteAdmin);
 
 //PRODUTO
-router.get("/produto/imagem/:id",adminAutentication|| autenticar, produtoController.serveImage)
-router.get("/produto/:id",adminAutentication || autenticar, produtoController.viewProdutoId);
-router.get("/produto", adminAutentication || autenticar, produtoController.viewAllProduto);
+router.get("/produto/imagem/:id",autenticar || adminAutentication, produtoController.serveImage)
+router.get("/produto/:id",autenticar || adminAutentication, produtoController.viewProdutoId);
+router.get("/produto", autenticar || adminAutentication, produtoController.viewAllProduto);
 router.post("/produto", adminAutentication, uploadProduto.single("foto"), produtoController.createProduto);
 router.patch("/produto/:id", adminAutentication, uploadProduto.single("foto"), produtoController.updateProduto);
 router.delete("/produto/:id",adminAutentication, produtoController.deleteProduto);
-
 
 //RELATORIO
 router.get("/logs-login",adminAutentication, loginController.viewLogin)
@@ -33,13 +31,15 @@ router.get("/alteracao/produto", adminAutentication, produtoController.viewAlter
 
 //CLIENTE
 router.post("/cliente", clienteController.createUser);
-router.get("/pedido/view/:id",autenticar,clienteController.viewUserOrder)
 router.get("/cliente/:id", autenticar || adminAutentication, clienteController.viewUser);
 router.get("/cliente", adminAutentication, clienteController.viewAllUsers);
 router.patch("/cliente/:id", autenticar, clienteController.updateUser);
 router.delete("/cliente/:id", autenticar || adminAutentication, clienteController.deleteUser);
 
 //PEDIDO
+router.get("/admin/pedido/view", adminAutentication, pedidoController.viewAllOrders);
+router.get("/pedido/view/:id",autenticar,pedidoController.viewUserOrder)
 router.post("/pedido", autenticar, uploadComprovante.single("comprovante"), pedidoController.createOrder);
+
 
 module.exports = router;
