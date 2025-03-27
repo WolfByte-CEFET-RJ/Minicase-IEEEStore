@@ -26,6 +26,7 @@ async function login({cpf,email,senha}){
                 throw new Error("Senha incorreta.");
             }
             const token = gerarTokenAdmin(admin);
+            const login = await knex("controle_login").insert({id_admin: admin.id})
             return { message: 'Login bem-sucedido!', token };
          }
          else if(email){
@@ -38,6 +39,7 @@ async function login({cpf,email,senha}){
                 throw new Error("Senha incorreta.");
             }
             const token = gerarTokenUser(user);
+            const login = await knex("controle_login").insert({id_cliente: user.id})
             return { message: 'Login bem-sucedido!', token };
          }
     }catch(error){
@@ -45,6 +47,23 @@ async function login({cpf,email,senha}){
     }
 }
 
+async function viewLogin(){
+    try{
+        const view = await knex("controle_login").select("*");
+        console.log(view)
+        if(!view){
+            throw new Error("Erro ao exibir logs");
+        }
+        if(view.length ===0){
+            throw new Error("Não foi possível encontrar alteracoes");
+        }
+        return view
+    }catch(error){
+        console.log("Erro ao visualizar os logs");
+        throw error;
+    }
+
+}
 module.exports = {
-    login,
+    login,viewLogin,
 };

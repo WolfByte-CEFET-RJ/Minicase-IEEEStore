@@ -5,27 +5,42 @@ const adminController = require("../controller/adminController.js");
 const loginController = require("../controller/loginController.js");
 const produtoController = require("../controller/produtoController.js");
 const metodo_pagamentoController = require('../controller/metodo_pagamentoController.js');
+
+const clienteController = require("../controller/clienteController.js");
+const {upload} = require("../middleware/upload");
 const {autenticar} = require("../middleware/auth.js");
 
 //ADMINISTRADOR
 //Substituir autenticar por adminAutentication
-router.get("/admin/:id",adminAutentication,adminController.viewAdmin);
+router.get("/admin",adminAutentication,adminController.viewAdmin);
 router.post("/admin/criar",adminAutentication,adminController.adminCreationPower);
 router.post("/login",loginController.login);
-router.patch("/admin/:id",adminAutentication,adminController.updateAdmin);
-router.delete("/admin/:id",adminAutentication,adminController.deleteAdmin);
+router.patch("/admin",adminAutentication,adminController.updateAdmin);
+router.delete("/admin",adminAutentication,adminController.deleteAdmin);
 
 //PRODUTO
+router.get("/produto/imagem/:id",adminAutentication|| autenticar, produtoController.serveImage)
 router.get("/produto/:id",adminAutentication || autenticar, produtoController.viewProdutoId);
 router.get("/produto", adminAutentication || autenticar, produtoController.viewAllProduto);
-router.post("/produto", adminAutentication,produtoController.createProduto);
-router.patch("/produto/:id", adminAutentication,produtoController.updateProduto);
-router.delete("/produto/:id",adminAutentication,produtoController.deleteProduto);
+router.post("/produto", adminAutentication, upload.single("foto"), produtoController.createProduto);
+router.patch("/produto/:id", adminAutentication, upload.single("foto"), produtoController.updateProduto);
+router.delete("/produto/:id",adminAutentication, produtoController.deleteProduto);
 
 //METODO PAGAMENTO
 router.get("/metodo_pagamento", adminAutentication || autenticar, metodo_pagamentoController.findOneMetodo_Pagamento);
 router.patch("/metodo_pagamento", adminAutentication,metodo_pagamentoController.updateMetodo_Pagamento);
 
 
+
+//RELATORIO
+router.get("/logs-login",adminAutentication, loginController.viewLogin)
+router.get("/alteracao/produto", adminAutentication, produtoController.viewAlteracao);
+
+//CLIENTE
+router.post("/cliente", clienteController.createUser);
+router.get("/cliente/:id", autenticar || adminAutentication, clienteController.viewUser);
+router.get("/cliente", adminAutentication, clienteController.viewAllUsers);
+router.patch("/cliente/:id", autenticar, clienteController.updateUser);
+router.delete("/cliente/:id", autenticar || adminAutentication, clienteController.deleteUser);
 
 module.exports = router;

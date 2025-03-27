@@ -3,12 +3,13 @@ import { useState } from "react"
 import { useLocation } from "react-router";
 import { Link } from "react-router";
 import Logo from "./Logo";
+import useUserContext from "../../hooks/useUseContext";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isAdm, setIsAdm] = useState(true)
   const location = useLocation();
   const hideHeaderRoutes = ["/signup", "/login", "/signup-adm"]
+  let {isAdm, userId} = useUserContext()
 
   if(hideHeaderRoutes.includes(location.pathname)){ //Condição que verifica o caminho atual para não renderizar o Header se for signup ou login
     return <Logo />
@@ -152,8 +153,14 @@ function Header() {
                 <ul className="w-full mt-12">
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                     <Link 
-                      to="/cadastrar-produto">
+                      to="/signup-product">
                       Cadastrar Produto
+                    </Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                  <Link 
+                      to="/signup-adm">
+                      Cadastrar Administrador
                     </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
@@ -164,13 +171,13 @@ function Header() {
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                     <Link 
-                      to="/lista-de-usuarios">
+                      to="/Lista_de_usuarios">
                       Lista de usuários
                     </Link>
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                     <Link 
-                      to="/lista-de-produtos">
+                      to="listar-produtos">
                       Lista de produtos
                     </Link>
                   </li>
@@ -182,7 +189,7 @@ function Header() {
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                     <Link 
-                      to="/meu-perfil">
+                      to={`/meu-perfil/${userId}`}>
                       Meu perfil
                     </Link>
                   </li>

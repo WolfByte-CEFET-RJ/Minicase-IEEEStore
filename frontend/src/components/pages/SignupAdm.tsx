@@ -6,16 +6,29 @@ import { RiIdCardLine } from "react-icons/ri";
 import { Bs123 } from "react-icons/bs";
 import { MdOutlineLocalPhone } from "react-icons/md";
 import { TbLock } from "react-icons/tb";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 export default function SignupAdm() {
-
+    
+    const navigate = useNavigate()
+    const token = sessionStorage.getItem('token') ? sessionStorage.getItem('token') : localStorage.getItem('token')
+    const [msg, setMsg] = useState('')
+    let color = ''
+    msg === 'Administrador cadastrado com sucesso!' ? color = 'text-green-600' : color = 'text-red-600'
+    
+    useEffect(()=> {
+        // Defina o token (pode ser pego do localStorage, state, etc.)
+        if(token === null) {
+            navigate('/login')
+        }
+    }, [])
+    
     const [signupAdm, setSignupAdm] = useState({})
     const selectNumberTeams = 3
     const [teams, setTeams] = useState<string[]>(Array(selectNumberTeams).fill(" - "))
-    // console.log(teams)
-
+    
     const team = {
         'Gestão': ['Gestão de Projetos', 'Gestão de Pessoas', 'Gestão de Processos', 'Gestão financeira'],
         'Marketing': ['Marketing'],
@@ -25,14 +38,13 @@ export default function SignupAdm() {
         'SocialWolf': ['Mecânica', 'Programação', 'Eletrônica', 'Educacional'],
         'WolfByte': ['Inteligência Artificial (IA)', 'Web/App', 'Hardware', 'Games']
     }
-
+    
     function handleOnchange(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault()
         const {name, value} = e.target
         setSignupAdm({...signupAdm, [name]: value})
-        console.log(signupAdm);
     }
-
+    
     function handleSelectEdit(index:number, value:string, type: "equipe" | "cargo") {
         setTeams((prevTeams) => {
             return prevTeams.map((item, i) => {
@@ -44,38 +56,38 @@ export default function SignupAdm() {
             })
         })
     }
-
+    
     async function submit(e:FormEvent<HTMLFormElement>) {
         e.preventDefault()
         setSignupAdm({...signupAdm, ["cargo"]: teams})
-        console.log(signupAdm)
         try {
-            // Defina o token (pode ser pego do localStorage, state, etc.)
-            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzM5NjYwNDM2LCJleHAiOjE3Mzk3NDY4MzZ9.LUwUBdP1nZtkU27k6wdSKUb_CK5HfYg_308RqthYUMQ";
-        
+
             const response = await axios.post(
-              "http://localhost:8080/admin/criar",
-              signupAdm,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  "Content-Type": "application/json", // Tipo de conteúdo // Caso precise de um header extra
-                },
-              }
+                "http://localhost:8080/admin/criar",
+                signupAdm,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json", // Tipo de conteúdo
+                    },
+                }
             );
         
-            console.log("Resposta do servidor:", response.data);
-          } catch (error) {
-            console.error("Erro ao enviar o formulário:", error);
-            console.log("Ocorreu um erro ao enviar os dados. Tente novamente.");
-          }
+            setMsg(response.data.message)
+        } catch (error) {
+            if(axios.isAxiosError(error)) {
+                setMsg(error?.response?.data?.message)
+            }
         }
+    }
         
     
 
     return (
         <InformationBox>
             <h1 className="font-bold text-4xl text-center">Cadastro de Administrador</h1>
+            
+            <p className={`text-center ${color} font-semibold`}>{msg}</p>
                         <form className="flex flex-col px-10 py-5" onSubmit={submit}>
                             <div className="flex flex-row flex-wrap px-10 py-5 justify-around">
                                 <div className="flex flex-col">
