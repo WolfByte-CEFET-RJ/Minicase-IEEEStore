@@ -4,6 +4,8 @@ const {adminAutentication} = require("../middleware/adminAuth.js");
 const adminController = require("../controller/adminController.js");
 const loginController = require("../controller/loginController.js");
 const produtoController = require("../controller/produtoController.js");
+const metodo_pagamentoController = require('../controller/metodo_pagamentoController.js');
+
 const clienteController = require("../controller/clienteController.js");
 const {upload} = require("../middleware/upload");
 const {autenticar} = require("../middleware/auth.js");
@@ -23,6 +25,11 @@ router.get("/produto", adminAutentication || autenticar, produtoController.viewA
 router.post("/produto", adminAutentication, upload.single("foto"), produtoController.createProduto);
 router.patch("/produto/:id", adminAutentication, upload.single("foto"), produtoController.updateProduto);
 router.delete("/produto/:id",adminAutentication, produtoController.deleteProduto);
+
+//METODO PAGAMENTO
+router.get("/metodo_pagamento", adminAutentication || autenticar, metodo_pagamentoController.findOneMetodo_Pagamento);
+router.patch("/metodo_pagamento", adminAutentication,metodo_pagamentoController.updateMetodo_Pagamento);
+
 
 
 //RELATORIO
