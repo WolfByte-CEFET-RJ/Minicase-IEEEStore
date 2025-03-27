@@ -17,7 +17,6 @@ function UserList(){
       }
 
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
-    const [error, setError] = useState(null);
     const token = sessionStorage.getItem('token') ? sessionStorage.getItem('token') : localStorage.getItem('token')
 
     useEffect(() => {
@@ -32,7 +31,7 @@ function UserList(){
             } catch (error) {
                 console.error("Erro ao buscar usuários:", error);
                 if(axios.isAxiosError(error)) {
-                    setError(error?.response?.data?.message)
+                    console.log(error?.response?.data?.message)
                 }
             }
         }

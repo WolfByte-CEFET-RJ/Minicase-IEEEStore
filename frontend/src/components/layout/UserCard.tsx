@@ -28,7 +28,7 @@ function UserCard({ user }: UserCardProps) {
 
 
   return (
-    <div className="bg-white p-4 shadow-lg rounded-lg border border-2 border-gray-400 w-64 flex flex-col gap-1">
+    <div className="bg-white p-4 shadow-lg rounded-lg border-2 border-gray-400 w-64 flex flex-col gap-1">
       <p className="text-black"><span className="font-bold">Nome</span>: {user.nome}</p>
       <p className="text-black"><span className="font-bold">CPF</span>: {user.cpf}</p>
       <p className="text-black"><span className="font-bold">Equipe</span>: {user.equipe}</p>
