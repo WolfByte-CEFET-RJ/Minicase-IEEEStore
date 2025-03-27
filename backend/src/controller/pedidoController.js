@@ -18,8 +18,6 @@ async function viewAllOrders(req,res){
 async function viewUserOrder(req,res){
     try{
         const userId = req.params.id;
-        console.log("aaa",userId);
-        console.log("bbb",req.userId);
         if(parseInt(userId)!==parseInt(req.userId)){
             return  res.status(403).json({message:"Acesso negado"});
             
@@ -37,8 +35,9 @@ async function viewUserOrder(req,res){
 
 async function createOrder(req, res) {
     try {
-        const { id_usuario,preco_final, metodo_pagamento, comprovante, estado_pedido, mensagem } = req.body;
-        
+        let { id_usuario, preco_final, metodo_pagamento, estado_pedido, mensagem } = req.body;
+        const comprovante = req.file.path;
+        preco_final = parseFloat(preco_final);
         const pedidoService = await pedidoServices.createOrder({
             preco_final,
             metodo_pagamento,

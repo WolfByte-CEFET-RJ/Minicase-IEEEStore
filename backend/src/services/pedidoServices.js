@@ -34,7 +34,7 @@ async function viewAllOrders(){
 
 async function createOrder({id_usuario,preco_final, metodo_pagamento, comprovante, estado_pedido, mensagem}) {
     try {
-        if (!preco_final || !metodo_pagamento) {
+        if (!preco_final || !metodo_pagamento || !comprovante) {
             throw new Error("Preencha todos os campos obrigatórios.");
         }
 
@@ -48,7 +48,7 @@ async function createOrder({id_usuario,preco_final, metodo_pagamento, comprovant
         const [pedido] = await knex("pedido").insert({
             preco_final,
             metodo_pagamento,
-            comprovante: "esperando_comprovante",
+            comprovante,
             estado_pedido: "EM_ANALISE",
             mensagem: "Quando o pedido for entregue, aqui haverá informações sobre a retirada do produto",
             id_usuario
