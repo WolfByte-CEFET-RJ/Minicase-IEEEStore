@@ -35,7 +35,7 @@ async function viewUserOrder(req,res){
 
 async function createOrder(req, res) {
     try {
-        let { id_usuario, preco_final, metodo_pagamento, estado_pedido, mensagem } = req.body;
+        let { id_usuario, preco_final, metodo_pagamento, estado_pedido, mensagem,id_pedido, quantidade} = req.body;
         const comprovante = req.file.path;
         preco_final = parseFloat(preco_final);
         const pedidoService = await pedidoServices.createOrder({
@@ -44,8 +44,11 @@ async function createOrder(req, res) {
             comprovante,
             estado_pedido,
             mensagem,
-            id_usuario
+            id_usuario,
+            id_pedido,
+            quantidade
         });
+        
         
         res.json({ status: true, message: pedidoService });
         

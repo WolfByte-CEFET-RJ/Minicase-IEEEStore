@@ -31,7 +31,8 @@ async function viewAllOrders(){
       throw err;
     }
   }
-
+const quantidade= 10
+const exemplo = 1
 async function createOrder({id_usuario,preco_final, metodo_pagamento, comprovante, estado_pedido, mensagem}) {
     try {
         if (!preco_final || !metodo_pagamento || !comprovante) {
@@ -53,13 +54,26 @@ async function createOrder({id_usuario,preco_final, metodo_pagamento, comprovant
             mensagem: "Quando o pedido for entregue, aqui haverá informações sobre a retirada do produto",
             id_usuario
         });
+        const [item] = await knex("item").insert({
+            id_produto:exemplo,
+            id_pedido:pedido,
+            quantidade:quantidade
+
+        })
+
+
 
         return pedido;
+
     } catch (erro) {
         console.error("Erro ao criar pedido", erro);
         throw erro;
     }
 }
+
+//funções dos itens
+
+
 
 module.exports = {
     createOrder,
