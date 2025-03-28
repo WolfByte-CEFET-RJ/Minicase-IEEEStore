@@ -42,24 +42,24 @@ const carrinho = {
 };
 async function createOrder({id_usuario,preco_final, metodo_pagamento, comprovante, estado_pedido, mensagem}) {
     try {
-        if (!preco_final || !metodo_pagamento || !comprovante) {
+        if (!carrinho.preco_final || !metodo_pagamento || !comprovante) {
             throw new Error("Preencha todos os campos obrigatórios.");
         }
 
-        if (typeof preco_final !== "number" || preco_final <= 0) {
+        if (typeof carrinho.preco_final !== "number" || carrinho.preco_final <= 0) {
             throw new Error("Preço final não está sendo recebido como um número positivo.");
         }
-        if(!id_usuario){
+        if(!carrinho.id_user){
             throw new Error("Preencha a quem pertence este pedido.")
         }
 
         const [pedido] = await knex("pedido").insert({
-            preco_final,
+            preco_final: carrinho.preco_final,
             metodo_pagamento,
             comprovante,
             estado_pedido: "EM_ANALISE",
             mensagem: "Quando o pedido for entregue, aqui haverá informações sobre a retirada do produto",
-            id_usuario
+            id_usuario:  carrinho.id_user
         });
         const itemsToInsert = carrinho.produtos.map(item => ({
             id_pedido: pedido, 
@@ -69,8 +69,6 @@ async function createOrder({id_usuario,preco_final, metodo_pagamento, comprovant
 
         const [item] = await knex("item").insert( itemsToInsert )
 
-
-
         return pedido;
 
     } catch (erro) {
@@ -78,10 +76,6 @@ async function createOrder({id_usuario,preco_final, metodo_pagamento, comprovant
         throw erro;
     }
 }
-
-//funções dos itens
-
-
 
 module.exports = {
     createOrder,
