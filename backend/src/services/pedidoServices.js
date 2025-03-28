@@ -40,8 +40,6 @@ const carrinho = {
     ],
     preco_final: 250
 };
-const quantidade= 10
-const exemplo = 1
 async function createOrder({id_usuario,preco_final, metodo_pagamento, comprovante, estado_pedido, mensagem}) {
     try {
         if (!preco_final || !metodo_pagamento || !comprovante) {
