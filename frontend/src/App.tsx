@@ -20,6 +20,7 @@ import Perfil from './components/pages/Perfil'
 import UserProvider from './context/userProvider'
 import ListProduct from './components/pages/product/ListProduct'
 import UserList from './components/pages/Lista_de_usuarios'
+import PaymentDetails from './components/pages/PaymentDetails'
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
               <Route path="/signup-product" element={<SignupProduct />} />
               <Route path="/editar-produto/:id" element={<EditProduct />} />
               <Route path="/alterar-pagamento" element={<Payment />} />
+              <Route path="/detalhes-de-pagamento" element={<PaymentDetails />} />
               <Route path="/meu-perfil/:id" element={<Perfil />} />
               <Route path="listar-produtos" element={<ListProduct />} />
               <Route path="listar-usuarios" element={<UserList />} />

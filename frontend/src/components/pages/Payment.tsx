@@ -19,20 +19,9 @@ export default function Payment() {
 
     async function submit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        const url = 'http://localhost:8080/metodo_pagamento/view'
-        // try {
-        //     const response = await axios.patch(url, payment, {
-        //         headers: {
-        //             Authorization: `Bearer ${token}`
-        //         }
-        //     })
-        //     console.log(response)
-        // } catch(error) {
-        //     console.log(error)
-        // }
-
+        const url = 'http://localhost:8080/metodo_pagamento/'
         try {
-            const response = await axios.get(url, {
+            const response = await axios.patch(url, payment, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
