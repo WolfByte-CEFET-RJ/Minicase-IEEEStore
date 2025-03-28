@@ -11,6 +11,7 @@ import axios from "axios";
 export default function Payment() {
 
     const [payment, setPayment] = useState({})
+    const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
 
     function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
         setPayment({...payment, [e.target.name]: e.target.value})
@@ -18,9 +19,24 @@ export default function Payment() {
 
     async function submit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        const url = 'http://localhost:8080/'
+        const url = 'http://localhost:8080/metodo_pagamento/view'
+        // try {
+        //     const response = await axios.patch(url, payment, {
+        //         headers: {
+        //             Authorization: `Bearer ${token}`
+        //         }
+        //     })
+        //     console.log(response)
+        // } catch(error) {
+        //     console.log(error)
+        // }
+
         try {
-            const response = await axios.patch(url, payment)
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
             console.log(response)
         } catch(error) {
             console.log(error)

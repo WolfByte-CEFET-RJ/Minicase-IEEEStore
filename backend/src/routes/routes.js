@@ -28,7 +28,7 @@ router.patch("/produto/:id", adminAutentication, uploadProduto.single("foto"), p
 router.delete("/produto/:id",adminAutentication, produtoController.deleteProduto);
 
 //METODO PAGAMENTO
-router.get("/metodo_pagamento", adminAutentication || autenticar, metodo_pagamentoController.findOneMetodo_Pagamento);
+router.get("/metodo_pagamento/view", autenticar || adminAutentication, metodo_pagamentoController.findOneMetodo_Pagamento);
 router.patch("/metodo_pagamento", adminAutentication,metodo_pagamentoController.updateMetodo_Pagamento);
 
 

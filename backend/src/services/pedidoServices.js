@@ -7,8 +7,8 @@ async function viewUserOrder(userId){
     try{
         const id = userId;
         
-        const viewOwnOrder = await knex("pedido").select("*").where({id_usuario: id}).first();
-        const getOrderId = await knex("pedido").select("id").where({id_usuario:id}).first();
+        const viewOwnOrder = await knex("pedido").select("*").where({id_usuario: id});
+        const getOrderId = await knex("pedido").select("id").where({id_usuario:id});
         const item = await knex("item").select("*").where({id_pedido: getOrderId.id})
         if(!viewOwnOrder){
             throw new Error("Não há pedidos.");
