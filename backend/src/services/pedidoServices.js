@@ -31,6 +31,15 @@ async function viewAllOrders(){
       throw err;
     }
   }
+const carrinho = {
+    id_user: 1,
+    produtos: [
+        { id_produto: 1, quantidade: 2 },
+        { id_produto: 2, quantidade: 1 },
+        { id_produto: 3, quantidade: 3 }
+    ],
+    preco_final: 250
+};
 const quantidade= 10
 const exemplo = 1
 async function createOrder({id_usuario,preco_final, metodo_pagamento, comprovante, estado_pedido, mensagem}) {
@@ -54,12 +63,13 @@ async function createOrder({id_usuario,preco_final, metodo_pagamento, comprovant
             mensagem: "Quando o pedido for entregue, aqui haverá informações sobre a retirada do produto",
             id_usuario
         });
-        const [item] = await knex("item").insert({
-            id_produto:exemplo,
-            id_pedido:pedido,
-            quantidade:quantidade
+        const itemsToInsert = carrinho.produtos.map(item => ({
+            id_pedido: pedido, 
+            id_produto: item.id_produto,
+            quantidade: item.quantidade
+        }));
 
-        })
+        const [item] = await knex("item").insert( itemsToInsert )
 
 
 
