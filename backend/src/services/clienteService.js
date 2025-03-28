@@ -5,11 +5,13 @@ const { configDotenv } = require("dotenv");
 const jwt = require("jsonwebtoken");
 configDotenv();
 
+
 async function gerarHashSenha(senha) {
   const saltRounds = 10;
   const senhaHasheada = await bcrypt.hash(senha, saltRounds);
   return senhaHasheada;
 }
+
 
 async function viewAllUsers(){
     try{
@@ -47,7 +49,7 @@ async function createUser({nome, cpf, idade, telefone, email, cargo, membro_paga
         const cpfExistente = await knex("cliente").select("*").where({cpf}).first();
         const emailExistente = await knex("cliente").select("*").where({email}).first();
 
-        if(nome === "" || cpf === "" || idade === "" || telefone === "" || membro_pagante === "" || senha === ""){
+        if(nome === "" || cpf === "" || idade === "" || telefone === "" || membro_pagante === "" || senha === "" || email === ""){
             throw new Error("Preencha todos os campos obrigatórios.");
         }
         if(cpfExistente || emailExistente){

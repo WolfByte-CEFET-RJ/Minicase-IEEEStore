@@ -1,5 +1,6 @@
 const clienteServices = require("../services/clienteService.js");
 
+
 async function viewAllUsers(req,res){
     try{
         const viewService = await clienteServices.viewAllUsers();

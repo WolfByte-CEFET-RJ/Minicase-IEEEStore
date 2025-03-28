@@ -5,7 +5,8 @@ const adminController = require("../controller/adminController.js");
 const loginController = require("../controller/loginController.js");
 const produtoController = require("../controller/produtoController.js");
 const clienteController = require("../controller/clienteController.js");
-const {upload} = require("../middleware/upload");
+const pedidoController = require("../controller/pedidoController.js");
+const {uploadProduto, uploadComprovante} = require("../middleware/upload.js");
 const {autenticar} = require("../middleware/auth.js");
 
 //ADMINISTRADOR
@@ -17,13 +18,12 @@ router.patch("/admin",adminAutentication,adminController.updateAdmin);
 router.delete("/admin",adminAutentication,adminController.deleteAdmin);
 
 //PRODUTO
-router.get("/produto/imagem/:id", autenticar || adminAutentication, produtoController.serveImage)
-router.get("/produto/:id", adminAutentication || autenticar, produtoController.viewProdutoId);
+router.get("/produto/imagem/:id",autenticar || adminAutentication, produtoController.serveImage)
+router.get("/produto/:id",autenticar || adminAutentication, produtoController.viewProdutoId);
 router.get("/produto", autenticar || adminAutentication, produtoController.viewAllProduto);
-router.post("/produto", adminAutentication, upload.single("foto"), produtoController.createProduto);
-router.patch("/produto/:id", adminAutentication, upload.single("foto"), produtoController.updateProduto);
+router.post("/produto", adminAutentication, uploadProduto.single("foto"), produtoController.createProduto);
+router.patch("/produto/:id", adminAutentication, uploadProduto.single("foto"), produtoController.updateProduto);
 router.delete("/produto/:id",adminAutentication, produtoController.deleteProduto);
-
 
 //RELATORIO
 router.get("/logs-login",adminAutentication, loginController.viewLogin)
@@ -35,5 +35,11 @@ router.get("/cliente/:id", autenticar || adminAutentication, clienteController.v
 router.get("/cliente", adminAutentication, clienteController.viewAllUsers);
 router.patch("/cliente/:id", autenticar, clienteController.updateUser);
 router.delete("/cliente/:id", autenticar || adminAutentication, clienteController.deleteUser);
+
+//PEDIDO
+router.get("/admin/pedido/view", adminAutentication, pedidoController.viewAllOrders);
+router.get("/pedido/view/:id",autenticar,pedidoController.viewUserOrder)
+router.post("/pedido", autenticar, uploadComprovante.single("comprovante"), pedidoController.createOrder);
+
 
 module.exports = router;
