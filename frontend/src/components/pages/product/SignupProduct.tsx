@@ -106,7 +106,7 @@ export default function SignupProduct() {
                 />
                 <div className="flex gap-3 mt-7">
                     <SubmitButton text="Cadastrar produto" className="text-xl bg-blue-900 hover:bg-blue-950 text-white px-8 py-2 " />
-                    <button className="bg-blue-800 hover:bg-blue-950 text-white font-bold px-8 py-2 rounded-xl text-xl" onClick={() => navigate('/paymant-details')}>Detalhes pagamento</button>
+                    <button className="bg-blue-800 hover:bg-blue-950 text-white font-bold px-8 py-2 rounded-xl text-xl" onClick={() => navigate('/alterar-pagamento')}>Detalhes pagamento</button>
                 </div>
             </form>
         </InformationBox>

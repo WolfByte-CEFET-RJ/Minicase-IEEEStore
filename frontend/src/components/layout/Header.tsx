@@ -24,12 +24,16 @@ function Header() {
       }
     }).then((res) => {
       setNome(isAdm ? res.data.message?.adminInfo?.nome.split(' ')[0] : res.data?.data?.userInfo?.nome.split(' ')[0])
-      console.log(nome)
     })
   }, [userId])
 
   if(hideHeaderRoutes.includes(location.pathname)){ //Condição que verifica o caminho atual para não renderizar o Header se for signup ou login
     return <Logo />
+  }
+
+  function exit() {
+    localStorage.removeItem('token')
+    sessionStorage.removeItem('token')
   }
 
   return (
@@ -233,7 +237,13 @@ function Header() {
               </li>
               <li>
                 {nome !== '' ? (
-                  <p>Olá,<span className="p-3 hover:text-gray-800 rounded-md transition-all cursor-pointer" onClick={()=>navigate(`/meu-perfil/${userId}`)}>{nome}</span></p>
+                  <Link 
+                    to="login"
+                    className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer"
+                    onClick={exit}
+                  >
+                    Sair
+                  </Link>
                 ) : (
                   <Link 
                     to="login"

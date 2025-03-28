@@ -42,7 +42,7 @@ function App() {
               <Route path="/signup-adm" element={<SignupAdm />} />
               <Route path="/signup-product" element={<SignupProduct />} />
               <Route path="/editar-produto/:id" element={<EditProduct />} />
-              <Route path="/payment" element={<Payment />} />
+              <Route path="/alterar-pagamento" element={<Payment />} />
               <Route path="/meu-perfil/:id" element={<Perfil />} />
               <Route path="listar-produtos" element={<ListProduct />} />
               <Route path="listar-usuarios" element={<UserList />} />

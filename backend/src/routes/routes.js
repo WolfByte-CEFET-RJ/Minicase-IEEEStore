@@ -17,9 +17,9 @@ router.patch("/admin",adminAutentication,adminController.updateAdmin);
 router.delete("/admin",adminAutentication,adminController.deleteAdmin);
 
 //PRODUTO
-router.get("/produto/imagem/:id",adminAutentication|| autenticar, produtoController.serveImage)
-router.get("/produto/:id",adminAutentication || autenticar, produtoController.viewProdutoId);
-router.get("/produto", adminAutentication || autenticar, produtoController.viewAllProduto);
+router.get("/produto/imagem/:id", autenticar || adminAutentication, produtoController.serveImage)
+router.get("/produto/:id", adminAutentication || autenticar, produtoController.viewProdutoId);
+router.get("/produto", autenticar || adminAutentication, produtoController.viewAllProduto);
 router.post("/produto", adminAutentication, upload.single("foto"), produtoController.createProduto);
 router.patch("/produto/:id", adminAutentication, upload.single("foto"), produtoController.updateProduto);
 router.delete("/produto/:id",adminAutentication, produtoController.deleteProduto);

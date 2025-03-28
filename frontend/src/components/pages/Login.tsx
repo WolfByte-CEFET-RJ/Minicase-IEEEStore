@@ -67,7 +67,7 @@ export default function Login() {
                 <Input
                     type="text"
                     placeholder="Digite seu cpf"
-                    name="email"
+                    name="cpf"
                     size={40}
                     icon={<MdAlternateEmail size={30} />}
                     onChange={handleOnChange}
