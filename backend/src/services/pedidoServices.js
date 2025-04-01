@@ -32,7 +32,7 @@ async function viewAllOrders(){
     }
   }
 const carrinho = {
-    id_user: 2,
+    id_user: 20,
     produtos: [
         { id_produto: 1, quantidade: 2 },
         { id_produto: 5, quantidade: 2 },
@@ -64,8 +64,7 @@ async function createOrder({id_usuario,preco_final, metodo_pagamento, comprovant
 
             console.log("Produto verificado com sucesso.");
         }
-       
-
+      
         if (!carrinho.preco_final || !metodo_pagamento || !comprovante) {
             throw new Error("Preencha todos os campos obrigatórios.");
         }
@@ -74,9 +73,14 @@ async function createOrder({id_usuario,preco_final, metodo_pagamento, comprovant
             throw new Error("Preço final não está sendo recebido como um número positivo.");
         }
         if(!carrinho.id_user){
-            throw new Error("Preencha a quem pertence este pedido.")
+            throw new Error("O pedido deve ser feito por um usuário autenticado.");
         }
 
+        const acceptedValues = ["credito", "debito", "pix"]
+
+        if(!acceptedValues.includes(metodo_pagamento)){
+            throw new Error("Os métodos de pagamento aceitos são apenas pix, credito ou debito.");
+        }
         const [pedido] = await knex("pedido").insert({
             preco_final: carrinho.preco_final,
             metodo_pagamento,
