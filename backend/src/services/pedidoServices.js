@@ -7,9 +7,9 @@ async function viewUserOrder(userId){
     try{
         const id = userId;
         
-        const viewOwnOrder = await knex("pedido").select("*").where({id_usuario: id}).first();
-        const getOrderId = await knex("pedido").select("id").where({id_usuario:id}).first();
-        const item = await knex("item").select("*").where({id_pedido: getOrderId.id})
+        const viewOwnOrder = await knex("pedido").select("*").where({id_usuario: id});
+        const getOrderId = viewOwnOrder.map((pedido) => pedido.id);
+        const item = await knex("item").select("*").whereIn("id_pedido", getOrderId);
         if(!viewOwnOrder){
             throw new Error("Não há pedidos.");
         }
@@ -31,7 +31,7 @@ async function viewAllOrders(){
       throw err;
     }
   }
-const carrinho = {
+  const carrinho = {
     id_user: 20,
     produtos: [
         { id_produto: 1, quantidade: 2 },
