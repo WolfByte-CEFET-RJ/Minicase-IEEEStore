@@ -1,60 +1,68 @@
-import { useState } from "react";
-
-type Product = {
-  id: number;
-  nome: string;
-  preco: number;
-  quantidade: number;
-  foto: string;
-};
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContext";
 
 export default function Cart() {
-  const [cart, setCart] = useState<Product[]>([
-    // Exemplos
-    { id: 1, nome: "Produto 1", preco: 20.0, quantidade: 1, foto: "url_da_imagem_1" },
-    { id: 2, nome: "Produto 2", preco: 35.0, quantidade: 1, foto: "url_da_imagem_2" },
-  ]);
-
-  const removeFromCart = (id: number) => {
-    setCart(cart.filter((product) => product.id !== id));
-  };
+  const { productsCart, addProductToCart ,removeProductFromCart, clearCart } = useContext(CartContext)!;
 
   const calculateTotal = () => {
-    return cart.reduce((total, product) => total + product.preco * product.quantidade, 0);
+    return productsCart.reduce((total, product) => total + product.preco * product.quantidade, 0);
   };
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-xl font-bold mb-4">Carrinho de Compras</h1>
-      {cart.length === 0 ? (
-        <p>Seu carrinho está vazio.</p>
+      <h1 className="text-4xl font-bold mb-4">Carrinho de Compras</h1>
+
+      {productsCart.length === 0 ? (
+        <p className="text-xl">Seu carrinho está vazio</p>
       ) : (
         <div>
           <ul>
-            {cart.map((product) => (
+            {productsCart.map((product) => (
               <li key={product.id} className="flex justify-between items-center mb-2 p-2 border-b">
                 <div className="flex items-center">
                   <img src={product.foto} alt={product.nome} className="w-16 h-16 mr-4" />
-                  <div>
-                    <p className="font-semibold">{product.nome}</p>
-                    <p>Preço: R${product.preco}</p>
-                    <p>Quantidade: {product.quantidade}</p>
+                  <div className="flex flex-col gap-y-2">
+                    <p className="text-2xl font-semibold">{product.nome}</p>
+                    <p className="text-lg font-medium">Preço: R${product.preco.toFixed(2)}</p>                
+                    <div className="flex items-center gap-5">
+                      <p className="text-base">Quantidade:</p>
+                      <div className="flex items-center gap-5 border-2 border-[#0D5FAA] rounded-2xl px-5 py-2">
+                        <button
+                          onClick={() => removeProductFromCart(product.id)}
+                          className="bg-gray-200 px-2 rounded-md text-xl font-medium"
+                        >
+                          -
+                        </button>
+                        <span className="font-medium">{product.quantidade}</span>
+                        <button
+                          onClick={() => addProductToCart(product)}
+                          className="bg-gray-200 px-2 rounded-md text-xl font-medium"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <button
-                  onClick={() => removeFromCart(product.id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  Remover
-                </button>
               </li>
             ))}
           </ul>
+
           <div className="mt-4 flex justify-between items-center">
-            <span className="font-semibold text-xl">Total: R${calculateTotal()}</span>
-            <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg">
-              Finalizar Compra
-            </button>
+            <span className="font-semibold text-xl">
+              Total: R${calculateTotal().toFixed(2)}
+            </span>
+            <div className="flex gap-4">
+              <button
+                onClick={clearCart}
+                className="bg-gray-400 hover:bg-gray-500 text-white text-xl font-semibold px-4 py-2 rounded-lg"
+              >
+                Limpar Carrinho
+              </button>
+              <button className="bg-[#0D5FAA] hover:bg-blue-900 text-white text-xl font-semibold px-6 py-2 rounded-lg">
+                Fechar pedido
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -1,11 +1,12 @@
 import ProductCategorySection from "../layout/ProductCategorySection"
 import ProductCard from "../layout/ProductCard"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router";
+import { CartContext } from "../../context/CartContext";
 
 
-export default function Home() {
+export default function Home() {   
 
     type Product = {
         id: number,

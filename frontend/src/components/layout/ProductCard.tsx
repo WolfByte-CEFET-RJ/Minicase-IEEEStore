@@ -3,7 +3,7 @@ import { useNavigate } from "react-router"
 import Modal from "./Modal"
 import axios from "axios"
 
-type Product = {
+export type Product = {
     id: number,
     nome: string,
     foto: string,
