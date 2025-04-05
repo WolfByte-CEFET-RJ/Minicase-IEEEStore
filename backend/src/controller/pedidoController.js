@@ -35,18 +35,49 @@ async function viewUserOrder(req,res){
 
 async function createOrder(req, res) {
     try {
-        let { id_usuario, preco_final, metodo_pagamento, estado_pedido, mensagem,id_pedido, quantidade} = req.body;
+        const carrinho = JSON.parse(req.body.carrinho);
+
+        let {
+            id_user,
+            produtos,
+            preco_final
+        } = carrinho;
+
+        if (parseInt(id_user) !== parseInt(req.userId)) {
+            return res.status(403).json({ message: "Acesso negado: você não pode fazer pedidos em nome de outro usuário." });
+        }
+
+        const metodo_pagamento = req.body.metodo_pagamento;
+        const estado_pedido = req.body.estado_pedido;
+        const mensagem = req.body.mensagem;
         const comprovante = req.file.path;
+
+        if(typeof produtos === "string") {
+            try{
+              produtos = JSON.parse(produtos);
+            }catch (erro){
+              return res.json({ status: false, message: "Formato inválido no campo 'produtos'" });
+            }
+          }
+
         preco_final = parseFloat(preco_final);
+
+        if (isNaN(id_user)) {
+            return res.json({ status: false, message: "ID do usuário inválido" });
+        }
+
+        id_user = parseInt(id_user);
+
+        const id_usuario = id_user
+
         const pedidoService = await pedidoServices.createOrder({
+            id_usuario,
             preco_final,
             metodo_pagamento,
             comprovante,
             estado_pedido,
             mensagem,
-            id_usuario,
-            id_pedido,
-            quantidade
+            produtos,            
         });
         
         
