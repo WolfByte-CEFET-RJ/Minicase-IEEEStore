@@ -40,6 +40,7 @@ router.delete("/cliente/:id", autenticar || adminAutentication, clienteControlle
 router.get("/admin/pedido/view", adminAutentication, pedidoController.viewAllOrders);
 router.get("/pedido/view/:id",autenticar,pedidoController.viewUserOrder)
 router.post("/pedido", autenticar, uploadComprovante.single("comprovante"), pedidoController.createOrder);
+router.get("/pedido/comprovante/:id",autenticar || adminAutentication, pedidoController.serveComprovante)
 
 
 module.exports = router;

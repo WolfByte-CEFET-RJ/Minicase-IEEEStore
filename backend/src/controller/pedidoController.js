@@ -2,6 +2,17 @@ const pedidoServices = require("../services/pedidoServices.js");
 
 
 
+async function serveComprovante(req,res){
+    try{
+        const {id} = req.params;
+        const comprovante = await pedidoServices.serveComprovante(id);
+        res.sendFile(comprovante);
+        
+    }catch(err){
+        res.status(500).json({message:"Erro ao enviar conseguir o comprovante"})
+    }
+}
+
 
 async function viewAllOrders(req,res){
     try{
@@ -93,4 +104,5 @@ module.exports = {
     createOrder,
     viewUserOrder,
     viewAllOrders,
+    serveComprovante,
 };

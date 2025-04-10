@@ -2,6 +2,17 @@ const knexConfig = require("../../knexfile.js");
 const knex = require("knex")(knexConfig.development);
 
 
+async function serveComprovante(id){                  
+    try{        
+        const get_comprovante = await knex("pedido").select("comprovante").where({id}).first();
+        const comprovantePath = get_comprovante.comprovante;
+        return comprovantePath;
+    }catch(err){
+        return {status:false, message:"Erro ao buscar comprovante"}
+    }
+}
+
+
 
 async function viewUserOrder(userId){
     try{
@@ -101,5 +112,6 @@ module.exports = {
     createOrder,
     viewAllOrders,
     viewUserOrder,
+    serveComprovante,
 
 };
