@@ -21,6 +21,7 @@ import UserProvider from './context/userProvider'
 import ListProduct from './components/pages/product/ListProduct'
 import UserList from './components/pages/Lista_de_usuarios'
 import PaymentDetails from './components/pages/PaymentDetails'
+import MyOrders from './components/pages/MyOrders'
 
 function App() {
 
@@ -48,6 +49,7 @@ function App() {
               <Route path="/meu-perfil/:id" element={<Perfil />} />
               <Route path="listar-produtos" element={<ListProduct />} />
               <Route path="listar-usuarios" element={<UserList />} />
+              <Route path="meus-pedidos" element={<MyOrders />} />
             </Routes>
           </Page>
         </UserProvider>
