@@ -100,9 +100,27 @@ async function createOrder(req, res) {
     }
 }
 
+async function updateOrder(req, res){
+    try{
+        const {id} = req.params;
+        const {id_usuario, preco_final, metodo_pagamento, comprovante, estado_pedido, mensagem} = req.body;
+       
+        const updateOrder = await pedidoServices.updateOrder({
+           id, estado_pedido, mensagem
+        });
+   
+        res.json({status: true, message: updateOrder});
+
+    }catch(erro){
+        console.log(erro);
+        res.json({status: false, message: erro.message});
+    }
+}
+
 module.exports = {
     createOrder,
     viewUserOrder,
     viewAllOrders,
     serveComprovante,
+    updateOrder,
 };

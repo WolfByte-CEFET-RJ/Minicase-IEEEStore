@@ -1,4 +1,5 @@
 const knexConfig = require("../../knexfile.js");
+const { updateAdmin } = require("./adminServices.js");
 const knex = require("knex")(knexConfig.development);
 
 
@@ -100,18 +101,51 @@ async function createOrder({id_usuario, preco_final, metodo_pagamento, comprovan
 
         const [item] = await knex("item").insert( itemsToInsert )
 
-        return pedido;
+        } catch (erro) {
+            console.error("Erro ao criar pedido", erro);
+            throw erro;
+        }
+}  
 
-    } catch (erro) {
-        console.error("Erro ao criar pedido", erro);
-        throw erro;
-    }
-}
+async function updateOrder({id, id_usuario, preco_final, metodo_pagamento, comprovante, estado_pedido, mensagem}){
+    try{
+        const order = await knex("pedido").where({id}).first();
+                        
+        if (!order){
+            throw new Error("Não foi possível encontrar este pedido.")
+        };
+
+        const camposAtualizar = {
+            id_usuario,
+            preco_final,
+            metodo_pagamento,
+            comprovante
+          };
+
+        if (typeof mensagem !== "string" || mensagem.trim() === ""){
+            throw new Error("A mensagem deve ser uma string dizendo onde e quando pegar o produto.");
+        };
+        camposAtualizar.mensagem = mensagem.trim();
+
+        if (typeof estado_pedido !== "string"){
+            throw new Error("O estado do pedido deve ser alterado.");
+        };
+
+        camposAtualizar.estado_pedido = estado_pedido.trim();
+
+        await knex("pedido").where({ id }).update(camposAtualizar);
+
+        return { status: true, message: "Produto atualizado com sucesso!" };
+
+    }catch(erro){
+        return {status: false, message: erro.message};
+    };
+};
 
 module.exports = {
     createOrder,
     viewAllOrders,
     viewUserOrder,
     serveComprovante,
-
+    updateOrder,
 };
