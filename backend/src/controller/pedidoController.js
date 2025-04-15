@@ -103,7 +103,7 @@ async function createOrder(req, res) {
 async function updateOrder(req, res){
     try{
         const {id} = req.params;
-        const {id_usuario, preco_final, metodo_pagamento, comprovante, estado_pedido, mensagem} = req.body;
+        const {estado_pedido, mensagem} = req.body;
        
         const updateOrder = await pedidoServices.updateOrder({
            id, estado_pedido, mensagem
