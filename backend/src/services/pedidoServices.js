@@ -101,6 +101,8 @@ async function createOrder({id_usuario, preco_final, metodo_pagamento, comprovan
 
         const [item] = await knex("item").insert( itemsToInsert )
 
+        return (itemsToInsert);
+
         } catch (erro) {
             console.error("Erro ao criar pedido", erro);
             throw erro;
