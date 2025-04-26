@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import Modal from "./Modal"
 import axios from "axios"
+import useUserContext from "../../hooks/useUseContext";
 
 export type Product = {
     id: number,
@@ -34,6 +35,7 @@ export default function ProductCard(props: ProductCardProps) {
     let navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
+    const {userId} = useUserContext()
 
     useEffect(() => {
         async function getImage(id: number) {
@@ -73,6 +75,20 @@ export default function ProductCard(props: ProductCardProps) {
         }
     }
 
+    function addOrder() {
+
+        const orderLocalStore = localStorage.getItem("order");
+        let order = orderLocalStore ? JSON.parse(orderLocalStore) : {id_user: userId, produtos: [], preco_final: 0};
+        
+        const productInCart = order.produtos.some((produto: {id_produto: number, quantidade: number}) => produto.id_produto == props.id)
+
+        if(!productInCart) {
+            order.produtos.push({id_produto:props.id, quantidade: 1})
+            order.preco_final += props.price
+            localStorage.setItem("order", JSON.stringify(order))
+        }
+    }
+
     return (
         <>
             <div className="flex flex-col gap-2 w-64 border-zinc border-2 rounded-lg bg-white">
@@ -88,7 +104,7 @@ export default function ProductCard(props: ProductCardProps) {
                             <p><span className="font-bold">Disponível:</span> {props.available}</p>
                             <p><span className="font-bold">Avaliação:</span> {props.rating}</p>
                             <button className="bg-blue-500 hover:bg-blue-600 w-full text-white font-bold py-1 rounded" onClick={() => navigate('/product/' + props.id)}>Ver Produto</button>
-                            <button className="bg-blue-700 hover:bg-blue-800 w-full text-white font-bold py-1 rounded">Adicionar ao Carrinho</button>
+                            <button className="bg-blue-700 hover:bg-blue-800 w-full text-white font-bold py-1 rounded" onClick={addOrder}>Adicionar ao Carrinho</button>
                         </div>
                     </>
                 ) : (
