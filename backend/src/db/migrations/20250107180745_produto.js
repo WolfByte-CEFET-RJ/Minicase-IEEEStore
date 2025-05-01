@@ -9,9 +9,9 @@ exports.up = function(knex) {
       table.float('preco').notNullable();
       table.integer('quantidade').notNullable();
       table.string('foto').notNullable();
-      table.float('media_avaliacao').notNullable();
-      table.integer('qt_avaliacoes');
-      table.float('qt_estrelas');
+      table.float('media_avaliacao').notNullable();//sumiu
+      table.integer('qt_avaliacoes');//sumiu
+      table.float('qt_estrelas');//sumiu
     });
   };
   
