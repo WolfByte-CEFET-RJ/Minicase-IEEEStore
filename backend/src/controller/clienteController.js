@@ -1,5 +1,6 @@
 const clienteServices = require("../services/clienteService.js");
 
+
 async function viewAllUsers(req,res){
     try{
         const viewService = await clienteServices.viewAllUsers();
@@ -26,7 +27,7 @@ async function viewUser(req,res){
     }
 }
 
-async function createUser(req, res){
+async function  createUser(req, res){
     try{
         const{nome, cpf, idade, telefone, email, cargo, membro_pagante, senha} = req.body;
         const createService = await clienteServices.createUser({

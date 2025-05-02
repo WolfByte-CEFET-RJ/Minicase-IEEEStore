@@ -5,11 +5,13 @@ const { configDotenv } = require("dotenv");
 const jwt = require("jsonwebtoken");
 configDotenv();
 
+
 async function gerarHashSenha(senha) {
   const saltRounds = 10;
   const senhaHasheada = await bcrypt.hash(senha, saltRounds);
   return senhaHasheada;
 }
+
 
 async function viewAllUsers(){
     try{
