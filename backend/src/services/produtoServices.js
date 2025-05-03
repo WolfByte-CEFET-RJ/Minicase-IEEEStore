@@ -34,8 +34,8 @@ async function viewProdutoId(id) {
     try {
         console.log("ID recebido:", id);
         const produto = await knex("produto").select("*").where({ id }).first();
-
-        console.log("Produto:", produto);
+        
+        console.log("Produto:", produto);   
         
         if (!produto) {
             throw new Error("Não foi possível encontrar um produto com esse id.");

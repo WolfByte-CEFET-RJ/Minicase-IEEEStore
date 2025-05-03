@@ -25,6 +25,18 @@ async function viewAllUsers(){
     }catch(erro){
         throw(erro);
     }
+}async function viewAllUsers(){
+    try{
+        const clientes = await knex("cliente").select("*");
+        if (clientes.length === 0){
+            throw new Error("Sem usuários no registro.");
+        }
+        
+        return clientes;
+
+    }catch(erro){
+        throw(erro);
+    }
 }
 
 async function viewUser(idUser){

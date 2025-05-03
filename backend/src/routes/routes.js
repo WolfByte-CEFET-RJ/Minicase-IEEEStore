@@ -4,6 +4,7 @@ const {adminAutentication} = require("../middleware/adminAuth.js");
 const adminController = require("../controller/adminController.js");
 const loginController = require("../controller/loginController.js");
 const produtoController = require("../controller/produtoController.js");
+const avaliacaoController = require("../controller/avaliacaoController.js");
 const metodo_pagamentoController = require('../controller/metodo_pagamentoController.js');
 
 const clienteController = require("../controller/clienteController.js");
@@ -48,6 +49,15 @@ router.get("/pedido/view/:id",autenticar,pedidoController.viewUserOrder);
 router.post("/pedido", autenticar, uploadComprovante.single("comprovante"), pedidoController.createOrder);
 router.get("/pedido/comprovante/:id",autenticar || adminAutentication, pedidoController.serveComprovante);
 router.patch("/pedido/update/:id", adminAutentication, pedidoController.updateOrder);
+
+
+//AVALIAÇÃO
+router.get("/avaliacao", adminAutentication, avaliacaoController.verAvaliacoes);
+router.get("/avaliacao/:id_produto", autenticar, avaliacaoController.verAvaliacoesProduto);
+router.post("/avaliacao/:id_produto/:id_usuario", autenticar, avaliacaoController.createAvaliacao);
+router.patch("/avaliacao/:id_produto/:id_usuario", autenticar, avaliacaoController.updateAvaliacao);
+router.delete("/avaliacao/:id_produto/:id_usuario", autenticar, avaliacaoController.deleteAvaliacao);
+
 
 
 module.exports = router;
