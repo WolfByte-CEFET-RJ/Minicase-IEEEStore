@@ -33,7 +33,7 @@ async function viewAlteracao() {
 async function viewProdutoId(id) {
     try {
         console.log("ID recebido:", id);
-        const produto = await knex("produto").select("*").where({ id }).first();
+        const produto = await knex("produto").select("id", "nome", "preco", "quantidade", "foto").where({ id }).first();
         const media = await knex("avaliacao").where({ id_produto: id }).avg("qt_estrelas as media_avaliacoes").first();
         const quantidade_avaliacoes = await knex("avaliacao").where({ id_produto: id }).count("* as total").first();
         const avaliacoes= await knex("avaliacao").where({id_produto: id}).select("id_usuario", "qt_estrelas");
