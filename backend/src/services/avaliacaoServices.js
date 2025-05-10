@@ -39,9 +39,35 @@ async function verAvaliacoesProduto(id_produto){
 
 }
 
+async function verAvaliacoesUsuario(id_usuario) {
+  try {
+    const avaliacoes = await knex("avaliacao")
+      .join("produto", "avaliacao.id_produto", "produto.id") 
+      .where("avaliacao.id_usuario", id_usuario)
+      .select(
+        "avaliacao.*",
+        "produto.nome as nome_produto",
+      );
+
+    if (avaliacoes.length === 0) {
+      throw new Error("Nenhuma avaliação encontrada para este usuário.");
+    }
+
+    return {
+      avaliacoes,
+      message: "Avaliações com informações dos produtos listadas com sucesso."
+    };
+  } catch (err) {
+    throw err;
+  }
+}
+
+
+
 async function createAvaliacao(id_produto, id_usuario, qt_estrelas) {
   
   const produtoExistente = await knex("produto").where({id: id_produto}).first();
+
   if(!produtoExistente){
     throw new Error("Não existe produto com esse id no banco");
   }
@@ -111,6 +137,7 @@ async function createAvaliacao(id_produto, id_usuario, qt_estrelas) {
   module.exports = {
     verAvaliacoes,
     verAvaliacoesProduto,
+    verAvaliacoesUsuario,
     createAvaliacao,
     updateAvaliacao,
     deleteAvaliacao,

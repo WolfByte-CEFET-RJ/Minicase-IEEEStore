@@ -1,5 +1,6 @@
 const produtoServices = require("../services/produtoServices.js");
 const express = require("express");
+const { verAvaliacoes } = require("./avaliacaoController.js");
 
 async function serveImage(req,res){
     try{
@@ -27,13 +28,20 @@ async function viewProdutoId(req, res) {
         const { id } = req.params;
         console.log("ID recebido:", id);
         const readService = await produtoServices.viewProdutoId(id);  
+
         
         if (!readService) {
             return res.status(404).json({ status: false, message: "Produto não encontrado." });
         }
 
-        res.status(200).json({ status: true, message: "Produto encontrado", produto: readService });
-        console.log("Controlador executado com sucesso");
+        res.status(200).json({
+            status: true,
+            message: "Produto encontrado",
+            produto: readService.produto,
+            media_avaliacoes: readService.media_avaliacoes,
+            avaliacoes: readService.avaliacoes
+        });
+     console.log("Controlador executado com sucesso");
     } catch (erro) {
         console.log(erro);
         res.status(500).json({ status: false, message: "Erro ao buscar o produto. " + erro.message });
