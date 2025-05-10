@@ -67,9 +67,8 @@ async function viewAllProduto(){
         const resultado = await knex("avaliacao").where({ id_produto: produto.id }).avg("qt_estrelas as media_avaliacoes").first();
 
       return {
-        ...produto,
-        media_avaliacoes: resultado.media_avaliacoes || 0, 
-      };
+        produto,
+        media_avaliacoes: resultado.media_avaliacoes || 0 };
     }));
 
     return produtosComMedia;

@@ -53,7 +53,6 @@ router.patch("/pedido/update/:id", adminAutentication, pedidoController.updateOr
 
 //AVALIAÇÃO
 router.get("/avaliacao", adminAutentication, avaliacaoController.verAvaliacoes);
-router.get("/avaliacao/produto/:id_produto", autenticar, avaliacaoController.verAvaliacoesProduto);
 router.get("/avaliacao/usuario/:id_usuario", autenticar, avaliacaoController.verAvaliacoesUsuario);
 router.post("/avaliacao/:id_produto/:id_usuario", autenticar, avaliacaoController.createAvaliacao);
 router.patch("/avaliacao/:id_produto/:id_usuario", autenticar, avaliacaoController.updateAvaliacao);
