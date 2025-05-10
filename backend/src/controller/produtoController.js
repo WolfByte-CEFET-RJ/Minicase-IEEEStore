@@ -39,7 +39,9 @@ async function viewProdutoId(req, res) {
             message: "Produto encontrado",
             produto: readService.produto,
             media_avaliacoes: readService.media_avaliacoes,
+            quantidade_avaliacoes: readService.quantidade_avaliacoes,
             avaliacoes: readService.avaliacoes
+
         });
      console.log("Controlador executado com sucesso");
     } catch (erro) {

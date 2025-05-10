@@ -35,9 +35,10 @@ async function viewProdutoId(id) {
         console.log("ID recebido:", id);
         const produto = await knex("produto").select("*").where({ id }).first();
         const media = await knex("avaliacao").where({ id_produto: id }).avg("qt_estrelas as media_avaliacoes").first();
-        const verTodasAvaliacoes_produto= await knex("avaliacao").where({id_produto: id}).select("id_usuario", "qt_estrelas");
+        const quantidade_avaliacoes = await knex("avaliacao").where({ id_produto: id }).count("* as total").first();
+        const avaliacoes= await knex("avaliacao").where({id_produto: id}).select("id_usuario", "qt_estrelas");
 
-        console.log("Produto:", produto, "Média de avaiações:", media, "Avaliações: " , verTodasAvaliacoes_produto);   
+        console.log("Produto:", produto, "Média de avaiações:", media,"Numero de avaliações:", quantidade_avaliacoes, "Avaliações: " , avaliacoes);   
         
         if (!produto) {
             throw new Error("Não foi possível encontrar um produto com esse id.");
@@ -45,7 +46,8 @@ async function viewProdutoId(id) {
         return {
         produto,
         media_avaliacoes: media?.media_avaliacoes || null,
-        avaliacoes : verTodasAvaliacoes_produto
+        avaliacoes,
+        quantidade_avaliacoes 
         };
     } catch (erro) {
         console.error("Erro:", erro.message);
