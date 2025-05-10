@@ -68,7 +68,7 @@ async function viewAllProduto(){
 
       return {
         ...produto,
-        media_avaliacoes: resultado.media_avaliacoes || 0, // se não tiver avaliação, retorna 0
+        media_avaliacoes: resultado.media_avaliacoes || 0, 
       };
     }));
 
