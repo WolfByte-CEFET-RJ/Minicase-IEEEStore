@@ -158,6 +158,12 @@ function Header() {
                   </li>
                   <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
                     <Link 
+                      to="/produtos-adq">
+                      Produtos Adquiridos
+                    </Link>
+                  </li>
+                  <li className="p-3 hover:bg-sky-700 hover:text-black rounded-md transition-all cursor-pointer">
+                    <Link 
                       to={`/meu-perfil/${userId}`}>
                       Meu perfil
                     </Link>
