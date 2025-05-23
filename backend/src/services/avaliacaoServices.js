@@ -19,36 +19,29 @@ async function verAvaliacoes(){
     
     }
   }
-
-async function verAvaliacoesUsuario(id_usuario) {
-  try {
-    const avaliacoes = await knex("avaliacao")
-      .join("produto", "avaliacao.id_produto", "produto.id") 
-      .where("avaliacao.id_usuario", id_usuario)
-      .select(
-        "avaliacao.*",
-        "produto.nome as nome_produto",
-      );
-
-    if (avaliacoes.length === 0) {
-      throw new Error("Nenhuma avaliação encontrada para este usuário.");
+async function verAvaliacoesProduto(id_produto){
+  try{
+    const verTodasAvaliacoes_produto= await knex("avaliacao").where({id_produto}).select("*");
+    const resultado = await knex("avaliacao").where({ id_produto }).avg("qt_estrelas as media_avaliacoes").first();
+    if (verTodasAvaliacoes_produto.length === 0) {
+      throw new Error("Nenhuma avaliação encontrada para este produto.");
     }
-
     return {
-      avaliacoes,
-      message: "Avaliações com informações dos produtos listadas com sucesso."
-    };
-  } catch (err) {
+      media_avaliacoes: resultado.media_avaliacoes,
+      avaliacoes: verTodasAvaliacoes_produto
+    }; 
+   }catch(err){
+    
     throw err;
+  
   }
+
+
 }
-
-
 
 async function createAvaliacao(id_produto, id_usuario, qt_estrelas) {
   
   const produtoExistente = await knex("produto").where({id: id_produto}).first();
-
   if(!produtoExistente){
     throw new Error("Não existe produto com esse id no banco");
   }
@@ -66,6 +59,19 @@ async function createAvaliacao(id_produto, id_usuario, qt_estrelas) {
   if (avaliacaoExistente) {
   throw new Error("Você já avaliou este produto.");
   } 
+
+const pedidoProduto = await knex("item")
+  .join("pedido", "item.id_pedido", "pedido.id")
+  .where({
+    "pedido.id_usuario": id_usuario,
+    "item.id_produto": id_produto
+  })
+  .first();
+
+  if(!pedidoProduto){
+    throw new Error("esse usuario nao comprou o produto que esta sendo avaliado.");
+  }
+
     await knex('avaliacao').insert({
       id_produto,
       id_usuario,
@@ -117,7 +123,7 @@ async function createAvaliacao(id_produto, id_usuario, qt_estrelas) {
 
   module.exports = {
     verAvaliacoes,
-    verAvaliacoesUsuario,
+    verAvaliacoesProduto,
     createAvaliacao,
     updateAvaliacao,
     deleteAvaliacao,
