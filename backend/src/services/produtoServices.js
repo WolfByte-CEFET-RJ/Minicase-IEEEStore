@@ -33,14 +33,22 @@ async function viewAlteracao() {
 async function viewProdutoId(id) {
     try {
         console.log("ID recebido:", id);
-        const produto = await knex("produto").select("*").where({ id }).first();
+        const produto = await knex("produto").select("id", "nome", "preco", "quantidade", "foto").where({ id }).first();
+        const media = await knex("avaliacao").where({ id_produto: id }).avg("qt_estrelas as media_avaliacoes").first();
+        const quantidade_avaliacoes = await knex("avaliacao").where({ id_produto: id }).count("* as total").first();
+        const avaliacoes= await knex("avaliacao").where({id_produto: id}).select("id_usuario", "qt_estrelas");
 
-        console.log("Produto:", produto);
+        console.log("Produto:", produto, "Média de avaiações:", media,"Numero de avaliações:", quantidade_avaliacoes, "Avaliações: " , avaliacoes);   
         
         if (!produto) {
             throw new Error("Não foi possível encontrar um produto com esse id.");
         }
-        return produto;
+        return {
+        produto,
+        media_avaliacoes: media?.media_avaliacoes || null,
+        avaliacoes,
+        quantidade_avaliacoes 
+        };
     } catch (erro) {
         console.error("Erro:", erro.message);
         throw erro;
@@ -49,19 +57,28 @@ async function viewProdutoId(id) {
 
 async function viewAllProduto(){
     try{
-        const produto = await knex("produto").select("*");
+    const produto = await knex("produto").select("id", "nome", "preco", "quantidade", "foto");
+
         if (produto.length === 0){
             throw new Error("Sem produtos no registro.");
         }
-        
-        return produto;
+
+        const produtosComMedia = await Promise.all(produto.map(async (produto) => {
+        const resultado = await knex("avaliacao").where({ id_produto: produto.id }).avg("qt_estrelas as media_avaliacoes").first();
+
+      return {
+        produto,
+        media_avaliacoes: resultado.media_avaliacoes || 0 };
+    }));
+
+    return produtosComMedia;
 
     }catch(erro){
         throw(erro);
     }
 }
 
-async function createProduto({ nome, preco, quantidade, foto, media_avaliacao, qt_avaliacoes, qt_estrelas }) {
+async function createProduto({ nome, preco, quantidade, foto, media_avaliacao}) {
     try {
         const produtoExistente = await knex("produto").select("*").where({ nome }).first();
         if(produtoExistente){
@@ -84,15 +101,9 @@ async function createProduto({ nome, preco, quantidade, foto, media_avaliacao, q
         if(media_avaliacao != undefined){
             throw new Error("não dê um valor para media avaliacao");
         }
-        
-        if(qt_avaliacoes != null){
-            throw new Error("qt avaliacoes deve ser nulo");
-        }
-        if(qt_estrelas != null){
-            throw new Error("não dê um valor para qt avaliacoes");
-        }
+
      const [id] = await knex('produto').insert({
-        nome, preco, quantidade, foto, media_avaliacao: 0, qt_avaliacoes: 0,  qt_estrelas: 0
+        nome, preco, quantidade, foto, media_avaliacao: 0
     });
     return{
         message: "Produto criado com sucesso.",
@@ -124,7 +135,7 @@ async function alteracaoProduto(id,id_adm){
     }
 }
 
-async function updateProduto(id,id_adm,nome, preco, quantidade, foto, qt_estrelas) {
+async function updateProduto(id,id_adm,nome, preco, quantidade, foto) {
     try {
         const produto = await knex("produto").select("*").where({ id }).first();
         if (!produto) {
@@ -153,21 +164,6 @@ async function updateProduto(id,id_adm,nome, preco, quantidade, foto, qt_estrela
 
         if (foto !== undefined && typeof foto === "string" && foto.trim() !== "") {
             camposAtualizar.foto = foto.trim();
-        }
-
-        if (qt_estrelas !== undefined) {
-            const estrelasFloat = parseFloat(qt_estrelas);
-            if (!isNaN(estrelasFloat) && estrelasFloat >= 0 && estrelasFloat <= 5 && estrelasFloat % 0.5 === 0) {
-                camposAtualizar.qt_estrelas = estrelasFloat;
-
-                if (produto.qt_avaliacoes === 0) {
-                    camposAtualizar.media_avaliacao = estrelasFloat;
-                    camposAtualizar.qt_avaliacoes = 1;
-                } else {
-                    camposAtualizar.media_avaliacao = ((produto.media_avaliacao * produto.qt_avaliacoes) + estrelasFloat) / (produto.qt_avaliacoes + 1);
-                    camposAtualizar.qt_avaliacoes = produto.qt_avaliacoes + 1;
-                }
-            }
         }
 
         if (Object.keys(camposAtualizar).length === 0) {

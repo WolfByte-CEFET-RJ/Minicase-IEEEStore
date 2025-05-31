@@ -1,4 +1,5 @@
 const adminServices = require("../services/adminServices.js");
+
 async function viewAdmin(req, res) {
   try {
     const idAdmin = req.userId;

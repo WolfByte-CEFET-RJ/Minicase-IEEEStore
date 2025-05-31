@@ -5,13 +5,27 @@ const { configDotenv } = require("dotenv");
 const jwt = require("jsonwebtoken");
 configDotenv();
 
+
 async function gerarHashSenha(senha) {
   const saltRounds = 10;
   const senhaHasheada = await bcrypt.hash(senha, saltRounds);
   return senhaHasheada;
 }
 
+
 async function viewAllUsers(){
+    try{
+        const clientes = await knex("cliente").select("*");
+        if (clientes.length === 0){
+            throw new Error("Sem usuários no registro.");
+        }
+        
+        return clientes;
+
+    }catch(erro){
+        throw(erro);
+    }
+}async function viewAllUsers(){
     try{
         const clientes = await knex("cliente").select("*");
         if (clientes.length === 0){

@@ -1,5 +1,6 @@
 const produtoServices = require("../services/produtoServices.js");
 const express = require("express");
+const { verAvaliacoes } = require("./avaliacaoController.js");
 
 async function serveImage(req,res){
     try{
@@ -27,13 +28,22 @@ async function viewProdutoId(req, res) {
         const { id } = req.params;
         console.log("ID recebido:", id);
         const readService = await produtoServices.viewProdutoId(id);  
+
         
         if (!readService) {
             return res.status(404).json({ status: false, message: "Produto não encontrado." });
         }
 
-        res.status(200).json({ status: true, message: "Produto encontrado", produto: readService });
-        console.log("Controlador executado com sucesso");
+        res.status(200).json({
+            status: true,
+            message: "Produto encontrado",
+            produto: readService.produto,
+            media_avaliacoes: readService.media_avaliacoes,
+            quantidade_avaliacoes: readService.quantidade_avaliacoes,
+            avaliacoes: readService.avaliacoes
+
+        });
+     console.log("Controlador executado com sucesso");
     } catch (erro) {
         console.log(erro);
         res.status(500).json({ status: false, message: "Erro ao buscar o produto. " + erro.message });
@@ -52,7 +62,7 @@ async function viewAllProduto(req, res){
 }
 async function createProduto(req, res) {
     try {
-        let {nome, preco, quantidade, media_avaliacao, qt_avaliacoes, qt_estrelas} = req.body;
+        let {nome, preco, quantidade, media_avaliacao} = req.body;
         const foto = req.file.path;
         
 
@@ -63,8 +73,8 @@ async function createProduto(req, res) {
             return req.stauts(400).json({status: false, message: "O arquivo da foto do produto é obrigatória."});
         }
 
-        console.log("Dados recebidos no controller:", { nome, preco, quantidade, foto, qt_estrelas, qt_avaliacoes });
-        const createService = await produtoServices.createProduto({ nome, preco, quantidade, foto, media_avaliacao, qt_estrelas, qt_avaliacoes });
+        console.log("Dados recebidos no controller:", { nome, preco, quantidade, foto, media_avaliacao });
+        const createService = await produtoServices.createProduto({ nome, preco, quantidade, foto, media_avaliacao, });
         res.json({ status: true, message: createService });
     } catch (erro) {
         console.error("Erro no controller:", erro);
@@ -78,16 +88,15 @@ async function updateProduto(req, res) {
     try {
         const id_admin = req.userId;
         const id = req.params.id;
-        let { nome, preco, quantidade, qt_estrelas } = req.body;
+        let { nome, preco, quantidade} = req.body;
         const foto = req.file ? req.file.path : null;
 
         if (preco !== undefined) preco = parseFloat(preco);
         if (quantidade !== undefined) quantidade = parseInt(quantidade);
-        if (qt_estrelas !== undefined) qt_estrelas = parseFloat(qt_estrelas);
 
-        console.log("Dados recebidos no controller:", { nome, preco, quantidade, foto, qt_estrelas });
-        const resultado = await produtoServices.updateProduto(id,id_admin,nome, preco, quantidade, foto, qt_estrelas);
-        //const alterar = await produtoServices.alteracaoProduto(id,id_admin);
+        console.log("Dados recebidos no controller:", { nome, preco, quantidade, foto });
+        const resultado = await produtoServices.updateProduto(id,id_admin,nome, preco, quantidade, foto);
+
         if (resultado) {
             res.status(200).json({resultado});
         } else {
