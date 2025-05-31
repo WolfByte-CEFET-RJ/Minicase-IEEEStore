@@ -19,16 +19,17 @@ async function verAvaliacoes(){
     
     }
   }
-async function verAvaliacoesProduto(id_produto){
+async function verAvaliacoesProduto(id_produto, id_usuario){
   try{
-    const verTodasAvaliacoes_produto= await knex("avaliacao").where({id_produto}).select("*");
+    const avaliacoes_usuario = await knex("avaliacao").where({id_usuario: id_usuario, id_produto: id_produto}).first();
     const resultado = await knex("avaliacao").where({ id_produto }).avg("qt_estrelas as media_avaliacoes").first();
-    if (verTodasAvaliacoes_produto.length === 0) {
-      throw new Error("Nenhuma avaliação encontrada para este produto.");
+
+    if(!avaliacoes_usuario){
+      throw new Error("nenhuma avaliacao encontrada para o usuario logado.");
     }
     return {
       media_avaliacoes: resultado.media_avaliacoes,
-      avaliacoes: verTodasAvaliacoes_produto
+      avaliacoes_usuario: avaliacoes_usuario
     }; 
    }catch(err){
     

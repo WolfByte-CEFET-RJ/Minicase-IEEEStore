@@ -10,15 +10,16 @@ async function verAvaliacoes(req,res){
     }
 }
 
-  async function verAvaliacoesUsuario(req, res) {
+  async function verAvaliacoesProduto(req, res) {
     try {
-      const { id_usuario } = req.params;
+      const { id_produto } = req.params;
+      const usuario = req.userId
   
-      if (!id_usuario) {
+      if (!id_produto) {
         throw new Error("O parâmetro id_produto é obrigatório.");
       }
 
-      const verAvaliacoes = await avaliacaoServices.verAvaliacoesUsuario(Number(id_usuario));
+      const verAvaliacoes = await avaliacaoServices.verAvaliacoesProduto(Number(id_produto), usuario);
   
       res.json({ status: true, data: verAvaliacoes });
       console.log("controlador executado");
@@ -90,7 +91,7 @@ async function createAvaliacao(req, res) {
 
 module.exports = {
     verAvaliacoes,
-    verAvaliacoesUsuario,
+    verAvaliacoesProduto,
     createAvaliacao,
     updateAvaliacao,
     deleteAvaliacao
