@@ -109,7 +109,7 @@ async function createOrder({id_usuario, preco_final, metodo_pagamento, comprovan
         }
 }  
 
-async function updateOrder({id, id_usuario, preco_final, metodo_pagamento, comprovante, estado_pedido, mensagem}){
+async function updateOrder({id, id_adm, estado_pedido, mensagem}){
     try{
         const order = await knex("pedido").where({id}).first();
                         
@@ -117,26 +117,21 @@ async function updateOrder({id, id_usuario, preco_final, metodo_pagamento, compr
             throw new Error("Não foi possível encontrar este pedido.")
         };
 
-        const camposAtualizar = {
-            id_usuario,
-            preco_final,
-            metodo_pagamento,
-            comprovante
-          };
-
         if (typeof mensagem !== "string" || mensagem.trim() === ""){
             throw new Error("A mensagem deve ser uma string dizendo onde e quando pegar o produto.");
         };
-        camposAtualizar.mensagem = mensagem.trim();
+        mensagem = mensagem.trim();
 
         if (typeof estado_pedido !== "string"){
             throw new Error("O estado do pedido deve ser alterado.");
         };
 
-        camposAtualizar.estado_pedido = estado_pedido.trim();
+        estado_pedido = estado_pedido.trim();
 
-        await knex("pedido").where({ id }).update(camposAtualizar);
-
+        await knex("pedido").where({ id }).update({estado_pedido: estado_pedido, mensagem: mensagem});
+        const pedido = await knex("alteracao_estado_pedido").insert({
+            id_adm: id_adm, id_pedido: id, estado_pedido: estado_pedido
+        })
         return { status: true, message: "Produto atualizado com sucesso!" };
 
     }catch(erro){
@@ -144,10 +139,29 @@ async function updateOrder({id, id_usuario, preco_final, metodo_pagamento, compr
     };
 };
 
+async function view_alteracao_estado_Pedido(){
+    try{
+        const view = await knex("alteracao_estado_pedido").select("*");
+        console.log(view)
+        if(!view){
+            throw new Error("Erro ao exibir logs");
+        }
+        if(view.length ===0){
+            throw new Error("Não foi possível encontrar alteracoes");
+        }
+        return view
+    }catch(error){
+        console.log("Erro ao visualizar os logs");
+        throw error;
+    }
+
+}
+
 module.exports = {
     createOrder,
     viewAllOrders,
     viewUserOrder,
     serveComprovante,
     updateOrder,
+    view_alteracao_estado_Pedido,
 };
