@@ -4,6 +4,8 @@ import InformationBox from "../layout/InformationBox"
 import SubmitButton from "../form/SubmitButton"
 import useUserContext from "../../hooks/useUseContext"
 import { useNavigate } from "react-router"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface PaymentDetails {
   chave_pix: string,
@@ -89,16 +91,32 @@ export default function PaymentDetails() {
         }
       })
       localStorage.removeItem("order")
-      // alert("Comprovante enviado com sucesso!")
-      navigate("/")
+      toast.success('Operação realizada com sucesso!', {
+        className: 'bg-green-700 text-white rounded-lg shadow-lg px-4 py-3',
+        progressClassName: 'bg-green-300',
+        icon: () => <>✅</>
+      });
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     } catch (error) {
       console.error("Erro ao enviar comprovante:", error)
-      // alert("Erro ao enviar comprovante.")
+      toast.error("Algo deu errado!");
     }
   }
 
   return (
     <div className="w-fit m-auto">
+       <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
       <h1 className="font-bold text-4xl pt-10 pb-2">Pagamento do pedido</h1>
       <InformationBox className="border-4 border-gray-400 w-fit p-10">
         <h2 className="text-xl font-semibold before:mr-1 before:text-4xl">

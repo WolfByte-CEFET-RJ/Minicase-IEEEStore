@@ -37,8 +37,6 @@ export default function MyOrders() {
         .catch((error) => console.log(error))
     }, [])
 
-    console.log(orders)
-
     return (
         <div className="container mx-auto p-4 flex flex-col gap-5">
             <h2 className="font-bold text-4xl pt-10 pb-2 mb-5">Meus pedidos</h2>
