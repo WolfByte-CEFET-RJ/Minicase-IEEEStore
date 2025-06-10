@@ -5,14 +5,11 @@ import axios from "axios"
 import useUserContext from "../../hooks/useUseContext";
 
 export type Product = {
-    id: number,
-    nome: string,
-    foto: string,
-    preco: number,
-    quantidade: number,
-    media_avaliacao: number,
-    qt_avaliacoes: number,
-    qt_estrelas: number
+    id_product: number,
+    nameProduct: string
+    imgSrc: string
+    imgAlt: string
+    preco: number
 };
 
 interface ProductCardProps {
@@ -36,7 +33,8 @@ export default function ProductCard(props: ProductCardProps) {
     const [isOpen, setIsOpen] = useState(false)
     const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token')
     const {userId} = useUserContext()
-
+    // console.log(userId);
+    
     useEffect(() => {
         async function getImage(id: number) {
             try {
@@ -66,7 +64,7 @@ export default function ProductCard(props: ProductCardProps) {
                 }
             })
             if(props.products && props.setProducts) {
-                props.setProducts(props.products.filter((product) => product.id !== props.id))
+                props.setProducts(props.products.filter((product) => product.id_product !== props.id))
             }
             if(props.setMsg) props.setMsg(response.data?.message)
             setIsOpen(false)
@@ -80,10 +78,10 @@ export default function ProductCard(props: ProductCardProps) {
         const orderLocalStore = localStorage.getItem("order");
         let order = orderLocalStore ? JSON.parse(orderLocalStore) : {id_user: userId, produtos: [], preco_final: 0};
         
-        const productInCart = order.produtos.some((produto: {id_produto: number, quantidade: number}) => produto.id_produto == props.id)
+        const productInCart = order.produtos.some((produto: Product) => produto.id_product == props.id)
 
         if(!productInCart) {
-            order.produtos.push({id_produto:props.id, quantidade: 1})
+            order.produtos.push({id_produto:props.id, name: props.nameProduct, imgSrc: props.imgSrc, imgAlt: props.imgAlt, preco: props.price, quantidade: 1})
             order.preco_final += props.price
             localStorage.setItem("order", JSON.stringify(order))
         }

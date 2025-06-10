@@ -4,18 +4,22 @@ const knex = require("knex")(knexConfig.development);
 
 
 async function viewUserOrder(userId){
-    try{
-        const id = userId;
-        
-        const viewOwnOrder = await knex("pedido").select("*").where({id_usuario: id});
-        const getOrderId = await knex("pedido").select("id").where({id_usuario:id});
-        const item = await knex("item").select("*").where({id_pedido: getOrderId.id})
-        if(!viewOwnOrder){
+    try {
+        const pedidos = await knex("pedido").select("*").where({ id_usuario: userId });
+
+        if (!pedidos || pedidos.length === 0) {
             throw new Error("Não há pedidos.");
         }
-        return {pedidos: viewOwnOrder, itens: item};
-    }catch(err){
-        console.error("Erro ao localizar pedidos.");
+
+        const pedidoIds = pedidos.map(p => p.id); // extrai os IDs dos pedidos
+
+        const itens = await knex("item").select("*").whereIn("id_pedido", pedidoIds);
+
+        return { pedidos, itens };
+
+    } catch (err) {
+        console.error("Erro ao localizar pedidos:", err.message);
+        throw err; // importante lançar o erro para o controller capturar corretamente
     }
 }
 
