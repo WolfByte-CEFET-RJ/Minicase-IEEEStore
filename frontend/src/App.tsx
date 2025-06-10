@@ -22,6 +22,7 @@ import ListProduct from './components/pages/product/ListProduct'
 import UserList from './components/pages/Lista_de_usuarios'
 import PaymentDetails from './components/pages/PaymentDetails'
 import MyOrders from './components/pages/MyOrders'
+import ProdutosAdq from './components/pages/ProdutosAdquiridos'
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
               <Route path="/ecobags" element={<Ecobags />} />
               <Route path="/meus-favoritos" element={<MeusFavoritos />} />
               <Route path="/meu-carrinho" element={<MeuCarrinho />} />
+              <Route path="/produtos-adq" element={<ProdutosAdq />} />
               <Route path="/signup-adm" element={<SignupAdm />} />
               <Route path="/signup-product" element={<SignupProduct />} />
               <Route path="/editar-produto/:id" element={<EditProduct />} />
