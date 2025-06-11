@@ -47,9 +47,15 @@ async function login({cpf,email,senha}){
     }
 }
 
-async function viewLogin(){
+async function viewLogin(dataInicio=0, dataFim=0){
     try{
-        const view = await knex("controle_login").select("*");
+        let view;
+        if(dataFim===0 && dataInicio===0){
+            view = await knex("controle_login").select("*");
+        }
+        else{
+            view = await knex("controle_login").where("hora_login",'>=',dataInicio).where("hora_login",'<=',dataFim);
+        }
         console.log(view)
         if(!view){
             throw new Error("Erro ao exibir logs");

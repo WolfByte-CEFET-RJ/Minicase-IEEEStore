@@ -18,9 +18,22 @@ async function login(req,res){
     }
 }
 
+const isValidDate= (dateString) => {
+  return !isNaN(new Date(dateString));
+};
+
 async function viewLogin(req,res) {
     try{
-        const logsService = await loginServices.viewLogin();
+        const inicio = req.query.inicio;
+        const fim = req.query.fim;
+        if(!isValidDate(inicio)||!isValidDate(fim)){
+            return res.status(400).json({status:false, message: "O formato deve ser DD-MM-AAAA"});
+        }
+        const dataInicio = new Date(inicio);
+        const dataFim = new Date(fim);    
+        console.log(dataFim);
+        console.log(dataInicio)
+        const logsService = await loginServices.viewLogin(dataInicio,dataFim);
         res.json({status:true,message:logsService})
     }catch(err){
         console.log(err);

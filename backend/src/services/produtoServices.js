@@ -16,9 +16,9 @@ async function serveImage(id){
     }
 }
 
-async function viewAlteracao() {
+async function viewAlteracao(dataInicio=0,dataFim=0) {
     try {
-        const alteracao = await knex("alteracao_produto").select("*");
+        const alteracao= await knex("alteracao_produto").where("data_alteracao",'>=',dataInicio).where("data_alteracao",'<',dataFim);
         if (alteracao.length === 0) {
             throw new Error("Não foi possível encontrar alteracoes");
         }

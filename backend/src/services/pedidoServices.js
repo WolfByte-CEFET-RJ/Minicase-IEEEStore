@@ -31,9 +31,9 @@ async function viewUserOrder(userId){
     }
 }
 
-async function viewAllOrders(){
+async function viewAllOrders(dataInicio,dataFim){
     try{
-      const viewAllPedido = await knex("pedido").select("*");
+      const viewAllPedido = await knex("pedido").select("*").where("data",'>=',dataInicio).where("data",'<',dataFim);
       const viewAllItens = await knex("item").select("*");
       if(!viewAllPedido){
         throw new Error("Sem pedidos");

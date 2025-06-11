@@ -13,9 +13,24 @@ async function serveImage(req,res){
     }
 }
 
+const isValidDate = (dateString) => {
+  return !isNaN(new Date(dateString));
+};
+
 async function viewAlteracao(req,res){
     try{
-        const viewAlteracaoService = await produtoServices.viewAlteracao();
+
+        const inicio = req.query.inicio;
+        const fim = req.query.fim;
+
+        if(!isValidDate(inicio)||!isValidDate(fim)){
+            return res.status(400).json({status:false, message: "O formato deve ser DD-MM-AAAA"});
+        }
+
+        const dataInicio = new Date(inicio);
+        const dataFim = new Date(fim);
+
+        const viewAlteracaoService = await produtoServices.viewAlteracao(dataInicio,dataFim);
         res.json({status: true, message: viewAlteracaoService});
         console.log("controlador executado");
     }catch(error){

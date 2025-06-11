@@ -16,7 +16,14 @@ async function serveComprovante(req,res){
 
 async function viewAllOrders(req,res){
     try{
-      const viewAllPedidoService = await pedidoServices.viewAllOrders();
+      const inicio = req.query.inicio;
+      const fim = req.query.fim;
+        if(!isValidDate(inicio)||!isValidDate(fim)){
+            return res.status(400).json({status:false, message: "O formato deve ser DD-MM-AAAA"});
+        }
+    const dataInicio = new Date(inicio);
+    const dataFim = new Date(fim);
+      const viewAllPedidoService = await pedidoServices.viewAllOrders(dataInicio,dataFim);
       res.status(200).json({status: true, viewAllPedidoService});
     }catch(err){
       console.log(err);
