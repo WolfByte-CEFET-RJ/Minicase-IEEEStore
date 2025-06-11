@@ -110,10 +110,11 @@ async function createOrder(req, res) {
 async function updateOrder(req, res){
     try{
         const {id} = req.params;
+        const id_adm = req.userId;
         const {estado_pedido, mensagem} = req.body;
        
         const updateOrder = await pedidoServices.updateOrder({
-           id, estado_pedido, mensagem
+           id, id_adm, estado_pedido, mensagem
         });
    
         res.json({status: true, message: updateOrder});
@@ -124,10 +125,20 @@ async function updateOrder(req, res){
     }
 }
 
+async function view_alteracao_estado_Pedido(req, res){
+    try{
+        const alteracoes = await pedidoServices.view_alteracao_estado_Pedido();
+        res.json({status: true, message: alteracoes});
+    }catch(erro){
+        res.json({status: false, message: erro.message});
+    }
+}
+
 module.exports = {
     createOrder,
     viewUserOrder,
     viewAllOrders,
     serveComprovante,
     updateOrder,
+    view_alteracao_estado_Pedido,
 };
