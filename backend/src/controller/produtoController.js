@@ -34,7 +34,7 @@ async function viewAlteracao(req,res){
         res.json({status: true, message: viewAlteracaoService});
         console.log("controlador executado");
     }catch(error){
-        console.erro("Erro no controller", error)
+        console.error("Erro no controller", error)
         res.json({status: false, message: error.message});
     }
 }

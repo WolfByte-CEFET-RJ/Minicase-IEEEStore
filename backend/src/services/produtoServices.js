@@ -16,7 +16,7 @@ async function serveImage(id){
     }
 }
 
-async function viewAlteracao(dataInicio=0,dataFim=0) {
+async function viewAlteracao(dataInicio,dataFim) {
     try {
         const alteracao= await knex("alteracao_produto").where("data_alteracao",'>=',dataInicio).where("data_alteracao",'<',dataFim);
         if (alteracao.length === 0) {

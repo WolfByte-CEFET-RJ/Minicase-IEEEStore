@@ -47,7 +47,7 @@ async function login({cpf,email,senha}){
     }
 }
 
-async function viewLogin(dataInicio=0, dataFim=0){
+async function viewLogin(dataInicio, dataFim){
     try{
         let view;
         if(dataFim===0 && dataInicio===0){
