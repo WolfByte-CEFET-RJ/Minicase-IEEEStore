@@ -144,6 +144,25 @@ async function updateOrder({id, id_usuario, preco_final, metodo_pagamento, compr
         return {status: false, message: erro.message};
     };
 };
+async function viewAteracaoEstadoPedido(dataInicio, dataFim){
+      try{
+
+        const view = await knex("alteracao_estado_pedido").where("data_alteracao",'>=',dataInicio).where("data_alteracao",'<',dataFim);
+        console.log(view)
+        if(!view){
+            throw new Error("Erro ao exibir logs");
+        }
+        if(view.length ===0){
+            throw new Error("Não foi possível encontrar alteracoes");
+        }
+        return view
+    }catch(error){
+        console.log("Erro ao visualizar os logs");
+        throw error;
+    }
+
+}
+
 
 module.exports = {
     createOrder,
@@ -151,4 +170,6 @@ module.exports = {
     viewUserOrder,
     serveComprovante,
     updateOrder,
+    viewAteracaoEstadoPedido,
+    
 };

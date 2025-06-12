@@ -118,9 +118,20 @@ async function updateOrder(req, res){
     }
 }
 
-async function view_alteracao_estado_Pedido(req, res){
+async function viewAteracaoEstadoPedido(req, res){
     try{
-        const alteracoes = await pedidoServices.view_alteracao_estado_Pedido();
+        const inicio = req.query.inicio;
+        const fim = req.query.fim;
+
+         if(!isValidDate(inicio)||!isValidDate(fim)){
+            return res.status(400).json({status:false, message: "O formato deve ser DD-MM-AAAA"});
+        }
+
+        const dataInicio = new Date(inicio);
+        const dataFim = new Date(fim);
+
+
+        const alteracoes = await pedidoServices.view_alteracao_estado_Pedido(dataInicio, dataFim);
         res.json({status: true, message: alteracoes});
     }catch(erro){
         res.json({status: false, message: erro.message});
