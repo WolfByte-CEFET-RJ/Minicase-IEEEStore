@@ -118,7 +118,11 @@ async function updateOrder(req, res){
     }
 }
 
-async function viewAteracaoEstadoPedido(req, res){
+const isValidDate= (dateString) => {
+  return !isNaN(new Date(dateString));
+};
+
+async function viewAlteracaoEstadoPedido(req, res){
     try{
         const inicio = req.query.inicio;
         const fim = req.query.fim;
@@ -131,7 +135,7 @@ async function viewAteracaoEstadoPedido(req, res){
         const dataFim = new Date(fim);
 
 
-        const alteracoes = await pedidoServices.view_alteracao_estado_Pedido(dataInicio, dataFim);
+        const alteracoes = await pedidoServices.viewAteracaoEstadoPedido(dataInicio, dataFim);
         res.json({status: true, message: alteracoes});
     }catch(erro){
         res.json({status: false, message: erro.message});
@@ -144,5 +148,5 @@ module.exports = {
     viewAllOrders,
     serveComprovante,
     updateOrder,
-    view_alteracao_estado_Pedido,
+    viewAlteracaoEstadoPedido,
 };
