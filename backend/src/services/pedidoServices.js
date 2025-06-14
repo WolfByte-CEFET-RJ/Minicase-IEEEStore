@@ -15,21 +15,44 @@ async function serveComprovante(id){
 
 
 
-async function viewUserOrder(userId){
-    try{
-        const id = userId;
-        
-        const viewOwnOrder = await knex("pedido").select("*").where({id_usuario: id});
-        const getOrderId = viewOwnOrder.map((pedido) => pedido.id);
-        const item = await knex("item").select("*").whereIn("id_pedido", getOrderId);
-        if(!viewOwnOrder){
+async function viewUserOrder(userId) {
+    try {
+        const viewOwnOrder = await knex("pedido").select("*").where({id_usuario: userId});
+
+        if (viewOwnOrder.length === 0) {
             throw new Error("Não há pedidos.");
         }
-        return {pedidos: viewOwnOrder, itens: item};
-    }catch(err){
-        console.error("Erro ao localizar pedidos.");
+
+        const getOrderId = viewOwnOrder.map((pedido) => pedido.id);
+
+        const itens = await knex("item").select("*").whereIn("id_pedido", getOrderId);
+
+        const itensComNome = await Promise.all(itens.map(async (item) => {
+            const produto = await knex("produto")
+                .select("nome")
+                .where({id: item.id_produto})
+                .first();
+
+            if (!produto || !produto.nome) {
+                throw new Error(`Produto com ID ${item.id_produto} não encontrado ou sem nome.`);
+            }
+
+            return {
+                ...item,
+                nome_produto: produto.nome
+            };
+        }));
+
+        return {
+            pedidos: viewOwnOrder,
+            itens: itensComNome
+        };
+    } catch (err) {
+        console.error("Erro ao localizar pedidos:", err.message);
+        return { erro: err.message };
     }
 }
+
 
 async function viewAllOrders(){
     try{
